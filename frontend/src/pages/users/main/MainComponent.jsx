@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { Layout, Menu } from "antd";
 import verifyToken from "../../../helpers/verifyToken";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetAuthenticatedUserQuery } from "../../../redux/api/userApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../../redux/features/userSlice";
 import { CiStar } from "react-icons/ci";
+import { MenuComponents } from "./MenuComponent";
+import { ModuleComponents } from "./ModuleComponent";
+import Main from "./Main";
+
+const { Header, Content, Footer, Sider } = Layout;
 
 const MainComponent = () => {
   const navigate = useNavigate();
@@ -12,6 +18,7 @@ const MainComponent = () => {
   const { module } = useParams();
   const authenticatedUser = useSelector((store) => store?.user);
   const [menuItems, setMenuItems] = useState([]);
+  const [collapsed, setCollapsed] = useState(false);
 
   const {
     data: userData,
@@ -48,8 +55,7 @@ const MainComponent = () => {
               key: module.key,
               label: getLabel(module),
               children,
-              // icon: menuIcons[module.key],
-              icon: <CiStar />,
+              icon: MenuComponents[module.key],
             };
 
             return moduleObj;
@@ -66,18 +72,15 @@ const MainComponent = () => {
     return module?.children
       ?.filter((child) => child?.access)
       .map((child) => {
-        //TODO: add modules
-        // const childItem = moduleComponents[child.key];
+        const childItem = ModuleComponents[child.key];
         if (child?.children?.length > 0) {
           // If there are sub-children, call fetchChildModule recursively
           const subChildren = fetchChildModule(child);
           return {
             key: child.key,
             label: getLabel(child),
-            // component: childItem?.component,
-            component: <div>{child?.name}</div>,
-            // icon: menuIcons[child.key],
-            icon: <CiStar />,
+            component: childItem?.component,
+            icon: MenuComponents[child.key],
             children: subChildren.length > 0 ? subChildren : undefined,
           };
         } else {
@@ -85,19 +88,24 @@ const MainComponent = () => {
           return {
             key: child.key,
             label: getLabel(child),
-            // component: childItem?.component,
-            component: <div>{child?.name}</div>,
-            // icon: menuIcons[child.key],
-            icon: <CiStar />,
+            component: childItem?.component,
+            icon: MenuComponents[child.key],
           };
         }
       });
   };
 
   const getLabel = (item) => {
-    if (!item?.children || item?.children?.length === 0) {
+    // If admin portal, then redirect to admin portal
+    if (item.key === "adminSettings") {
+      return <Link to={"/admin/users"}>{item.name}</Link>;
+    }
+    // if not admin but also dont have children, then redirect to current module
+    else if (!item?.children || item?.children?.length === 0) {
       return <Link to={"/home/" + item.key}>{item.name}</Link>;
-    } else {
+    }
+    // else just return the name to avoid parent module redirect
+    else {
       return item.name;
     }
   };
@@ -106,7 +114,39 @@ const MainComponent = () => {
     return <div>Loading...</div>;
   }
 
-  return <div>MainComponent</div>;
+
+  return (
+    <Layout
+      style={{
+        minHeight: "100vh",
+      }}
+    >
+      <Header
+        style={{
+          padding: 0,
+        }}
+      />
+
+      <Layout>
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+        >
+          <div className="demo-logo-vertical" />
+          <Menu defaultSelectedKeys={[module]} theme="light" mode="inline" items={menuItems} />
+        </Sider>
+        <Main module={module} />
+        {/* <Footer
+          style={{
+            textAlign: "center",
+          }}
+        >
+          Ant Design ©{new Date().getFullYear()} Created by Ant UED
+        </Footer> */}
+      </Layout>
+    </Layout>
+  );
 };
 
 export default MainComponent;
