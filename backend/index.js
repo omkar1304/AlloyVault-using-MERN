@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 
 import connectDB from "./lib/connectDB.js";
 import userRouter from "./routes/user.route.js";
+import adminRouter from "./routes/admin.route.js";
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -27,6 +28,7 @@ app.use(
 
 //* Routes
 app.use("/api/users", userRouter);
+app.use("/api/admin", adminRouter);
 
 //* Listeting
 app.listen(PORT, () => {

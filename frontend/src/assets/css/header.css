@@ -1,0 +1,19 @@
+.page-header {
+  color: #1e1e1e;
+  line-height: 2.25rem;
+  font-size: 1.75rem;
+  letter-spacing: -2%;
+  font-weight: 700;
+  height: 2.25rem;
+  margin-block: 0.4rem;
+}
+
+.page-sub-header {
+  color: #6B7280;
+  line-height: 1.25rem;
+  font-size: 0.85rem;
+  letter-spacing: 0%;
+  font-weight: 400;
+  height: 1.25rem;
+  margin-block: 0.4rem;
+}

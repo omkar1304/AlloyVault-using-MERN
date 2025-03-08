@@ -1,0 +1,49 @@
+.custom-search {
+  width: 100%;
+  height: 2.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb !important;
+  background-color: white !important;
+  color: black !important;
+  padding-left: 12px !important;
+  box-shadow: none !important;
+  transition: all 0.3s ease-in-out;
+  margin-block: 0.5rem;
+}
+
+/* Placeholder text color */
+.custom-search::placeholder {
+  color: black !important;
+  opacity: 0.5;
+}
+
+/* Search input focus (remove Ant Design blue focus) */
+.custom-search:focus,
+.custom-search:focus-within,
+.custom-search:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Search icon */
+.custom-search .ant-input-search-button {
+  background: transparent !important;
+  border: none !important;
+  color: black !important;
+}
+
+/* Remove hover effect from search button */
+.custom-search .ant-input-search-button:hover {
+  background: transparent !important;
+  color: black !important;
+}
+
+/* Disable autofill background */
+.custom-search input:-webkit-autofill,
+.custom-search input:-webkit-autofill:hover,
+.custom-search input:-webkit-autofill:focus,
+.custom-search input:-webkit-autofill:active {
+  box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: black !important;
+}

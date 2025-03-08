@@ -6,7 +6,6 @@ import { GrShieldSecurity } from "react-icons/gr";
 import { TbLogs } from "react-icons/tb";
 import { AiOutlineHome } from "react-icons/ai";
 
-
 const { Sider } = Layout;
 
 const getItem = (label, key, icon, children, onClick = () => {}) => {
@@ -33,8 +32,8 @@ const AdminDrawer = ({ module }) => {
       navigate("/admin/activityLogs")
     ),
     getItem("Main Portal", "mainPortal", <AiOutlineHome />, null, () =>
-        navigate("/home/inward")
-      ),
+      navigate("/home/inward")
+    ),
   ];
   return (
     <Sider
@@ -43,11 +42,7 @@ const AdminDrawer = ({ module }) => {
       onCollapse={(value) => setCollapsed(value)}
     >
       <div className="demo-logo-vertical" />
-      <Menu
-        defaultSelectedKeys={[module]}
-        mode="inline"
-        items={items}
-      />
+      <Menu defaultSelectedKeys={[module]} mode="inline" items={items} />
     </Sider>
   );
 };

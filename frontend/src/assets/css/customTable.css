@@ -1,0 +1,83 @@
+.custom-table-container {
+  background: #ffffff;
+  position: relative;
+  margin-top: 12px;
+}
+
+.custom-row td {
+  padding: 12px;
+  font-size: 14px;
+}
+
+.avatar {
+  background: #333;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 50%;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.action-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-icon,
+.delete-icon {
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.edit-icon:hover {
+  background: #ffcc00;
+}
+
+.delete-icon:hover {
+  background: #ff4d4f;
+  color: white;
+}
+
+/* Pagination */
+.custom-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.custom-pagination .pagination-btn {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  color: #fff;
+  padding: 8px 15px;
+  cursor: pointer;
+  margin: 0 5px;
+  border-radius: 5px;
+}
+
+.custom-pagination .ant-pagination-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-pagination .ant-pagination-item-active {
+  background: #e5e7eb;
+  color: white;
+  border: none;
+}
+
+/* Position Previous button to the left */
+.custom-pagination .prev-btn {
+  margin-right: auto;
+}
+
+/* Position Next button to the right */
+.custom-pagination .next-btn {
+  margin-left: auto !important;
+}

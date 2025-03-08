@@ -75,8 +75,10 @@ const AdminComponent = () => {
       />
 
       <Layout>
-        <AdminDrawer module={module}/>
-        <Main module={module} />
+        <AdminDrawer module={module} />
+        <Content className="main-content">
+          <Main module={module} />
+        </Content>
       </Layout>
     </Layout>
   );
