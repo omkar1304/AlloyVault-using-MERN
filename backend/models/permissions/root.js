@@ -1,63 +1,71 @@
 const perms = [
   {
-    name: "Settings",
-    key: "settings",
-    access: true,
+    name: "Admin Settings",
+    key: "adminSettings",
+    access: false,
     order: 1,
-    children: [
-      {
-        name: "Settings 1",
-        key: "settings1",
-        access: true,
-        order: 1,
-      },
-      {
-        name: "Settings 2",
-        key: "settings2",
-        access: true,
-        order: 2,
-      },
-    ],
   },
   {
-    name: "Dashboards",
-    key: "dashboards",
+    name: "Stock Tracking",
+    key: "stockTracking",
     access: true,
     order: 2,
     children: [
       {
-        name: "Dashboards 1",
-        key: "dashboards1",
+        name: "Inward",
+        key: "inward",
         access: true,
         order: 1,
       },
       {
-        name: "Dashboards 2",
-        key: "dashboards2",
+        name: "Outward",
+        key: "outward",
         access: true,
         order: 2,
+      },
+      {
+        name: "Branch Transfer",
+        key: "branchTransfer",
+        access: true,
+        order: 3,
       },
     ],
   },
   {
-    name: "Calendar",
-    key: "calendar",
-    access: false,
+    name: "Company Details",
+    key: "companyDetails",
+    access: true,
     order: 3,
-    children: [
-      {
-        name: "Calendar 1",
-        key: "calendar1",
-        access: false,
-        order: 1,
-      },
-      {
-        name: "Calendar 2",
-        key: "calendar2",
-        access: false,
-        order: 2,
-      },
-    ],
+  },
+  {
+    name: "Challan Generation",
+    key: "challanGeneration",
+    access: true,
+    order: 4,
+  },
+  {
+    name: "Stock Summary",
+    key: "stockSummary",
+    access: true,
+    order: 5,
+  },
+  {
+    name: "Job Work",
+    key: "jobWork",
+    access: true,
+    order: 6,
+  },
+  {
+    name: "Processing Unit",
+    key: "processingUnit",
+    access: true,
+    order: 7,
+  },
+  {
+    name: "History",
+    key: "history",
+    access: true,
+    order: 8,
   },
 ];
 
