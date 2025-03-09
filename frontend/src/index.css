@@ -103,3 +103,32 @@
   border-color: rgba(0, 0, 0, 0.5);
   box-shadow: none;
 }
+
+/* Scroll Bar */
+/* Width of the scrollbar */
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+/* Track (background of the scrollbar) */
+::-webkit-scrollbar-track {
+  background: #1d1d1d; 
+}
+
+/* Handle (movable part of scrollbar) */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Horizontal scrollbar */
+::-webkit-scrollbar-horizontal {
+  height: 6px;
+}

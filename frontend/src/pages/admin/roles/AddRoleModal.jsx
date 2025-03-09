@@ -17,6 +17,7 @@ const AddRoleModal = ({ open, onClose }) => {
       const errMessage = error?.data?.message || "Couldn't add role!"
       toast.error(errMessage);
     }
+    form.resetFields();
     onClose();
   };
 

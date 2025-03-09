@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useGetRolesQuery } from "../../../redux/api/adminApiSlice";
-import { Grid, Input } from "antd";
 import getTableColumns from "./getTableColumns";
 import { PageHeader, PageSubHeader } from "../../../component/Headers";
 import CustomTable from "./../../../component/CustomTable";
@@ -8,13 +7,12 @@ import AssignedUserModal from "./AssignedUserModal";
 import CustomSearch from "../../../component/CustomSearch";
 import CustomButton from "../../../component/CustomButton";
 import AddRoleModal from "./AddRoleModal";
+import PermissionModal from "./PermissionModal";
 
-const { useBreakpoint } = Grid;
-const { Search } = Input;
 const Roles = () => {
-  const screens = useBreakpoint();
   const [isAssignedUserModalOpen, setIsAssignedUserModalOpen] = useState(false);
   const [isAddRoleModalOpen, setIsAddRoleModalOpen] = useState(false);
+  const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
   const [singleItem, setSingleItem] = useState(null);
   const [query, setQuery] = useState({
     page: 1,
@@ -59,6 +57,16 @@ const Roles = () => {
     setIsAddRoleModalOpen(false);
   };
 
+  const openPermissionModal = (item = null) => {
+    setIsPermissionModalOpen(true);
+    setSingleItem(item);
+  };
+
+  const closePermissionModal = () => {
+    setIsPermissionModalOpen(false);
+    setSingleItem(null);
+  };
+
   return (
     <div>
       <AddRoleModal open={isAddRoleModalOpen} onClose={closeAddRoleModal} />
@@ -66,6 +74,11 @@ const Roles = () => {
         open={isAssignedUserModalOpen}
         onClose={closeAssignedUserModal}
         users={singleItem?.assignedUsers || []}
+      />
+      <PermissionModal
+        open={isPermissionModalOpen}
+        onClose={closePermissionModal}
+        item={singleItem}
       />
       <div className="flex-row-space-between">
         <div>
@@ -87,7 +100,10 @@ const Roles = () => {
         page={query?.page}
         size={query?.size}
         isLoading={isRolesLoading}
-        columns={getTableColumns({ openAssignedUserModal })}
+        columns={getTableColumns({
+          openAssignedUserModal,
+          openPermissionModal,
+        })}
         onPageChange={onPageChange}
       />
     </div>

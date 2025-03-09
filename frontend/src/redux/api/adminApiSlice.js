@@ -28,7 +28,22 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["getRoles"],
     }),
+    updatePermission: builder.mutation({
+      query: (data) => ({
+        url: `${ADMIN_URL}/updatePermission`,
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { payload: encryptData(data) },
+      }),
+    }),
   }),
 });
 
-export const { useGetRolesQuery, useAddRoleMutation } = adminApiSlice;
+export const {
+  useGetRolesQuery,
+  useAddRoleMutation,
+  useUpdatePermissionMutation,
+} = adminApiSlice;

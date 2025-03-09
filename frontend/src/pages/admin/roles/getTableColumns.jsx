@@ -1,7 +1,7 @@
 import { DeleteIcon, EditIcon } from "../../../component/ActionComponent";
 import CustomButton from "./../../../component/CustomButton";
 
-const getTableColumns = ({ openAssignedUserModal }) => {
+const getTableColumns = ({ openAssignedUserModal, openPermissionModal }) => {
   return [
     {
       title: "Name",
@@ -35,7 +35,7 @@ const getTableColumns = ({ openAssignedUserModal }) => {
       width: 50,
       render: (row) => (
         <div className="flex-row-start">
-          <EditIcon />
+          <EditIcon onClick={() => openPermissionModal(row)}/>
           <DeleteIcon />
         </div>
       ),

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
 import Role from "../../models/role.model.js";
-import decryptData from './../../lib/decryptData.js';
+import decryptData from "./../../lib/decryptData.js";
 
 export const getRoles = async (req, res) => {
   try {
@@ -102,9 +102,11 @@ export const addRole = async (req, res) => {
     const { name } = decryptData(req.body.payload);
     const { userId } = req?.user;
 
-    const exisitingRole = await Role.findOne({ name})
-    if(exisitingRole) {
-      return res.status(400).json({ message: "Role already exists with given name!" });
+    const exisitingRole = await Role.findOne({ name });
+    if (exisitingRole) {
+      return res
+        .status(400)
+        .json({ message: "Role already exists with given name!" });
     }
 
     const role = new Role({
@@ -116,6 +118,32 @@ export const addRole = async (req, res) => {
     return res.status(201).json({ message: "Role added successfully" });
   } catch (error) {
     console.log("Error in add role controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const updatePermission = async (req, res) => {
+  try {
+    const {
+      value = undefined,
+      roleId = undefined,
+      key = undefined,
+    } = decryptData(req.body.payload);
+
+    if (!value || !roleId || !key) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const result = await Role.findByIdAndUpdate(roleId, {
+      [key]: value,
+    });
+    if (!result) {
+      return res.status(404).json({ message: "Role not found" });
+    }
+
+    return res.status(201).json({ message: "Role updated successfully" });
+  } catch (error) {
+    console.log("Error in update role controller:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
