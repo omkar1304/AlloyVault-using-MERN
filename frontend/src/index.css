@@ -12,6 +12,11 @@
   background-color: #fff;
 }
 
+.outer-layout{
+  min-height: 100vh;
+  background-color: #FFF;
+}
+
 /* Override Ant design components */
 
 /* Sider */
@@ -93,3 +98,8 @@
   transition: none !important;
 }
 
+/* Input */
+.ant-input-outlined:focus, .ant-input-outlined:hover {
+  border-color: rgba(0, 0, 0, 0.5);
+  box-shadow: none;
+}

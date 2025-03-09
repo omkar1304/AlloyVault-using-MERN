@@ -9,6 +9,8 @@ import { CiStar } from "react-icons/ci";
 import { MenuComponents } from "./MenuComponent";
 import { ModuleComponents } from "./ModuleComponent";
 import Main from "./Main";
+import { Toaster } from "react-hot-toast";
+import CustomHeader from "../../../component/CustomHeader";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -114,36 +116,33 @@ const MainComponent = () => {
     return <div>Loading...</div>;
   }
 
-
   return (
-    <Layout
-      style={{
-        minHeight: "100vh",
-      }}
-    >
-      <Header
+    <Layout className="outer-layout">
+      <Toaster />
+      <CustomHeader />
+      <Layout
         style={{
-          padding: 0,
+          // marginLeft: collapsed ? "80px" : "200px",
+          marginTop: "64px",
+          // transition: "margin-left 0.3s ease-in-out",
         }}
-      />
-
-      <Layout>
+      >
         <Sider
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
         >
           <div className="demo-logo-vertical" />
-          <Menu defaultSelectedKeys={[module]} theme="light" mode="inline" items={menuItems} />
+          <Menu
+            defaultSelectedKeys={[module]}
+            theme="light"
+            mode="inline"
+            items={menuItems}
+          />
         </Sider>
+        <Content className="main-content">
         <Main module={module} />
-        {/* <Footer
-          style={{
-            textAlign: "center",
-          }}
-        >
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
-        </Footer> */}
+        </Content>
       </Layout>
     </Layout>
   );

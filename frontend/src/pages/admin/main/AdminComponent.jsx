@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Layout, Result } from "antd";
 import verifyToken from "../../../helpers/verifyToken";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,8 +9,10 @@ import Roles from "./../roles/index";
 import ActivityLogs from "./../activityLogs/index";
 import AdminDrawer from "./AdminDrawer";
 import { useGetAuthenticatedUserQuery } from "../../../redux/api/userApiSlice";
+import { Toaster } from "react-hot-toast";
+import CustomHeader from "../../../component/CustomHeader";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content } = Layout;
 
 const adminModule = {
   users: <Users />,
@@ -19,6 +21,7 @@ const adminModule = {
 };
 
 const AdminComponent = () => {
+  const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { module } = useParams();
@@ -62,20 +65,21 @@ const AdminComponent = () => {
   };
 
   return (
-    <Layout
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "white",
-      }}
-    >
-      <Header
+    <Layout className="outer-layout">
+      <Toaster />
+      <CustomHeader />
+      <Layout
         style={{
-          padding: 0,
+          marginLeft: collapsed ? "80px" : "200px",
+          marginTop: "64px",
+          transition: "margin-left 0.3s ease-in-out",
         }}
-      />
-
-      <Layout>
-        <AdminDrawer module={module} />
+      >
+        <AdminDrawer
+          module={module}
+          collapsed={collapsed}
+          setCollapsed={setCollapsed}
+        />
         <Content className="main-content">
           <Main module={module} />
         </Content>

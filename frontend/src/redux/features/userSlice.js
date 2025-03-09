@@ -6,6 +6,7 @@ const initialState = {
   roleName: null,
   firstName: null,
   lastName: null,
+  displayName: null,
   email: null,
   perms: [],
   isAuthenticated: false,

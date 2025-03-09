@@ -7,13 +7,14 @@ import CustomTable from "./../../../component/CustomTable";
 import AssignedUserModal from "./AssignedUserModal";
 import CustomSearch from "../../../component/CustomSearch";
 import CustomButton from "../../../component/CustomButton";
-import { AddIcon } from "../../../component/ActionComponent";
+import AddRoleModal from "./AddRoleModal";
 
 const { useBreakpoint } = Grid;
 const { Search } = Input;
 const Roles = () => {
   const screens = useBreakpoint();
   const [isAssignedUserModalOpen, setIsAssignedUserModalOpen] = useState(false);
+  const [isAddRoleModalOpen, setIsAddRoleModalOpen] = useState(false);
   const [singleItem, setSingleItem] = useState(null);
   const [query, setQuery] = useState({
     page: 1,
@@ -28,22 +29,39 @@ const Roles = () => {
   } = useGetRolesQuery({ ...query });
 
   useEffect(() => {
-    console.log("query", query);
     getRolesRefetch();
   }, [query]);
 
-  function openAssignedUserModal(item = null) {
+  const onPageChange = (pageNumber, pageSize) => {
+    setQuery({
+      ...query,
+      page: query?.size !== pageSize ? 1 : pageNumber,
+      size: pageSize,
+    });
+    return;
+  };
+
+  const openAssignedUserModal = (item = null) => {
     setIsAssignedUserModalOpen(true);
     setSingleItem(item);
-  }
+  };
 
-  function closeAssignedUserModal() {
+  const closeAssignedUserModal = () => {
     setIsAssignedUserModalOpen(false);
     setSingleItem(null);
-  }
+  };
+
+  const openAddRoleModal = () => {
+    setIsAddRoleModalOpen(true);
+  };
+
+  const closeAddRoleModal = () => {
+    setIsAddRoleModalOpen(false);
+  };
 
   return (
     <div>
+      <AddRoleModal open={isAddRoleModalOpen} onClose={closeAddRoleModal} />
       <AssignedUserModal
         open={isAssignedUserModalOpen}
         onClose={closeAssignedUserModal}
@@ -56,7 +74,7 @@ const Roles = () => {
             Create and edit roles to access application smoothly!
           </PageSubHeader>
         </div>
-        <CustomButton >Create Role</CustomButton>
+        <CustomButton onClick={openAddRoleModal}>Create Role</CustomButton>
       </div>
       <CustomSearch
         query={query}
@@ -66,8 +84,11 @@ const Roles = () => {
       <CustomTable
         data={rolesData?.roles || []}
         total={rolesData?.total}
+        page={query?.page}
+        size={query?.size}
         isLoading={isRolesLoading}
         columns={getTableColumns({ openAssignedUserModal })}
+        onPageChange={onPageChange}
       />
     </div>
   );

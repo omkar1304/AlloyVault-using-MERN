@@ -1,16 +1,16 @@
+import mongoose from "mongoose";
 import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
 import Role from "../../models/role.model.js";
+import decryptData from './../../lib/decryptData.js';
 
 export const getRoles = async (req, res) => {
   try {
     const { payload } = req.query;
-    console.log("payload", payload);
     const {
       page = 1,
       size = 25,
       keyword = undefined,
     } = decryptUrlPayload(payload);
-    console.log(page, size, keyword);
 
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;
@@ -93,6 +93,29 @@ export const getRoles = async (req, res) => {
     return res.status(200).json({ roles, total });
   } catch (error) {
     console.log("Error in get roles controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const addRole = async (req, res) => {
+  try {
+    const { name } = decryptData(req.body.payload);
+    const { userId } = req?.user;
+
+    const exisitingRole = await Role.findOne({ name})
+    if(exisitingRole) {
+      return res.status(400).json({ message: "Role already exists with given name!" });
+    }
+
+    const role = new Role({
+      name,
+      createdBy: userId,
+    });
+    await role.save();
+
+    return res.status(201).json({ message: "Role added successfully" });
+  } catch (error) {
+    console.log("Error in add role controller:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

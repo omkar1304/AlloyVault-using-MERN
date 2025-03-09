@@ -18,8 +18,8 @@ const getItem = (label, key, icon, children, onClick = () => {}) => {
   };
 };
 
-const AdminDrawer = ({ module }) => {
-  const [collapsed, setCollapsed] = useState(false);
+const AdminDrawer = ({ module, collapsed, setCollapsed }) => {
+  
   const navigate = useNavigate();
   const items = [
     getItem("Users", "users", <PiUsersThreeBold />, null, () =>
@@ -40,6 +40,15 @@ const AdminDrawer = ({ module }) => {
       collapsible
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
+      style={{
+        position: "fixed",
+        left: 0,
+        height: "calc(100vh - 64px)",
+        overflowY: "auto",
+        backgroundColor: "white",
+        borderRight: "1px solid #E5E7EB",
+        zIndex: 999,
+      }}
     >
       <div className="demo-logo-vertical" />
       <Menu defaultSelectedKeys={[module]} mode="inline" items={items} />

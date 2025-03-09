@@ -4,7 +4,18 @@ import { Grid, Pagination, Table } from "antd";
 
 const { useBreakpoint } = Grid;
 
-const CustomTable = ({ data, total, isLoading, columns }) => {
+const CustomTable = ({
+  data,
+  total,
+  page,
+  size,
+  isLoading,
+  columns,
+  onPageChange,
+}) => {
+  const nextDisabled = page >= Math.ceil(total / size);
+  const prevDisabled = page === 1;
+
   const screens = useBreakpoint();
   return (
     <div className="custom-table-container">
@@ -18,14 +29,35 @@ const CustomTable = ({ data, total, isLoading, columns }) => {
         rowClassName="custom-row"
       />
       <Pagination
+        current={page}
+        pageSize={size}
         className="custom-pagination"
         total={total}
         showSizeChanger={false}
+        onChange={(newPage, pageSize) => onPageChange(newPage, pageSize)}
         itemRender={(page, type, originalElement) => {
           if (type === "prev")
-            return <button className="pagination-btn">❮ Previous</button>;
+            return (
+              <button
+                onClick={() => !prevDisabled && onPageChange(page - 1, size)}
+                className="pagination-btn"
+                disabled={prevDisabled}
+                style={{ cursor:  `${prevDisabled ? "not-allowed": "pointer"}` }}
+              >
+                ❮ Previous
+              </button>
+            );
           if (type === "next")
-            return <button className="pagination-btn">Next ❯</button>;
+            return (
+              <button
+                onClick={() => !nextDisabled && onPageChange(page + 1, size)}
+                className="pagination-btn"
+                disabled={nextDisabled}
+                style={{ cursor:  `${nextDisabled ? "not-allowed": "pointer"}` }}
+              >
+                Next ❯
+              </button>
+            );
           return originalElement;
         }}
       />

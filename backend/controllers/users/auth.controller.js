@@ -103,6 +103,7 @@ export const getAuthenticatedUser = async (req, res) => {
       roleName: role?.name,
       firstName: user?.firstName,
       lastName: user?.lastName,
+      displayName: user?.displayName,
       email: user?.email,
       perms: role?.perms,
     });

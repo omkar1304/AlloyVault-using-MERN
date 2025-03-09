@@ -1,0 +1,57 @@
+.custom-header {
+  padding: 0rem 1.5rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: #1E1E1E;
+  padding: 0 20px;
+  height: 64px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.avatar {
+  background: white;
+}
+
+.search-input {
+  width: 300px;
+  border-radius: 20px;
+  background: white;
+}
+
+.right-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon {
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: #FFF;
+  line-height: 2.5rem !important;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+.dropdown-button{
+    border: none;
+}
+
+.user-avatar{
+  background-color: #111827;
+  font-size: 1.25rem;
+}
+
+.username {
+  color: #374151;
+} 
