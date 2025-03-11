@@ -27,6 +27,7 @@ const CustomTable = ({
         loading={isLoading}
         pagination={false}
         rowClassName="custom-row"
+        rowKey="_id"
       />
       <Pagination
         current={page}

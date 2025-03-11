@@ -14,7 +14,11 @@ const AssignedUserModal = ({ open, onClose, users }) => {
       <Divider />
       {users?.map((user) => {
         return (
-          <Tag style={{ marginBottom: "8px", padding: "2px 8px" }} color="#000">
+          <Tag
+            key={user?._id}
+            style={{ marginBottom: "8px", padding: "2px 8px" }}
+            color="#000"
+          >
             <Link to={`/admin/users/${user._id}`}>{user.displayName}</Link>
           </Tag>
         );

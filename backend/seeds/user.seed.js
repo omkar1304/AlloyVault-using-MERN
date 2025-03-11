@@ -14,6 +14,7 @@ const seedUserDatabase = async () => {
     await User.create({
       firstName: "Omkar",
       lastName: "Pedamkar",
+      displayName: "Omkar Pedamkar",
       email: "omkarpedamkar2@gmail.com",
       password: hashedPassword,
       role: role?._id,

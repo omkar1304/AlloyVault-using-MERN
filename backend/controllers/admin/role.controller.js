@@ -130,10 +130,10 @@ export const updatePermission = async (req, res) => {
       key = undefined,
     } = decryptData(req.body.payload);
 
-    if (!value || !roleId || !key) {
+    if (value === undefined || roleId === undefined || key === undefined) {
       return res.status(400).json({ message: "All fields are required" });
     }
-
+    
     const result = await Role.findByIdAndUpdate(roleId, {
       [key]: value,
     });

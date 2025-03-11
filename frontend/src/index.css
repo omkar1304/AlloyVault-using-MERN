@@ -104,6 +104,16 @@
   box-shadow: none;
 }
 
+/* Switch */
+
+.ant-switch.ant-switch-checked{
+  background-color: #000 !important;
+}
+
+.ant-switch.ant-switch-checked:hover{
+  border-color: rgba(0, 0, 0, 0.5);
+}
+
 /* Scroll Bar */
 /* Width of the scrollbar */
 ::-webkit-scrollbar {
