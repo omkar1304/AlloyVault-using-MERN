@@ -6,9 +6,15 @@ import {
   getRoles,
   updatePermission,
 } from "../controllers/admin/role.controller.js";
+import { getUserDetails, getUsers } from "../controllers/admin/user.controller.js";
 
 const router = express.Router();
 
+// User routes
+router.get("/getUsers", authenticate, getUsers);
+router.get("/getUserDetails/:userId", authenticate, getUserDetails);
+
+// Role routes
 router.get("/getRoles", authenticate, getRoles);
 router.post("/addRole", authenticate, addRole);
 router.post("/updatePermission", authenticate, updatePermission);
