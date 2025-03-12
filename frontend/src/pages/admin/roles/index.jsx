@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   useDeleteRoleMutation,
   useGetRolesQuery,
-} from "../../../redux/api/adminApiSlice";
+} from "../../../redux/api/admin/roleApiSlice";
 import getTableColumns from "./getTableColumns";
 import { PageHeader, PageSubHeader } from "../../../component/Headers";
 import CustomTable from "./../../../component/CustomTable";

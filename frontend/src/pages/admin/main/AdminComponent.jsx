@@ -8,10 +8,10 @@ import Users from "./../users/index";
 import Roles from "./../roles/index";
 import ActivityLogs from "./../activityLogs/index";
 import AdminDrawer from "./AdminDrawer";
-import { useGetAuthenticatedUserQuery } from "../../../redux/api/userApiSlice";
 import { Toaster } from "react-hot-toast";
 import CustomHeader from "../../../component/CustomHeader";
 import CustomResult from "../../../component/CustomResult";
+import { useGetAuthenticatedUserQuery } from "../../../redux/api/user/authApiSlice";
 
 const { Content } = Layout;
 

@@ -1,7 +1,7 @@
 import { Form, Input, Modal } from "antd";
 import React from "react";
 import toast from "react-hot-toast";
-import { useAddRoleMutation } from "../../../redux/api/adminApiSlice";
+import { useAddRoleMutation } from "../../../redux/api/admin/roleApiSlice";
 import CustomButton from "../../../component/CustomButton";
 
 const AddRoleModal = ({ open, onClose }) => {

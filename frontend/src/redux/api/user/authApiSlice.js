@@ -1,6 +1,7 @@
-import apiSlice from "./apiSlice";
-import { USER_URL } from "../constant";
-import encryptData from "../../helpers/encryptData";
+import { USER_URL } from "../../constant";
+import apiSlice from "../apiSlice";
+import encryptData from '../../../helpers/encryptData';
+
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

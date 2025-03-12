@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, message } from "antd";
-import { useLoginMutation } from "../../redux/api/userApiSlice";
 import verifyToken from "../../helpers/verifyToken";
+import { useLoginMutation } from "../../redux/api/user/authApiSlice";
 
 const Login = () => {
   const [messageApi, contextHolder] = message.useMessage();

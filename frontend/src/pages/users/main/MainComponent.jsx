@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Layout, Menu } from "antd";
 import verifyToken from "../../../helpers/verifyToken";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useGetAuthenticatedUserQuery } from "../../../redux/api/userApiSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useGetAuthenticatedUserQuery } from "../../../redux/api/user/authApiSlice";
 import { setUser } from "../../../redux/features/userSlice";
 import { CiStar } from "react-icons/ci";
 import { MenuComponents } from "./MenuComponent";
@@ -11,6 +11,7 @@ import { ModuleComponents } from "./ModuleComponent";
 import Main from "./Main";
 import { Toaster } from "react-hot-toast";
 import CustomHeader from "../../../component/CustomHeader";
+
 
 const { Header, Content, Footer, Sider } = Layout;
 

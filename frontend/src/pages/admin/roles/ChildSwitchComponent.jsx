@@ -1,6 +1,7 @@
 import { Switch } from "antd";
 import React, { useEffect, useRef, useState } from "react";
-import { useUpdatePermissionMutation } from "../../../redux/api/adminApiSlice";
+import { useUpdatePermissionMutation } from "../../../redux/api/admin/roleApiSlice";
+
 
 const ChildSwitchComponent = ({ parentIndex, childIndex, roleId, value }) => {
   const [checked, setChecked] = useState(value);

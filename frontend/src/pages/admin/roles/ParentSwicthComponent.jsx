@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useUpdatePermissionMutation } from "../../../redux/api/adminApiSlice";
 import toast from "react-hot-toast";
 import { Switch } from "antd";
+import { useUpdatePermissionMutation } from "../../../redux/api/admin/roleApiSlice";
 
 const ParentSwicthComponent = ({ moduleIndex, roleId, value }) => {
   const [checked, setChecked] = useState(value);
