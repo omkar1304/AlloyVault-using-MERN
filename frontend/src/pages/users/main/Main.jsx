@@ -2,6 +2,7 @@ import React from "react";
 import { Result } from "antd";
 import { useSelector } from "react-redux";
 import { ModuleComponents } from "./ModuleComponent";
+import CustomResult from "../../../component/CustomResult";
 
 const Main = ({ module }) => {
   const authenticatedUser = useSelector((store) => store?.user);
@@ -10,11 +11,7 @@ const Main = ({ module }) => {
   // If no module found from module component then provide 404 template
   if (!moduleConfig) {
     return (
-      <Result
-        status="404"
-        title="Page not found"
-        subTitle="Sorry, the page you're looking for does not exist"
-      />
+      <CustomResult statusCode={404}/>
     );
   }
 
@@ -46,11 +43,7 @@ const Main = ({ module }) => {
     (parentData && currentData && !currentData.access) // no parent data and current data but current data has no access
   ) {
     return (
-      <Result
-        status="403"
-        title="Access denied"
-        subTitle="You do not have permission to view this module."
-      />
+      <CustomResult statusCode={403}/>
     );
   }
 

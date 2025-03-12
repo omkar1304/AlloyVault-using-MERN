@@ -12,6 +12,7 @@ import CustomButton from "../../../component/CustomButton";
 import AddRoleModal from "./AddRoleModal";
 import PermissionModal from "./PermissionModal";
 import toast from "react-hot-toast";
+import CustomResult from "../../../component/CustomResult";
 
 const Roles = () => {
   const [isAssignedUserModalOpen, setIsAssignedUserModalOpen] = useState(false);
@@ -26,7 +27,7 @@ const Roles = () => {
   const {
     data: rolesData,
     isLoading: isRolesLoading,
-    isError,
+    isError: isErrorInRoles,
     refetch: getRolesRefetch,
   } = useGetRolesQuery({ ...query });
 
@@ -83,6 +84,10 @@ const Roles = () => {
     setSingleItem(null);
   };
 
+  if (isErrorInRoles) {
+    return <CustomResult statusCode={500} />;
+  }
+
   return (
     <div>
       <AddRoleModal open={isAddRoleModalOpen} onClose={closeAddRoleModal} />
@@ -119,7 +124,7 @@ const Roles = () => {
         columns={getTableColumns({
           openAssignedUserModal,
           openPermissionModal,
-          handleDeleteRole
+          handleDeleteRole,
         })}
         onPageChange={onPageChange}
       />

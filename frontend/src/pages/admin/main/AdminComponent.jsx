@@ -11,6 +11,7 @@ import AdminDrawer from "./AdminDrawer";
 import { useGetAuthenticatedUserQuery } from "../../../redux/api/userApiSlice";
 import { Toaster } from "react-hot-toast";
 import CustomHeader from "../../../component/CustomHeader";
+import CustomResult from "../../../component/CustomResult";
 
 const { Content } = Layout;
 
@@ -56,11 +57,7 @@ const AdminComponent = () => {
     return adminModule[module] ? (
       adminModule[module]
     ) : (
-      <Result
-        status="404"
-        title="Page not found"
-        subTitle="Sorry, the page you're looking for does not exist"
-      />
+      <CustomResult statusCode={404} />
     );
   };
 
