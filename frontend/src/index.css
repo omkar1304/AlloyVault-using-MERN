@@ -98,6 +98,11 @@
   transition: none !important;
 }
 
+.ant-btn-color-primary, .ant-btn-variant-ant solid{
+  background-color: #000;
+  color: #FFF
+}
+
 /* Input */
 .ant-input-outlined:focus, .ant-input-outlined:hover {
   border-color: rgba(0, 0, 0, 0.5);

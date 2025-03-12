@@ -1,7 +1,12 @@
+import { Popconfirm } from "antd";
 import { DeleteIcon, EditIcon } from "../../../component/ActionComponent";
 import CustomButton from "./../../../component/CustomButton";
 
-const getTableColumns = ({ openAssignedUserModal, openPermissionModal }) => {
+const getTableColumns = ({
+  openAssignedUserModal,
+  openPermissionModal,
+  handleDeleteRole,
+}) => {
   return [
     {
       title: "Name",
@@ -35,8 +40,17 @@ const getTableColumns = ({ openAssignedUserModal, openPermissionModal }) => {
       width: 50,
       render: (row) => (
         <div className="flex-row-start">
-          <EditIcon onClick={() => openPermissionModal(row)}/>
-          <DeleteIcon />
+          <EditIcon onClick={() => openPermissionModal(row)} />
+          <Popconfirm
+            title="Delete the role"
+            description="Are you sure to delete this role?"
+            onConfirm={() => handleDeleteRole(row?._id)}
+            onCancel={null}
+            okText="Yes"
+            cancelText="No"
+          >
+            <DeleteIcon />
+          </Popconfirm>
         </div>
       ),
     },

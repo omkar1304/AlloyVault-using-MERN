@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useGetRolesQuery } from "../../../redux/api/adminApiSlice";
+import {
+  useDeleteRoleMutation,
+  useGetRolesQuery,
+} from "../../../redux/api/adminApiSlice";
 import getTableColumns from "./getTableColumns";
 import { PageHeader, PageSubHeader } from "../../../component/Headers";
 import CustomTable from "./../../../component/CustomTable";
@@ -8,6 +11,7 @@ import CustomSearch from "../../../component/CustomSearch";
 import CustomButton from "../../../component/CustomButton";
 import AddRoleModal from "./AddRoleModal";
 import PermissionModal from "./PermissionModal";
+import toast from "react-hot-toast";
 
 const Roles = () => {
   const [isAssignedUserModalOpen, setIsAssignedUserModalOpen] = useState(false);
@@ -26,6 +30,8 @@ const Roles = () => {
     refetch: getRolesRefetch,
   } = useGetRolesQuery({ ...query });
 
+  const [deleteRole, { isLoading: isRoleDeleting }] = useDeleteRoleMutation();
+
   useEffect(() => {
     getRolesRefetch();
   }, [query]);
@@ -37,6 +43,16 @@ const Roles = () => {
       size: pageSize,
     });
     return;
+  };
+
+  const handleDeleteRole = async (roleId) => {
+    try {
+      await deleteRole(roleId);
+      toast.success("Role deleted successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Couldn't delete the role!");
+    }
   };
 
   const openAssignedUserModal = (item = null) => {
@@ -103,6 +119,7 @@ const Roles = () => {
         columns={getTableColumns({
           openAssignedUserModal,
           openPermissionModal,
+          handleDeleteRole
         })}
         onPageChange={onPageChange}
       />

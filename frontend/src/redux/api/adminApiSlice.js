@@ -39,6 +39,17 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         body: { payload: encryptData(data) },
       }),
     }),
+    deleteRole: builder.mutation({
+      query: (roleId) => ({
+        url: `${ADMIN_URL}/deleteRole/${roleId}`,
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      invalidatesTags: ["getRoles"],
+    }),
   }),
 });
 
@@ -46,4 +57,5 @@ export const {
   useGetRolesQuery,
   useAddRoleMutation,
   useUpdatePermissionMutation,
+  useDeleteRoleMutation,
 } = adminApiSlice;
