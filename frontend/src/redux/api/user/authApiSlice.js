@@ -1,7 +1,6 @@
 import { USER_URL } from "../../constant";
 import apiSlice from "../apiSlice";
-import encryptData from '../../../helpers/encryptData';
-
+import encryptData from "../../../helpers/encryptData";
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -16,6 +15,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: { payload: encryptData(payload) },
       }),
     }),
+    logout: builder.mutation({
+      query: () => ({
+        url: `${USER_URL}/logout`,
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
     getAuthenticatedUser: builder.query({
       query: () => ({
         url: `${USER_URL}/getAuthenticatedUser`,
@@ -25,4 +34,4 @@ export const userApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useGetAuthenticatedUserQuery } = userApiSlice;
+export const { useLoginMutation, useLogoutMutation, useGetAuthenticatedUserQuery } = userApiSlice;

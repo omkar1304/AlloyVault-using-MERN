@@ -12,7 +12,7 @@ const Login = () => {
   // If the user is logged in, redirect to the home page
   useEffect(() => {
     if (verifyToken()) {
-      navigate("/");
+      navigate("/home/inward");
     }
   }, []);
 
@@ -21,7 +21,7 @@ const Login = () => {
       const res = await login(values).unwrap();
       localStorage.setItem("token", res?.token);
       messageApi.success("Login successful!");
-      navigate("/");
+      navigate("/home/inward");
     } catch (error) {
       console.error(error);
       messageApi.error("Login failed!");

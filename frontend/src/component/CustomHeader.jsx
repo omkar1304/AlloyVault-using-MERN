@@ -6,22 +6,41 @@ import { IoIosArrowDown, IoIosLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import getInitials from "../helpers/getInitials";
+import { useLogoutMutation } from "../redux/api/user/authApiSlice";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const { Header } = Layout;
-const items = [
-  {
-    label: "Settings",
-    key: "settings",
-    icon: <IoSettingsOutline />,
-  },
-  {
-    label: "Logout",
-    key: "logout",
-    icon: <IoIosLogOut />,
-  },
-];
+
 const CustomHeader = () => {
+  const navigate = useNavigate();
   const authenticatedUser = useSelector((store) => store?.user);
+  const [logout, {}] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("You have been logged out successfully.");
+      localStorage.clear();
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to log out. Please try again later.");
+    }
+  };
+
+  const items = [
+    {
+      label: <p>Settings</p>,
+      key: "settings",
+      icon: <IoSettingsOutline />,
+    },
+    {
+      label: <p onClick={handleLogout}>Logout</p>,
+      key: "logout",
+      icon: <IoIosLogOut />,
+    },
+  ];
 
   return (
     <Header className="flex-row-space-between custom-header">
