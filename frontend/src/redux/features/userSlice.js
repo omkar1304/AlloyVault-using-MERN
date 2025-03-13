@@ -10,6 +10,7 @@ const initialState = {
   email: null,
   perms: [],
   isAuthenticated: false,
+  isAdminApproved: false
 };
 
 const userSlice = createSlice({

@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
 import Role from "../../models/role.model.js";
 import decryptData from "./../../lib/decryptData.js";
+import createActivityLog from "../../helpers/createActivityLog.js";
 
 export const getRoles = async (req, res) => {
   try {
@@ -115,6 +116,8 @@ export const addRole = async (req, res) => {
     });
     await role.save();
 
+    await createActivityLog(userId, `User created role - ${name}`);
+
     return res.status(201).json({ message: "Role added successfully" });
   } catch (error) {
     console.log("Error in add role controller:", error.message);
@@ -151,6 +154,7 @@ export const updatePermission = async (req, res) => {
 export const deleteRole = async (req, res) => {
   try {
     const { roleId = undefined } = req.params;
+    const { userId } = req?.user;
 
     if (!roleId) {
       return res.status(400).json({ message: "RoleId is missing!" });
@@ -161,6 +165,8 @@ export const deleteRole = async (req, res) => {
     if (!role) {
       return res.status(404).json({ message: "Role not found" });
     }
+
+    await createActivityLog(userId, `User deleted role - ${role?.name}`);
 
     return res.status(200).json({ message: "Role deleted successfully" });
   } catch (error) {

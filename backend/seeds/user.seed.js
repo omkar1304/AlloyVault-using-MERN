@@ -17,6 +17,7 @@ const seedUserDatabase = async () => {
       displayName: "Omkar Pedamkar",
       email: "omkarpedamkar2@gmail.com",
       password: hashedPassword,
+      isAdminApproved: true,
       role: role?._id,
     });
     console.log("Database seeded successfully");

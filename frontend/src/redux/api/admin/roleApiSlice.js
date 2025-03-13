@@ -4,7 +4,7 @@ import encodeUrlPayload from '../../../helpers/encryptUrlPayload';
 import encryptData from '../../../helpers/encryptData';
 import { ADMIN_URL } from '../../constant';
 
-export const adminApiSlice = apiSlice.injectEndpoints({
+export const roleApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getRoles: builder.query({
       query: (data) => ({
@@ -59,4 +59,4 @@ export const {
   useAddRoleMutation,
   useUpdatePermissionMutation,
   useDeleteRoleMutation,
-} = adminApiSlice;
+} = roleApiSlice;

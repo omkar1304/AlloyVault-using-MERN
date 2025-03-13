@@ -6,6 +6,7 @@ import {
   compareHashedPassword,
   getHashedPassword,
 } from "../../lib/bcryptPassowrd.js";
+import createActivityLog from "../../helpers/createActivityLog.js";
 
 export const register = async (req, res) => {
   try {
@@ -35,6 +36,7 @@ export const register = async (req, res) => {
         userId: newUser?._id,
         email: newUser.email,
       });
+      await createActivityLog(newUser?._id, "User registered successfully");
       res.status(201).json({ message: "User registered successfully", token });
     }
 
@@ -75,6 +77,7 @@ export const login = async (req, res) => {
       },
       res
     );
+    await createActivityLog(user?._id, "User logged in successfully");
 
     res.status(201).json({ message: "User Logged in successfully", token });
   } catch (error) {
@@ -85,7 +88,9 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
+    const { userId } = req.user;
     res.cookie("jwt", "", { maxAge: 0 });
+    await createActivityLog(userId, "User logged out successfully");
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     console.log("Error in logout controller:", error.message);
@@ -115,6 +120,7 @@ export const getAuthenticatedUser = async (req, res) => {
       lastName: user?.lastName,
       displayName: user?.displayName,
       email: user?.email,
+      isAdminApproved: user?.isAdminApproved,
       perms: role?.perms,
     });
   } catch (error) {

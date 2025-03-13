@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: mongoose.Types.ObjectId, ref: "Role" },
+    isAdminApproved: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

@@ -3,16 +3,21 @@ import { Result } from "antd";
 import { useSelector } from "react-redux";
 import { ModuleComponents } from "./ModuleComponent";
 import CustomResult from "../../../component/CustomResult";
+import { useNavigate } from "react-router-dom";
 
 const Main = ({ module }) => {
+  const navigate = useNavigate();
   const authenticatedUser = useSelector((store) => store?.user);
   const moduleConfig = ModuleComponents[module];
 
+  // If user is not admin approved then redirect to onboarding page
+  if (!authenticatedUser.isAdminApproved) {
+    return navigate("/onboarding");
+  }
+
   // If no module found from module component then provide 404 template
   if (!moduleConfig) {
-    return (
-      <CustomResult statusCode={404}/>
-    );
+    return <CustomResult statusCode={404} />;
   }
 
   const {
@@ -42,9 +47,7 @@ const Main = ({ module }) => {
     (!parentData && currentData && !currentData.access) || // no parent data but has current data but no access
     (parentData && currentData && !currentData.access) // no parent data and current data but current data has no access
   ) {
-    return (
-      <CustomResult statusCode={403}/>
-    );
+    return <CustomResult statusCode={403} />;
   }
 
   return <Component />;

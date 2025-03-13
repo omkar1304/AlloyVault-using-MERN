@@ -4,6 +4,7 @@ import Home from "./pages/users/home";
 import Login from "./pages/auth/login";
 import MainComponent from "./pages/users/main/MainComponent";
 import AdminComponent from "./pages/admin/main/AdminComponent";
+import InActivePage from "./pages/auth/InActivePage";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/onboarding" element={<InActivePage />} />
         <Route path="/home/:module" element={<MainComponent />} />
         <Route path="/admin/:module" element={<AdminComponent />} />
       </Routes>

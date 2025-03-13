@@ -3,7 +3,7 @@ import encodeUrlPayload from "../../../helpers/encryptUrlPayload";
 import encryptData from "../../../helpers/encryptData";
 import { ADMIN_URL } from "../../constant";
 
-export const adminApiSlice = apiSlice.injectEndpoints({
+export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: (data) => ({
@@ -29,4 +29,4 @@ export const adminApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetUsersQuery, useGetUserDetailsQuery } = adminApiSlice;
+export const { useGetUsersQuery, useGetUserDetailsQuery } = userApiSlice;
