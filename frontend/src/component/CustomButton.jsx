@@ -8,6 +8,7 @@ const CustomButton = ({
   label,
   isLoading = false,
   icon = null,
+  width = null,
   ...rest
 }) => {
   return (
@@ -18,6 +19,7 @@ const CustomButton = ({
       loading={isLoading}
       icon={icon}
       {...rest}
+      style={{ width}}
     >
       {children}
     </Button>

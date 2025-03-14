@@ -25,7 +25,7 @@ const InActivePage = () => {
   if (authenticatedUser.isAdminApproved) {
     return navigate("/home/inward");
   }
-  return <CustomResult statusCode={403} />;
+  return <CustomResult statusCode={100} />;
 };
 
 export default InActivePage;

@@ -1,10 +1,14 @@
 import React from "react";
 import "../assets/css/customResult.css";
 import { Link } from "react-router-dom";
+import InActiveImg from "../assets/images/results/100.svg";
 import NotFoundImg from "../assets/images/results/404.svg";
 import AccessDeinedImg from "../assets/images/results/403.svg";
 import ServerErrorImg from "../assets/images/results/500.svg";
 import NoDataImg from "../assets/images/results/noData.svg";
+import { Button } from "antd";
+import CustomButton from "./CustomButton";
+import { SendIcon } from "./ActionComponent";
 
 const handleRefresh = () => {
   window.location.reload();
@@ -15,8 +19,20 @@ const CustomResult = ({ statusCode }) => {
   let resultHeading = null;
   let resultSubheading = null;
   let resultTroubleshoot = null;
+  let resultActionButton = null;
 
   switch (statusCode) {
+    case 100:
+      resultImg = InActiveImg;
+      resultHeading = "Access Pending Approval";
+      resultSubheading =
+        "Your account is under review. The admin will assign you to a branch shortly.";
+      resultActionButton = (
+        <CustomButton style={{ marginTop: "5px" }} type="primary">
+          Notify Admin
+        </CustomButton>
+      );
+      break;
     case 404:
       resultImg = NotFoundImg;
       resultHeading = "Page Not Found";
@@ -59,6 +75,7 @@ const CustomResult = ({ statusCode }) => {
         {resultSubheading}
         {resultTroubleshoot}
       </p>
+      {resultActionButton && resultActionButton}
     </section>
   );
 };

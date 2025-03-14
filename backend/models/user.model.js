@@ -9,6 +9,8 @@ const UserSchema = new mongoose.Schema(
     password: { type: String, required: true },
     role: { type: mongoose.Types.ObjectId, ref: "Role" },
     isAdminApproved: { type: Boolean, default: false },
+    otp: { type: String },
+    otpExpires: { type: Date },
   },
   { timestamps: true }
 );

@@ -5,7 +5,7 @@
   letter-spacing: -2%;
   font-weight: 700;
   height: 2.25rem;
-  margin-block: 0.4rem;
+  margin-bottom: 0.2rem;
 }
 
 .page-sub-header {
@@ -15,5 +15,5 @@
   letter-spacing: 0%;
   font-weight: 400;
   height: 1.25rem;
-  margin-block: 0.4rem;
+  margin-bottom: 0.2rem;
 }

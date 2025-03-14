@@ -1,11 +1,16 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, Form, Input, message } from "antd";
+import "../../assets/css/auth.css";
+import { Link, useNavigate } from "react-router-dom";
+import { PageHeader, PageSubHeader } from "../../component/Headers";
+import CustomLogo from "../../component/CustomLogo";
+import CustomButton from "../../component/CustomButton";
+import { Form, Input, Col, Row } from "antd";
 import verifyToken from "../../helpers/verifyToken";
+import { toast } from "react-hot-toast";
 import { useLoginMutation } from "../../redux/api/user/authApiSlice";
 
 const Login = () => {
-  const [messageApi, contextHolder] = message.useMessage();
+  const [form] = Form.useForm();
   const navigate = useNavigate();
   const [login, { isLoading }] = useLoginMutation();
 
@@ -20,61 +25,116 @@ const Login = () => {
     try {
       const res = await login(values).unwrap();
       localStorage.setItem("token", res?.token);
-      messageApi.success("Login successful!");
+      toast.success("Login successful!");
       navigate("/home/inward");
     } catch (error) {
       console.error(error);
-      messageApi.error("Login failed!");
+      toast.error("Login failed!");
     }
   };
 
-
   return (
-    <div>
-      <h1>Login Page</h1>
-      <Form
-        disabled={isLoading}
-        layout="vertical"
-        onFinish={onFinish}
-        autoComplete="off"
-      >
-        <Form.Item
-          label="email"
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: "Please input your email!",
-            },
-            {
-              type: "email",
-              message: "Please enter valid email!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
+    <section className="flex-col-center full-height">
+      <div className="flex-col-center auth-container">
+        <div className="flex-col-space-between">
+          <CustomLogo />
+          <div className="auth-header">
+            <PageHeader>Login to your account</PageHeader>
+            <PageSubHeader>
+              Enter your details to access your account
+            </PageSubHeader>
+          </div>
+        </div>
 
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
+        <Form
+          form={form}
+          disabled={isLoading}
+          layout="vertical"
+          autoComplete="off"
+          name="normal_login"
+          className="full-width"
+          onFinish={onFinish}
         >
-          <Input.Password />
-        </Form.Item>
+          <Row gutter={[16]}>
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter a email",
+                  },
+                  {
+                    type: "email",
+                    message: "Please enter a valid email!",
+                  },
+                ]}
+              >
+                <Input
+                  size="large"
+                  placeholder="john.dowry@example.com"
+                  block
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={[16]}>
+            <Col
+              xs={24}
+              sm={24}
+              md={24}
+              lg={24}
+              xl={24}
+              style={{ height: "75px" }}
+            >
+              <Form.Item
+                label="Password"
+                name="password"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your password",
+                  },
+                ]}
+              >
+                <Input.Password size="large" placeholder="**********" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Link to="/resetPassword" className="auth-forgot-password">
+            Forgot Password?
+          </Link>
+          <Row gutter={[16]}>
+            <Col
+              xs={24}
+              sm={24}
+              md={24}
+              lg={24}
+              xl={24}
+              style={{ height: "65px" }}
+            >
+              <Form.Item style={{ marginTop: 16 }}>
+                <CustomButton
+                  isLoading={isLoading}
+                  htmlType="submit"
+                  width="100%"
+                >
+                  Login
+                </CustomButton>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
 
-        <Form.Item label={null}>
-          <Button loading={isLoading} type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+        <span className="auth-link-span">
+          No account yet?{" "}
+          <Link to="/register" className="auth-link">
+            Create an account
+          </Link>
+        </span>
+      </div>
+    </section>
   );
 };
 

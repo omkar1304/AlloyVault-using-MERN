@@ -1,5 +1,13 @@
 /* utlity classes */
 
+.full-width {
+  width: 100%;
+}
+
+.full-height {
+  height: 100vh;
+}
+
 .flex-row-center {
   display: flex;
   justify-content: center;
@@ -27,4 +35,12 @@
   justify-content: flex-start;
   align-items: center;
   gap: 0.5rem;
+}
+
+.flex-col-space-between {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
 }

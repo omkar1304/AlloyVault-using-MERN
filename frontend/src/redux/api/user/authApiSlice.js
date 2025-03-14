@@ -2,8 +2,19 @@ import { USER_URL } from "../../constant";
 import apiSlice from "../apiSlice";
 import encryptData from "../../../helpers/encryptData";
 
-export const userApiSlice = apiSlice.injectEndpoints({
+export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    register: builder.mutation({
+      query: (payload) => ({
+        url: `${USER_URL}/register`,
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { payload: encryptData(payload) },
+      }),
+    }),
     login: builder.mutation({
       query: (payload) => ({
         url: `${USER_URL}/login`,
@@ -25,6 +36,39 @@ export const userApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    sendOTP: builder.mutation({
+      query: (payload) => ({
+        url: `${USER_URL}/sendOTP`,
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { payload: encryptData(payload) },
+      }),
+    }),
+    verifyOTP: builder.mutation({
+      query: (payload) => ({
+        url: `${USER_URL}/verifyOTP`,
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { payload: encryptData(payload) },
+      }),
+    }),
+    resetPassword: builder.mutation({
+      query: (payload) => ({
+        url: `${USER_URL}/resetPassword`,
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { payload: encryptData(payload) },
+      }),
+    }),
     getAuthenticatedUser: builder.query({
       query: () => ({
         url: `${USER_URL}/getAuthenticatedUser`,
@@ -34,4 +78,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useGetAuthenticatedUserQuery } = userApiSlice;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useSendOTPMutation,
+  useVerifyOTPMutation,
+  useResetPasswordMutation,
+  useGetAuthenticatedUserQuery,
+} = authApiSlice;

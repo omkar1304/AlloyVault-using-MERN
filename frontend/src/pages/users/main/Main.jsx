@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Result } from "antd";
 import { useSelector } from "react-redux";
 import { ModuleComponents } from "./ModuleComponent";
@@ -10,10 +10,13 @@ const Main = ({ module }) => {
   const authenticatedUser = useSelector((store) => store?.user);
   const moduleConfig = ModuleComponents[module];
 
-  // If user is not admin approved then redirect to onboarding page
-  if (!authenticatedUser.isAdminApproved) {
-    return navigate("/onboarding");
-  }
+  useEffect(() => {
+    // If user is not admin approved then redirect to onboarding page
+    if (!authenticatedUser.isAdminApproved) {
+      return navigate("/onboarding");
+    }
+  }, [authenticatedUser]);
+
 
   // If no module found from module component then provide 404 template
   if (!moduleConfig) {

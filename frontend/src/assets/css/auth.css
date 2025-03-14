@@ -1,0 +1,50 @@
+.auth-container {
+  width: 29rem;
+  height: fit-content;
+  padding: 1.5rem;
+}
+
+.auth-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.3rem;
+}
+
+.auth-link-span{
+  font-size: 0.75rem;
+}
+
+.auth-link{
+  color: #6366F1;
+  text-decoration: none;
+}
+
+.auth-forgot-password {
+  font-size: 0.75rem;
+  text-decoration: none;
+  color: #6B7280;
+}
+
+.reset-password-container {
+  width: 32rem;
+  height: fit-content;
+  padding: 1.5rem;
+}
+
+.reset-password-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 0.5rem;
+  margin-block: 1.3rem;
+}
+
+.reset-password-login {
+  margin-block: 0.25rem;
+  font-size: 0.75rem;
+  text-decoration: none;
+  color: #000
+}

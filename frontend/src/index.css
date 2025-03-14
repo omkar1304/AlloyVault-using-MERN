@@ -119,6 +119,18 @@
   border-color: rgba(0, 0, 0, 0.5);
 }
 
+
+/* Col - 24 */
+.ant-col-md-24, .ant-col-md-12{
+  height: 90px;
+}
+
+/* Setp line */
+.ant-steps .ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title::after{
+  background-color: #000;
+}
+
+
 /* Scroll Bar */
 /* Width of the scrollbar */
 ::-webkit-scrollbar {
