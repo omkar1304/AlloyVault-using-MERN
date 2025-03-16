@@ -5,6 +5,7 @@ import { PiUsersThreeBold } from "react-icons/pi";
 import { GrShieldSecurity } from "react-icons/gr";
 import { TbLogs } from "react-icons/tb";
 import { AiOutlineHome } from "react-icons/ai";
+import { MdOutlineMarkEmailRead } from "react-icons/md";
 
 const { Sider } = Layout;
 
@@ -30,6 +31,9 @@ const AdminDrawer = ({ module, collapsed, setCollapsed }) => {
     ),
     getItem("Activity Logs", "activityLogs", <TbLogs />, null, () =>
       navigate("/admin/activityLogs")
+    ),
+    getItem("Email Logs", "emailLogs", <MdOutlineMarkEmailRead />, null, () =>
+      navigate("/admin/emailLogs")
     ),
     getItem("Main Portal", "mainPortal", <AiOutlineHome />, null, () =>
       navigate("/home/inward")

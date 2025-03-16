@@ -8,6 +8,7 @@ import {
 } from "../controllers/admin/role.controller.js";
 import { getUserDetails, getUsers } from "../controllers/admin/user.controller.js";
 import { getActivityLogs } from "../controllers/admin/activityLogs.controller.js";
+import { getEmailLogs } from "../controllers/admin/emailLogs.controller.js";
 
 const router = express.Router();
 
@@ -23,5 +24,8 @@ router.delete("/deleteRole/:roleId", authenticate, deleteRole);
 
 // Activity logs routes
 router.get("/getActivityLogs", authenticate, getActivityLogs);
+
+// Email logs routes
+router.get("/getEmailLogs", authenticate, getEmailLogs);
 
 export default router;

@@ -8,6 +8,7 @@ import Users from "./../users/index";
 import Roles from "./../roles/index";
 import ActivityLogs from "./../activityLogs/index";
 import AdminDrawer from "./AdminDrawer";
+import EmailLogs from "../emailLogs";
 import { Toaster } from "react-hot-toast";
 import CustomHeader from "../../../component/CustomHeader";
 import CustomResult from "../../../component/CustomResult";
@@ -19,6 +20,7 @@ const adminModule = {
   users: <Users />,
   roles: <Roles />,
   activityLogs: <ActivityLogs />,
+  emailLogs: <EmailLogs />,
 };
 
 const AdminComponent = () => {
