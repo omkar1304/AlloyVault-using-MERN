@@ -9,6 +9,7 @@ import {
 import { getUserDetails, getUsers } from "../controllers/admin/user.controller.js";
 import { getActivityLogs } from "../controllers/admin/activityLogs.controller.js";
 import { getEmailLogs } from "../controllers/admin/emailLogs.controller.js";
+import { getOptions, updateOptionField } from "../controllers/admin/option.controller.js";
 
 const router = express.Router();
 
@@ -21,6 +22,10 @@ router.get("/getRoles", authenticate, getRoles);
 router.post("/addRole", authenticate, addRole);
 router.post("/updatePermission", authenticate, updatePermission);
 router.delete("/deleteRole/:roleId", authenticate, deleteRole);
+
+// Options routes
+router.get("/getOptions", authenticate, getOptions);
+router.put("/updateOptionField", authenticate, updateOptionField);
 
 // Activity logs routes
 router.get("/getActivityLogs", authenticate, getActivityLogs);

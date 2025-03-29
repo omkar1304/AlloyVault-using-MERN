@@ -13,6 +13,10 @@ import { Toaster } from "react-hot-toast";
 import CustomHeader from "../../../component/CustomHeader";
 import CustomResult from "../../../component/CustomResult";
 import { useGetAuthenticatedUserQuery } from "../../../redux/api/user/authApiSlice";
+import Branch from "../options/branch";
+import MaterialType from "../options/materialType";
+import MaterialClass from "../options/materialClass";
+import Grade from "../options/grade";
 
 const { Content } = Layout;
 
@@ -21,6 +25,10 @@ const adminModule = {
   roles: <Roles />,
   activityLogs: <ActivityLogs />,
   emailLogs: <EmailLogs />,
+  branch: <Branch />,
+  materialType: <MaterialType />,
+  materialClass: <MaterialClass />,
+  grade: <Grade />,
 };
 
 const AdminComponent = () => {

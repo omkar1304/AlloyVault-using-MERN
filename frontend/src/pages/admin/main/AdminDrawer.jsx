@@ -5,7 +5,10 @@ import { PiUsersThreeBold } from "react-icons/pi";
 import { GrShieldSecurity } from "react-icons/gr";
 import { TbLogs } from "react-icons/tb";
 import { AiOutlineHome } from "react-icons/ai";
-import { MdOutlineMarkEmailRead } from "react-icons/md";
+import { MdOutlineMarkEmailRead, MdOutlineGrade  } from "react-icons/md";
+import { IoGitBranchOutline, IoOptionsSharp } from "react-icons/io5";
+import { SiMaterialformkdocs } from "react-icons/si";
+import { VscSymbolClass } from "react-icons/vsc";
 
 const { Sider } = Layout;
 
@@ -20,7 +23,6 @@ const getItem = (label, key, icon, children, onClick = () => {}) => {
 };
 
 const AdminDrawer = ({ module, collapsed, setCollapsed }) => {
-  
   const navigate = useNavigate();
   const items = [
     getItem("Users", "users", <PiUsersThreeBold />, null, () =>
@@ -29,6 +31,20 @@ const AdminDrawer = ({ module, collapsed, setCollapsed }) => {
     getItem("Roles", "roles", <GrShieldSecurity />, null, () =>
       navigate("/admin/roles")
     ),
+    getItem("Options", "options", <IoOptionsSharp  />, [
+      getItem("Branch", "branch", <IoGitBranchOutline />, null, () =>
+        navigate("/admin/branch")
+      ),
+      getItem("Material Type", "materialType", <SiMaterialformkdocs />, null, () =>
+        navigate("/admin/materialType")
+      ),
+      getItem("Material Class", "materialClass", <VscSymbolClass />, null, () =>
+        navigate("/admin/materialClass")
+      ),
+      getItem("Grade", "grade", <MdOutlineGrade />, null, () =>
+        navigate("/admin/grade")
+      ),
+    ], null),
     getItem("Activity Logs", "activityLogs", <TbLogs />, null, () =>
       navigate("/admin/activityLogs")
     ),

@@ -43,7 +43,7 @@ const EmailLogs = () => {
       <CustomSearch
         query={query}
         setQuery={setQuery}
-        placeholder="Search by name/action"
+        placeholder="Search by subject"
       />
       <CustomTable
         data={emailLogsData?.logs || []}
