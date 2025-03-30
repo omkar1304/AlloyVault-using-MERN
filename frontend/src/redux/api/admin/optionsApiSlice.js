@@ -3,7 +3,7 @@ import { ADMIN_URL } from "../../constant";
 import encodeUrlPayload from "../../../helpers/encryptUrlPayload";
 import encryptData from "../../../helpers/encryptData";
 
-export const optionsSlice = apiSlice.injectEndpoints({
+export const optionsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getOptions: builder.query({
       query: (data) => ({
@@ -59,4 +59,4 @@ export const {
   useUpdateOptionFieldMutation,
   useAddOptionMutation,
   useDeleteOptionMutation,
-} = optionsSlice;
+} = optionsApiSlice;

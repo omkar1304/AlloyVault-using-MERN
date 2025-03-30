@@ -26,6 +26,7 @@ import {
   getPartyRecords,
   updatePartyRecord,
 } from "../controllers/users/partyRecord.controller.js";
+import { getAsOption } from "../controllers/users/option.controller.js";
 
 const router = express.Router();
 
@@ -54,5 +55,8 @@ router.get("/getPartyRecords", authenticate, getPartyRecords);
 router.post("/addPartyRecord", authenticate, addPartyRecord);
 router.put("/updatePartyRecord/:recordId", authenticate, updatePartyRecord);
 router.delete("/deletePartyRecord/:recordId", authenticate, deletePartyRecord);
+
+// Options Routes ->
+router.get("/getAsOption", authenticate, getAsOption);
 
 export default router;

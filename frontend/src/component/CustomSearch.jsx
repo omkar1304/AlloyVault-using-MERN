@@ -3,7 +3,7 @@ import { Input } from "antd";
 import { SearchIcon } from "./ActionComponent";
 import "../assets/css/customSearch.css";
 
-const CustomSearch = ({ query, setQuery, placeholder = "" }) => {
+const CustomSearch = ({ query, setQuery, placeholder = "", ...rest }) => {
   const [searchText, setSearchText] = useState("");
 
   const handleSearch = (value) => {
@@ -37,6 +37,7 @@ const CustomSearch = ({ query, setQuery, placeholder = "" }) => {
       onChange={(e) => setSearchText(e.target.value)}
       onPressEnter={() => handleSearch(searchText)}
       onClear={() => handleSearch("")}
+      {...rest}
     />
   );
 };

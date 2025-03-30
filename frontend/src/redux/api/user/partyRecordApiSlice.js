@@ -3,7 +3,7 @@ import { USER_URL } from "../../constant";
 import encodeUrlPayload from "../../../helpers/encryptUrlPayload";
 import encryptData from "../../../helpers/encryptData";
 
-export const optionsSlice = apiSlice.injectEndpoints({
+export const partyRecordApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getPartyRecords: builder.query({
       query: (data) => ({
@@ -55,4 +55,4 @@ export const {
   useAddPartyRecordMutation,
   useUpdatePartyRecordMutation,
   useDeletePartyRecordMutation,
-} = optionsSlice;
+} = partyRecordApiSlice;

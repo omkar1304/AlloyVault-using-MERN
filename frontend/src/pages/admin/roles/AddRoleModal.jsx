@@ -14,7 +14,7 @@ const AddRoleModal = ({ open, onClose }) => {
       toast.success("Role added successfully!");
     } catch (error) {
       console.error(error);
-      const errMessage = error?.data?.message || "Couldn't add role!"
+      const errMessage = error?.data?.message || "Couldn't add role!";
       toast.error(errMessage);
     }
     form.resetFields();

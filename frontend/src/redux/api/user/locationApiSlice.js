@@ -2,7 +2,7 @@ import apiSlice from "../apiSlice";
 import encodeUrlPayload from "../../../helpers/encryptUrlPayload";
 import { USER_URL } from "../../constant";
 
-export const roleApiSlice = apiSlice.injectEndpoints({
+export const locationApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getCountriesAsOption: builder.query({
       query: (data) => ({
@@ -41,4 +41,4 @@ export const {
   useGetCountriesAsOptionQuery,
   useGetStatesAsOptionQuery,
   useGetCitiesAsOptionQuery,
-} = roleApiSlice;
+} = locationApiSlice;

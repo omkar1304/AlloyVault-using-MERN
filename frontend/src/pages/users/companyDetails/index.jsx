@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
+import { useParams } from "react-router-dom";
+import CompanyForm from "./CompanyForm";
+import CompanyList from "./CompanyList";
 
 const CompanyDetails = () => {
-  return (
-    <div>
-      CompanyDetails
-    </div>
-  )
-}
+  const { id } = useParams();
 
-export default CompanyDetails
+  if (id && id === "new") return <CompanyForm />;
+  else return <CompanyList />;
+};
+
+export default CompanyDetails;

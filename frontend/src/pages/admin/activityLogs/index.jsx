@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useGetActivityLogsQuery } from "../../../redux/api/admin/activityLogsSlice";
 import { PageHeader, PageSubHeader } from "../../../component/Headers";
 import CustomSearch from "../../../component/CustomSearch";
 import CustomTable from "../../../component/CustomTable";
 import getTableColumns from "./getTableColumns";
+import { useGetActivityLogsQuery } from "../../../redux/api/admin/activityLogsApiSlice";
 
 const ActivityLogs = () => {
   const [query, setQuery] = useState({

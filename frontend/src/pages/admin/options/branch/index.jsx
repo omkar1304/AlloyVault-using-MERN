@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  useDeleteOptionMutation,
-  useGetOptionsQuery,
-  useUpdateOptionFieldMutation,
-} from "../../../../redux/api/admin/optionsSlice";
 import { PageHeader, PageSubHeader } from "../../../../component/Headers";
 import CustomSearch from "../../../../component/CustomSearch";
 import CustomTable from "../../../../component/CustomTable";
@@ -11,6 +6,11 @@ import getTableColumns from "./getTableColumns";
 import AddOptionModal from "../optionComponents/AddOptionModal";
 import CustomButton from "../../../../component/CustomButton";
 import toast from "react-hot-toast";
+import {
+  useDeleteOptionMutation,
+  useGetOptionsQuery,
+  useUpdateOptionFieldMutation,
+} from "../../../../redux/api/admin/optionsApiSlice";
 
 const Branch = () => {
   const [query, setQuery] = useState({
@@ -90,7 +90,7 @@ const Branch = () => {
         columns={getTableColumns({
           updateOptionField,
           isOptionFieldUpdating,
-          handleDeleteOption
+          handleDeleteOption,
         })}
         onPageChange={onPageChange}
       />

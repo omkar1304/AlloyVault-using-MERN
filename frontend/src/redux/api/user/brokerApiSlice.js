@@ -3,7 +3,7 @@ import { USER_URL } from "../../constant";
 import encodeUrlPayload from "../../../helpers/encryptUrlPayload";
 import encryptData from "../../../helpers/encryptData";
 
-export const optionsSlice = apiSlice.injectEndpoints({
+export const brokerApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getBrokersAsOption: builder.query({
       query: (data) => ({
@@ -59,4 +59,4 @@ export const {
   useAddBrokerMutation,
   useUpdateBrokerMutation,
   useDeleteBrokerMutation,
-} = optionsSlice;
+} = brokerApiSlice;

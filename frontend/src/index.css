@@ -8,7 +8,7 @@
 }
 
 .main-content {
-  padding: 0.75rem;
+  padding: 1rem;
   background-color: #fff;
 }
 
@@ -88,16 +88,14 @@
 
 /* Button */
 
+:where(.css-dev-only-do-not-override-240cud).ant-btn-variant-outlined:not(:disabled):not(.ant-btn-disabled):hover, :where(.css-dev-only-do-not-override-240cud).ant-btn-variant-dashed:not(:disabled):not(.ant-btn-disabled):hover
 .ant-btn:hover,
-.ant-btn:focus,
-.ant-btn:active {
-  background-color: inherit !important;
-  border-color: unset !important;
-  color: unset !important;
+.ant-btn:focus {
+  background-color: #000 !important;
+  border: none !important;
+  color: #fff !important;
   box-shadow: none !important;
-  transition: none !important;
 }
-
 .ant-btn-color-primary, .ant-btn-variant-ant solid{
   background-color: #000;
   color: #FFF

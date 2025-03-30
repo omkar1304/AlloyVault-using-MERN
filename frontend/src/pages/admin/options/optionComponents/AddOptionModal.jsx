@@ -1,8 +1,8 @@
 import { Form, Input, Modal } from "antd";
 import React from "react";
 import toast from "react-hot-toast";
-import { useAddOptionMutation } from "../../../../redux/api/admin/optionsSlice";
 import CustomButton from '../../../../component/CustomButton';
+import { useAddOptionMutation } from "../../../../redux/api/admin/optionsApiSlice";
 
 const AddOptionModal = ({ open, onClose, type }) => {
   const [form] = Form.useForm();

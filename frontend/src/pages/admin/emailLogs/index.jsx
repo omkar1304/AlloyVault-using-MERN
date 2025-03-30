@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useGetEmailLogsQuery } from "../../../redux/api/admin/emailLogsSlice";
 import { PageHeader, PageSubHeader } from "../../../component/Headers";
 import CustomSearch from "../../../component/CustomSearch";
 import CustomTable from "../../../component/CustomTable";
 import getTableColumns from "./getTableColumns";
+import { useGetEmailLogsQuery } from "../../../redux/api/admin/emailLogsApiSlice";
 
 const EmailLogs = () => {
   const [query, setQuery] = useState({

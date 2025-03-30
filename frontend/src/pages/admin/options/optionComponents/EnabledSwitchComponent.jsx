@@ -1,7 +1,7 @@
 import { Switch } from "antd";
 import React, { useRef, useState } from "react";
-import { useUpdateOptionFieldMutation } from "../../../../redux/api/admin/optionsSlice";
 import toast from "react-hot-toast";
+import { useUpdateOptionFieldMutation } from "../../../../redux/api/admin/optionsApiSlice";
 
 const EnabledSwitchComponent = ({ optionId, checkedValue }) => {
   const [checked, setChecked] = useState(checkedValue);
@@ -11,7 +11,7 @@ const EnabledSwitchComponent = ({ optionId, checkedValue }) => {
   const handleOnChange = async (newCheckedValue) => {
     try {
       await updateOptionField({
-        recordId : optionId,
+        recordId: optionId,
         fieldName: "isEnabled",
         fieldValue: newCheckedValue,
       }).unwrap();

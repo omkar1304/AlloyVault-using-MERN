@@ -20,7 +20,9 @@ function App() {
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route path="/onboarding" element={<InActivePage />} />
         </Route>
-        <Route path="/home/:module" element={<MainComponent />} />
+        <Route path="/home/:module" element={<MainComponent />}>
+          <Route path="/home/:module/:id" />
+        </Route>
         <Route path="/admin/:module" element={<AdminComponent />} />
         <Route path="*" element={<CustomResult statusCode={404} />} />
       </Routes>
