@@ -17,6 +17,7 @@ import Branch from "../options/branch";
 import MaterialType from "../options/materialType";
 import MaterialClass from "../options/materialClass";
 import Grade from "../options/grade";
+import PartyType from "../options/partyType";
 
 const { Content } = Layout;
 
@@ -29,6 +30,7 @@ const adminModule = {
   materialType: <MaterialType />,
   materialClass: <MaterialClass />,
   grade: <Grade />,
+  partyType: <PartyType />
 };
 
 const AdminComponent = () => {

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "../assets/css/customTable.css";
 import { Grid, Pagination, Table } from "antd";
+import CustomResult from "./CustomResult";
 
 const { useBreakpoint } = Grid;
 
@@ -18,50 +19,63 @@ const CustomTable = ({
 
   const screens = useBreakpoint();
   return (
-    <div className="custom-table-container">
-      <Table
-        scroll={screens.md && { x: 1000 }}
-        columns={columns}
-        dataSource={data}
-        loading={isLoading}
-        pagination={false}
-        rowClassName="custom-row"
-        rowKey="_id"
-      />
-      <Pagination
-        current={page}
-        pageSize={size}
-        className="custom-pagination"
-        total={total}
-        showSizeChanger={false}
-        onChange={(newPage, pageSize) => onPageChange(newPage, pageSize)}
-        itemRender={(page, type, originalElement) => {
-          if (type === "prev")
-            return (
-              <button
-                onClick={() => !prevDisabled && onPageChange(page - 1, size)}
-                className="pagination-btn"
-                disabled={prevDisabled}
-                style={{ cursor:  `${prevDisabled ? "not-allowed": "pointer"}` }}
-              >
-                ❮ Previous
-              </button>
-            );
-          if (type === "next")
-            return (
-              <button
-                onClick={() => !nextDisabled && onPageChange(page + 1, size)}
-                className="pagination-btn"
-                disabled={nextDisabled}
-                style={{ cursor:  `${nextDisabled ? "not-allowed": "pointer"}` }}
-              >
-                Next ❯
-              </button>
-            );
-          return originalElement;
-        }}
-      />
-    </div>
+    <>
+      {!isLoading && !data.length && <CustomResult />}
+      {(data.length || isLoading) && (
+        <div className="custom-table-container">
+          <Table
+            scroll={screens.md && { x: 1000 }}
+            columns={columns}
+            dataSource={data}
+            loading={isLoading}
+            pagination={false}
+            rowClassName="custom-row"
+            rowKey="_id"
+          />
+          <Pagination
+            current={page}
+            pageSize={size}
+            className="custom-pagination"
+            total={total}
+            showSizeChanger={false}
+            onChange={(newPage, pageSize) => onPageChange(newPage, pageSize)}
+            itemRender={(page, type, originalElement) => {
+              if (type === "prev")
+                return (
+                  <button
+                    onClick={() =>
+                      !prevDisabled && onPageChange(page - 1, size)
+                    }
+                    className="pagination-btn"
+                    disabled={prevDisabled}
+                    style={{
+                      cursor: `${prevDisabled ? "not-allowed" : "pointer"}`,
+                    }}
+                  >
+                    ❮ Previous
+                  </button>
+                );
+              if (type === "next")
+                return (
+                  <button
+                    onClick={() =>
+                      !nextDisabled && onPageChange(page + 1, size)
+                    }
+                    className="pagination-btn"
+                    disabled={nextDisabled}
+                    style={{
+                      cursor: `${nextDisabled ? "not-allowed" : "pointer"}`,
+                    }}
+                  >
+                    Next ❯
+                  </button>
+                );
+              return originalElement;
+            }}
+          />
+        </div>
+      )}
+    </>
   );
 };
 

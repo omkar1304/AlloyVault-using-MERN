@@ -9,6 +9,7 @@ import { MdOutlineMarkEmailRead, MdOutlineGrade  } from "react-icons/md";
 import { IoGitBranchOutline, IoOptionsSharp } from "react-icons/io5";
 import { SiMaterialformkdocs } from "react-icons/si";
 import { VscSymbolClass } from "react-icons/vsc";
+import { GoOrganization } from "react-icons/go";
 
 const { Sider } = Layout;
 
@@ -43,6 +44,9 @@ const AdminDrawer = ({ module, collapsed, setCollapsed }) => {
       ),
       getItem("Grade", "grade", <MdOutlineGrade />, null, () =>
         navigate("/admin/grade")
+      ),
+      getItem("Party Type", "partyType", <GoOrganization />, null, () =>
+        navigate("/admin/partyType")
       ),
     ], null),
     getItem("Activity Logs", "activityLogs", <TbLogs />, null, () =>
