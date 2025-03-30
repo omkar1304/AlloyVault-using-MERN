@@ -3,7 +3,7 @@ import { BASE_URL } from "../constant";
 
 const apiSlice = createApi({
   reducerPath: "api",
-  tagTypes: ["getRoles", "getOptions"],
+  tagTypes: ["getRoles", "getOptions", "getBrokersAsOption"],
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
   }),

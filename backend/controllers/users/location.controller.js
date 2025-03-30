@@ -1,0 +1,87 @@
+import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
+import Country from "./../../models/country.model.js";
+import State from "./../../models/state.model.js";
+import City from "./../../models/city.model.js";
+
+export const getCountriesAsOption = async (req, res) => {
+  try {
+    const result = await Country.aggregate([
+      {
+        $sort: { name: 1 },
+      },
+      {
+        $project: {
+          _id: 0,
+          label: "$name",
+          value: "$_id",
+        },
+      },
+    ]);
+    return res.status(200).send(result);
+  } catch (error) {
+    console.log("Error in get countries options controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getStatesAsOption = async (req, res) => {
+  try {
+    const { payload } = req.query;
+    const { countryCode = undefined } = decryptUrlPayload(payload);
+
+    const result = await State.aggregate([
+      ...(countryCode
+        ? [
+            {
+              $match: { countryCode },
+            },
+          ]
+        : []),
+      {
+        $sort: { name: 1 },
+      },
+      {
+        $project: {
+          _id: 0,
+          label: "$name",
+          value: "$_id",
+        },
+      },
+    ]);
+    return res.status(200).send(result);
+  } catch (error) {
+    console.log("Error in get states options controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getCitiesAsOption = async (req, res) => {
+  try {
+    const { payload } = req.query;
+    const { stateCode = undefined } = decryptUrlPayload(payload);
+
+    const result = await City.aggregate([
+      ...(stateCode
+        ? [
+            {
+              $match: { stateCode },
+            },
+          ]
+        : []),
+      {
+        $sort: { name: 1 },
+      },
+      {
+        $project: {
+          _id: 0,
+          label: "$name",
+          value: "$_id",
+        },
+      },
+    ]);
+    return res.status(200).send(result);
+  } catch (error) {
+    console.log("Error in get cities options controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
