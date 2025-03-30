@@ -1,5 +1,14 @@
+import createActivityLog from "../../helpers/createActivityLog.js";
 import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
 import Options from "./../../models/options.model.js";
+import decryptData from "../../lib/decryptData.js";
+
+const optionMap = {
+  1: "Branch",
+  2: "Material Type",
+  3: "Material Class",
+  4: "Grade",
+};
 
 export const getOptions = async (req, res) => {
   try {
@@ -73,6 +82,7 @@ export const getOptions = async (req, res) => {
                 createdBy: { $arrayElemAt: ["$user.displayName", 0] },
                 action: 1,
                 createdAt: 1,
+                name: 1,
               },
             },
           ],
@@ -89,15 +99,51 @@ export const getOptions = async (req, res) => {
   }
 };
 
-export const updateOptionField = async (req, res) => {
+export const addOption = async (req, res) => {
   try {
-    const { optionId, fieldName, fieldValue } = decryptData(req.body.payload);
+    const { name, type } = decryptData(req.body.payload);
+    const { userId } = req?.user;
 
-    if (!fieldName || !fieldValue || !optionId) {
+    if (!name || !type) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const option = await Options.findByIdAndUpdate(optionId, {
+    const newOption = await Options({
+      name,
+      type,
+      createdBy: userId,
+    }).save();
+
+    if (!newOption) {
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+
+    await createActivityLog(
+      userId,
+      `User added option - ${name} in ${optionMap[type]}`
+    );
+
+    return res.status(200).json({ message: "Option added successfully" });
+  } catch (error) {
+    console.log("Error in update options controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const updateOptionField = async (req, res) => {
+  try {
+    const {
+      recordId,
+      fieldName,
+      fieldValue = undefined,
+    } = decryptData(req.body.payload);
+    const { userId } = req?.user;
+
+    if (!fieldName || !recordId) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const option = await Options.findByIdAndUpdate(recordId, {
       $set: {
         [fieldName]: fieldValue,
       },
@@ -107,7 +153,43 @@ export const updateOptionField = async (req, res) => {
       return res.status(404).json({ message: "Option not found" });
     }
 
+    await createActivityLog(
+      userId,
+      `User updated option - ${option?.name} to ${fieldValue} in ${
+        optionMap[option?.type]
+      }`
+    );
+
     return res.status(200).json({ message: "Option updated successfully" });
+  } catch (error) {
+    console.log("Error in update options controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const deleteOption = async (req, res) => {
+  try {
+    const { optionId = undefined } = req.params;
+    const { userId } = req?.user;
+
+    if (!optionId) {
+      return res.status(400).json({ message: "Option ID is required" });
+    }
+
+    const deletedOption = await Options.findByIdAndDelete(optionId);
+
+    if (!deletedOption) {
+      return res.status(404).json({ message: "Option not found" });
+    }
+
+    await createActivityLog(
+      userId,
+      `User deleted option - ${deletedOption?.name} in ${
+        optionMap[deletedOption?.type]
+      }`
+    );
+
+    return res.status(200).json({ message: "Option deleted successfully" });
   } catch (error) {
     console.log("Error in update options controller:", error.message);
     res.status(500).json({ message: "Internal Server Error" });

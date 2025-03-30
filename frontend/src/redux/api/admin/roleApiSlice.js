@@ -1,8 +1,7 @@
-
-import apiSlice from '../apiSlice';
-import encodeUrlPayload from '../../../helpers/encryptUrlPayload';
-import encryptData from '../../../helpers/encryptData';
-import { ADMIN_URL } from '../../constant';
+import apiSlice from "../apiSlice";
+import encodeUrlPayload from "../../../helpers/encryptUrlPayload";
+import encryptData from "../../../helpers/encryptData";
+import { ADMIN_URL } from "../../constant";
 
 export const roleApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

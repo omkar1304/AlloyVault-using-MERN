@@ -6,10 +6,18 @@ import {
   getRoles,
   updatePermission,
 } from "../controllers/admin/role.controller.js";
-import { getUserDetails, getUsers } from "../controllers/admin/user.controller.js";
+import {
+  getUserDetails,
+  getUsers,
+} from "../controllers/admin/user.controller.js";
 import { getActivityLogs } from "../controllers/admin/activityLogs.controller.js";
 import { getEmailLogs } from "../controllers/admin/emailLogs.controller.js";
-import { getOptions, updateOptionField } from "../controllers/admin/option.controller.js";
+import {
+  addOption,
+  deleteOption,
+  getOptions,
+  updateOptionField,
+} from "../controllers/admin/option.controller.js";
 
 const router = express.Router();
 
@@ -25,7 +33,9 @@ router.delete("/deleteRole/:roleId", authenticate, deleteRole);
 
 // Options routes
 router.get("/getOptions", authenticate, getOptions);
+router.post("/addOption", authenticate, addOption);
 router.put("/updateOptionField", authenticate, updateOptionField);
+router.delete("/deleteOption/:optionId", authenticate, deleteOption);
 
 // Activity logs routes
 router.get("/getActivityLogs", authenticate, getActivityLogs);

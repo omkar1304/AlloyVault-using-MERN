@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../assets/css/customTable.css";
 import { Grid, Pagination, Table } from "antd";
 
@@ -21,7 +21,6 @@ const CustomTable = ({
     <div className="custom-table-container">
       <Table
         scroll={screens.md && { x: 1000 }}
-        // bordered
         columns={columns}
         dataSource={data}
         loading={isLoading}
