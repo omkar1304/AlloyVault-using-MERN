@@ -144,7 +144,7 @@ const CompanyForm = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please enter a company name!",
+                    message: "Please enter a company name",
                   },
                 ]}
               >

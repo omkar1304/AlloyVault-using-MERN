@@ -12,7 +12,6 @@ import Main from "./Main";
 import { Toaster } from "react-hot-toast";
 import CustomHeader from "../../../component/CustomHeader";
 
-
 const { Header, Content, Footer, Sider } = Layout;
 
 const MainComponent = () => {
@@ -123,15 +122,24 @@ const MainComponent = () => {
       <CustomHeader />
       <Layout
         style={{
-          // marginLeft: collapsed ? "80px" : "200px",
+          marginLeft: collapsed ? "80px" : "200px",
           marginTop: "64px",
-          // transition: "margin-left 0.3s ease-in-out",
+          transition: "margin-left 0.3s ease-in-out",
         }}
       >
         <Sider
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
+          style={{
+            position: "fixed",
+            left: 0,
+            height: "calc(100vh - 64px)",
+            overflowY: "auto",
+            backgroundColor: "white",
+            borderRight: "1px solid #E5E7EB",
+            zIndex: 999,
+          }}
         >
           <div className="demo-logo-vertical" />
           <Menu
@@ -142,7 +150,7 @@ const MainComponent = () => {
           />
         </Sider>
         <Content className="main-content">
-        <Main module={module} />
+          <Main module={module} />
         </Content>
       </Layout>
     </Layout>
