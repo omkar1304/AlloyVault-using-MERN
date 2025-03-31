@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Layout, Result } from "antd";
 import verifyToken from "../../../helpers/verifyToken";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUser } from "../../../redux/features/userSlice";
 import Users from "./../users/index";
 import Roles from "./../roles/index";
@@ -38,7 +38,6 @@ const AdminComponent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { module } = useParams();
-  const authenticatedUser = useSelector((store) => store?.user);
 
   const {
     data: userData,

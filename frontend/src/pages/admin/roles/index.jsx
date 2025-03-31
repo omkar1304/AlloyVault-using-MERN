@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   useDeleteRoleMutation,
   useGetRolesQuery,
+  useUpdateRoleFieldMutation,
 } from "../../../redux/api/admin/roleApiSlice";
 import getTableColumns from "./getTableColumns";
 import { PageHeader, PageSubHeader } from "../../../component/Headers";
@@ -31,6 +32,8 @@ const Roles = () => {
     refetch: getRolesRefetch,
   } = useGetRolesQuery({ ...query });
 
+  const [updateRoleField, { isLoading: isRoleFieldUpdating }] =
+    useUpdateRoleFieldMutation();
   const [deleteRole, { isLoading: isRoleDeleting }] = useDeleteRoleMutation();
 
   useEffect(() => {
@@ -125,6 +128,8 @@ const Roles = () => {
           openAssignedUserModal,
           openPermissionModal,
           handleDeleteRole,
+          updateRoleField,
+          isRoleFieldUpdating
         })}
         onPageChange={onPageChange}
       />

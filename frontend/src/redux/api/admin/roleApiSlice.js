@@ -38,6 +38,19 @@ export const roleApiSlice = apiSlice.injectEndpoints({
         },
         body: { payload: encryptData(data) },
       }),
+      invalidatesTags: ["getRoles"],
+    }),
+    updateRoleField: builder.mutation({
+      query: (data) => ({
+        url: `${ADMIN_URL}/updateRoleField`,
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { payload: encryptData(data) },
+      }),
+      invalidatesTags: ["getRoles"],
     }),
     deleteRole: builder.mutation({
       query: (roleId) => ({
@@ -57,5 +70,6 @@ export const {
   useGetRolesQuery,
   useAddRoleMutation,
   useUpdatePermissionMutation,
+  useUpdateRoleFieldMutation,
   useDeleteRoleMutation,
 } = roleApiSlice;

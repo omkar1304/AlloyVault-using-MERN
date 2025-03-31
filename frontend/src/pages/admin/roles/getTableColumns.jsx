@@ -1,18 +1,28 @@
 import { Popconfirm } from "antd";
 import { DeleteIcon, EditIcon } from "../../../component/ActionComponent";
 import CustomButton from "./../../../component/CustomButton";
+import EditFieldComponent from "../../../component/EditFieldComponent";
 
 const getTableColumns = ({
   openAssignedUserModal,
   openPermissionModal,
   handleDeleteRole,
+  updateRoleField,
+  isRoleFieldUpdating,
 }) => {
   return [
     {
       title: "Name",
-      dataIndex: "name",
       width: 150,
-      render: (x) => x,
+      render: (row) => (
+        <EditFieldComponent
+          updateFunction={updateRoleField}
+          updateFunctionLoader={isRoleFieldUpdating}
+          recordId={row?._id}
+          fieldName={"name"}
+          fieldValue={row?.name}
+        />
+      ),
     },
     {
       title: "Created By",

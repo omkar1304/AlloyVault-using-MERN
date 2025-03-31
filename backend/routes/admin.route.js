@@ -5,6 +5,7 @@ import {
   deleteRole,
   getRoles,
   updatePermission,
+  updateRoleField,
 } from "../controllers/admin/role.controller.js";
 import {
   getUserDetails,
@@ -29,6 +30,7 @@ router.get("/getUserDetails/:userId", authenticate, getUserDetails);
 router.get("/getRoles", authenticate, getRoles);
 router.post("/addRole", authenticate, addRole);
 router.post("/updatePermission", authenticate, updatePermission);
+router.put("/updateRoleField", authenticate, updateRoleField);
 router.delete("/deleteRole/:roleId", authenticate, deleteRole);
 
 // Options routes

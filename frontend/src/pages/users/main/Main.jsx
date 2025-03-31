@@ -1,22 +1,31 @@
 import React, { useEffect } from "react";
 import { Result } from "antd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ModuleComponents } from "./ModuleComponent";
 import CustomResult from "../../../component/CustomResult";
 import { useNavigate } from "react-router-dom";
+import { useGetAuthenticatedUserQuery } from "../../../redux/api/user/authApiSlice";
+import { setUser } from "../../../redux/features/userSlice";
 
 const Main = ({ module }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const authenticatedUser = useSelector((store) => store?.user);
   const moduleConfig = ModuleComponents[module];
+  const {
+    data: userData,
+    isSuccess: isUserDataSuccess,
+    isLoading: userDataLoading,
+  } = useGetAuthenticatedUserQuery();
 
   useEffect(() => {
-    // If user is not admin approved then redirect to onboarding page
-    if (!authenticatedUser.isAdminApproved) {
+    if (isUserDataSuccess && userData) {
+      dispatch(setUser(userData));
+    }
+    if (userData && !userData?.isAdminApproved) {
       return navigate("/onboarding");
     }
-  }, [authenticatedUser]);
-
+  }, [userData]);
 
   // If no module found from module component then provide 404 template
   if (!moduleConfig) {

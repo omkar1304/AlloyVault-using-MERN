@@ -132,21 +132,59 @@ export const updatePermission = async (req, res) => {
       roleId = undefined,
       key = undefined,
     } = decryptData(req.body.payload);
+    const { userId } = req?.user;
 
     if (value === undefined || roleId === undefined || key === undefined) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const result = await Role.findByIdAndUpdate(roleId, {
+    const role = await Role.findByIdAndUpdate(roleId, {
       [key]: value,
     });
-    if (!result) {
+    if (!role) {
       return res.status(404).json({ message: "Role not found" });
     }
+
+    await createActivityLog(
+      userId,
+      `User updated role permissions - ${role?.name}`
+    );
 
     return res.status(201).json({ message: "Role updated successfully" });
   } catch (error) {
     console.log("Error in update role controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const updateRoleField = async (req, res) => {
+  try {
+    const {
+      recordId,
+      fieldName,
+      fieldValue = undefined,
+    } = decryptData(req.body.payload);
+    const { userId } = req?.user;
+
+    if (!fieldName || !recordId) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const role = await Role.findByIdAndUpdate(recordId, {
+      $set: {
+        [fieldName]: fieldValue,
+      },
+    });
+
+    if (!role) {
+      return res.status(404).json({ message: "Role not found" });
+    }
+
+    await createActivityLog(userId, `User updated role field - ${role?.name}`);
+
+    return res.status(200).json({ message: "Role updated successfully" });
+  } catch (error) {
+    console.log("Error in update role field controller:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
