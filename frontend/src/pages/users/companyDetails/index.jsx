@@ -6,7 +6,7 @@ import CompanyList from "./CompanyList";
 const CompanyDetails = () => {
   const { id } = useParams();
 
-  if (id && id === "new") return <CompanyForm />;
+  if (id && (id === "new" || id === "edit")) return <CompanyForm />;
   else return <CompanyList />;
 };
 

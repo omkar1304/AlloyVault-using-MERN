@@ -23,6 +23,7 @@ import {
 import {
   addPartyRecord,
   deletePartyRecord,
+  getPartyDetails,
   getPartyRecords,
   updatePartyRecord,
 } from "../controllers/users/partyRecord.controller.js";
@@ -52,6 +53,7 @@ router.get("/getCitiesAsOption", authenticate, getCitiesAsOption);
 
 // Party Record Routes ->
 router.get("/getPartyRecords", authenticate, getPartyRecords);
+router.get("/getPartyDetails/:recordId", authenticate, getPartyDetails);
 router.post("/addPartyRecord", authenticate, addPartyRecord);
 router.put("/updatePartyRecord/:recordId", authenticate, updatePartyRecord);
 router.delete("/deletePartyRecord/:recordId", authenticate, deletePartyRecord);

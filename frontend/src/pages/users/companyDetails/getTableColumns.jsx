@@ -1,8 +1,12 @@
-import { Popconfirm } from "antd";
+import { Avatar, Popconfirm, Tooltip } from "antd";
 import { DeleteIcon, EditIcon } from "../../../component/ActionComponent";
 import CustomButton from "./../../../component/CustomButton";
+import getInitials from "../../../helpers/getInitials";
+import { useNavigate } from "react-router-dom";
 
-const getTableColumns = ({}) => {
+const getTableColumns = ({handleDeleteRecord}) => {
+  const navigate = useNavigate();
+
   return [
     {
       title: "Company Name",
@@ -62,18 +66,31 @@ const getTableColumns = ({}) => {
       title: "Done By",
       dataIndex: "createdBy",
       width: 100,
-      render: (x) => x,
+      render: (x) => (
+        <Tooltip title={x}>
+          <Avatar
+            size={28}
+            style={{ backgroundColor: "#111827", cursor: "pointer" }}
+          >
+            {getInitials(x)}
+          </Avatar>
+        </Tooltip>
+      ),
     },
     {
       title: "Actions",
       width: 50,
       render: (row) => (
         <div className="flex-row-start">
-          <EditIcon />
+          <EditIcon
+            onClick={() =>
+              navigate(`/home/companyDetails/edit?recordId=${row?._id}`)
+            }
+          />
           <Popconfirm
             title="Delete the role"
             description="Are you sure to delete this role?"
-            // onConfirm={() => handleDeleteRole(row?._id)}
+            onConfirm={() => handleDeleteRecord(row?._id)}
             onCancel={null}
             okText="Yes"
             cancelText="No"

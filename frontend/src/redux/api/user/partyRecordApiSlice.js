@@ -14,6 +14,17 @@ export const partyRecordApiSlice = apiSlice.injectEndpoints({
           "Content-Type": "application/json",
         },
       }),
+      providesTags: ["getPartyRecords"],
+    }),
+    getPartyDetails: builder.query({
+      query: (recordId) => ({
+        url: `${USER_URL}/getPartyDetails/${recordId}`,
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
     }),
     addPartyRecord: builder.mutation({
       query: (data) => ({
@@ -46,12 +57,14 @@ export const partyRecordApiSlice = apiSlice.injectEndpoints({
           "Content-Type": "application/json",
         },
       }),
+      invalidatesTags: ["getPartyRecords"],
     }),
   }),
 });
 
 export const {
   useGetPartyRecordsQuery,
+  useGetPartyDetailsQuery,
   useAddPartyRecordMutation,
   useUpdatePartyRecordMutation,
   useDeletePartyRecordMutation,

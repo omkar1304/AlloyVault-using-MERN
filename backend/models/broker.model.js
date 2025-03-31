@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const BrokerSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    panNo: { type: String },
+    panNo: { type: String, default: null },
     mobile: { type: String },
     address: { type: String },
     createdBy: { type: mongoose.Types.ObjectId },

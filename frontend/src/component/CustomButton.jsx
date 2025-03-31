@@ -19,7 +19,7 @@ const CustomButton = ({
       loading={isLoading}
       icon={icon}
       {...rest}
-      style={{ width}}
+      style={{ width }}
     >
       {children}
     </Button>

@@ -53,6 +53,17 @@
   gap: 1.5rem;
 }
 
-.margin-top{
+.margin-top {
   margin-top: 1rem;
+}
+
+.filter-row {
+  margin-block: 0.5rem;
+}
+
+.filter-row-left {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.5rem;
 }

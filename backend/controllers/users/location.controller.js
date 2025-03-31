@@ -13,7 +13,7 @@ export const getCountriesAsOption = async (req, res) => {
         $project: {
           _id: 0,
           label: "$name",
-          value: "$_id",
+          value: "$countryCode",
         },
       },
     ]);
@@ -44,7 +44,7 @@ export const getStatesAsOption = async (req, res) => {
         $project: {
           _id: 0,
           label: "$name",
-          value: "$_id",
+          value: "$stateCode",
         },
       },
     ]);
@@ -58,13 +58,14 @@ export const getStatesAsOption = async (req, res) => {
 export const getCitiesAsOption = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { stateCode = undefined } = decryptUrlPayload(payload);
+    const { countryCode = undefined, stateCode = undefined } =
+      decryptUrlPayload(payload);
 
     const result = await City.aggregate([
-      ...(stateCode
+      ...(stateCode && countryCode
         ? [
             {
-              $match: { stateCode },
+              $match: { countryCode, stateCode },
             },
           ]
         : []),
@@ -75,7 +76,7 @@ export const getCitiesAsOption = async (req, res) => {
         $project: {
           _id: 0,
           label: "$name",
-          value: "$_id",
+          value: "$name",
         },
       },
     ]);

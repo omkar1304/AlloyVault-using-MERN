@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const CitySchema = mongoose.Schema(
   {
     name: { type: String},
+    countryCode: { type: String, required: true },
     stateCode: { type: String, required: true },
     createdBy: { type: mongoose.Types.ObjectId, ref: "User" },
   },

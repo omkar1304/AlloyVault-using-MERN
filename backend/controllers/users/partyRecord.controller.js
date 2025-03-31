@@ -2,6 +2,7 @@ import createActivityLog from "../../helpers/createActivityLog.js";
 import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
 import decryptData from "../../lib/decryptData.js";
 import PartyRecord from "../../models/partyRecord.model.js";
+import mongoose from "mongoose";
 
 export const getPartyRecords = async (req, res) => {
   try {
@@ -9,6 +10,10 @@ export const getPartyRecords = async (req, res) => {
     const {
       page = 1,
       size = 25,
+      selectedBroker = undefined,
+      selectedCountry = undefined,
+      selectedState = undefined,
+      selectedCity = undefined,
       keyword = undefined,
     } = decryptUrlPayload(payload);
 
@@ -16,6 +21,8 @@ export const getPartyRecords = async (req, res) => {
     const skip = (page - 1) * size;
 
     let matchQueryStage = [];
+
+    // Search filter
     if (keyword !== undefined) {
       const words = keyword.split(" ");
       const searchConditions = words.map((word) => ({
@@ -27,22 +34,23 @@ export const getPartyRecords = async (req, res) => {
       });
     }
 
+    // Dropdown filters
+    if (selectedBroker) {
+      matchQueryStage.push({
+        broker: new mongoose.Types.ObjectId(selectedBroker),
+      });
+    }
+    if (selectedCountry) {
+      matchQueryStage.push({ country: selectedCountry });
+    }
+    if (selectedState) {
+      matchQueryStage.push({ state: selectedState });
+    }
+    if (selectedCity) {
+      matchQueryStage.push({ city: selectedCity });
+    }
+
     const result = await PartyRecord.aggregate([
-      {
-        $lookup: {
-          from: "brokers",
-          localField: "broker",
-          foreignField: "_id",
-          as: "brokerInfo",
-          pipeline: [
-            {
-              $project: {
-                name: 1,
-              },
-            },
-          ],
-        },
-      },
       // Keyword filter
       ...(matchQueryStage.length
         ? [{ $match: { $and: matchQueryStage } }]
@@ -58,6 +66,21 @@ export const getPartyRecords = async (req, res) => {
             { $limit: size },
             {
               $lookup: {
+                from: "brokers",
+                localField: "broker",
+                foreignField: "_id",
+                as: "brokerInfo",
+                pipeline: [
+                  {
+                    $project: {
+                      name: 1,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
                 from: "options",
                 localField: "partyType",
                 foreignField: "_id",
@@ -66,6 +89,33 @@ export const getPartyRecords = async (req, res) => {
                   {
                     $project: {
                       name: 1,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: "countries",
+                localField: "country",
+                foreignField: "countryCode",
+                as: "countryInfo",
+              },
+            },
+            {
+              $lookup: {
+                from: "states",
+                let: { country: "$country", state: "$state" },
+                as: "stateInfo",
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $and: [
+                          { $eq: ["$countryCode", "$$country"] },
+                          { $eq: ["$stateCode", "$$state"] },
+                        ],
+                      },
                     },
                   },
                 ],
@@ -95,9 +145,9 @@ export const getPartyRecords = async (req, res) => {
                 broker: { $arrayElemAt: ["$brokerInfo.name", 0] },
                 gstNo: 1,
                 city: 1,
-                state: 1,
+                state: { $arrayElemAt: ["$stateInfo.name", 0] },
                 pincode: 1,
-                country: 1,
+                country: { $arrayElemAt: ["$countryInfo.name", 0] },
                 mobile: 1,
                 email: 1,
                 createdBy: {
@@ -115,6 +165,27 @@ export const getPartyRecords = async (req, res) => {
     return res.status(200).json({ partyRecords, total });
   } catch (error) {
     console.log("Error in get party records controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getPartyDetails = async (req, res) => {
+  try {
+    const { recordId = undefined } = req.params;
+
+    if (!recordId) {
+      return res.status(400).json({ message: "Party record ID is missing" });
+    }
+
+    const partyRecord = await PartyRecord.findById(recordId);
+
+    if (!partyRecord) {
+      return res.status(404).json({ message: "Party record not found" });
+    }
+
+    return res.status(200).send(partyRecord);
+  } catch (error) {
+    console.log("Error in party details record controller:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
