@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
+import { useParams } from "react-router-dom";
+import InwardForm from "./InwardForm";
+import InwardList from "./InwardList";
 
-const Inward = () => {
-  return (
-    <div>
-      Inward
-    </div>
-  )
-}
+const CompanyDetails = () => {
+  const { id } = useParams();
 
-export default Inward
+  if (id && (id === "new" || id === "edit")) return <InwardForm />;
+  else return <InwardList />;
+};
+
+export default CompanyDetails;

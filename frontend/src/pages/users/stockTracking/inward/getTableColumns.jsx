@@ -1,63 +1,76 @@
 import { Avatar, Popconfirm, Tooltip } from "antd";
-import { DeleteIcon, EditIcon } from "../../../component/ActionComponent";
-import getInitials from "../../../helpers/getInitials";
 import { useNavigate } from "react-router-dom";
+import getFormattedDate from '../../../../helpers/getFormattedDate';
+import { DeleteIcon, EditIcon } from "../../../../component/ActionComponent";
+import getInitials from '../../../../helpers/getInitials';
 
 const getTableColumns = ({handleDeleteRecord}) => {
   const navigate = useNavigate();
 
   return [
     {
-      title: "Company Name",
-      dataIndex: "companyName",
-      width: 150,
-      render: (x) => x,
+      title: "Date",
+      dataIndex: "entryDate",
+      width: 180,
+      render: (x) => x && getFormattedDate(x, true),
     },
     {
-      title: "Party Type",
-      dataIndex: "partyType",
+      title: "Invoice No.",
+      dataIndex: "invoiceNo",
       width: 100,
       render: (x) => x,
     },
     {
-      title: "Broker",
-      dataIndex: "broker",
+      title: "Class",
+      dataIndex: "materialClass",
       width: 100,
       render: (x) => x,
     },
     {
-      title: "GSTIN",
-      dataIndex: "gstNo",
+      title: "Grade",
+      dataIndex: "grade",
       width: 100,
       render: (x) => x,
     },
     {
-      title: "City",
-      dataIndex: "city",
+      title: "HSN no.",
+      dataIndex: "HSNCode",
       width: 100,
       render: (x) => x,
     },
     {
-      title: "State",
-      dataIndex: "state",
+      title: "Weight",
+      dataIndex: "weight",
       width: 100,
       render: (x) => x,
     },
     {
-      title: "Country",
-      dataIndex: "country",
+      title: "Rack no.",
+      dataIndex: "rackNo",
       width: 100,
       render: (x) => x,
     },
     {
-      title: "Pin code",
-      dataIndex: "pincode",
+      title: "Material Tyoe",
+      dataIndex: "materialType",
       width: 100,
       render: (x) => x,
     },
     {
-      title: "Email",
-      dataIndex: "email",
+      title: "Branch",
+      dataIndex: "branch",
+      width: 100,
+      render: (x) => x,
+    },
+    {
+      title: "Company",
+      dataIndex: "company",
+      width: 100,
+      render: (x) => x,
+    },
+    {
+      title: "Transport",
+      dataIndex: "transportName",
       width: 100,
       render: (x) => x,
     },
@@ -83,13 +96,13 @@ const getTableColumns = ({handleDeleteRecord}) => {
         <div className="flex-row-start">
           <EditIcon
             onClick={() =>
-              navigate(`/home/companyDetails/edit?recordId=${row?._id}`)
+              navigate(`/home/inward/edit?recordId=${row?._id}`)
             }
           />
           <Popconfirm
             title="Delete the role"
             description="Are you sure to delete?"
-            onConfirm={() => handleDeleteRecord(row?._id)}
+            // onConfirm={() => handleDeleteRecord(row?._id)}
             onCancel={null}
             okText="Yes"
             cancelText="No"

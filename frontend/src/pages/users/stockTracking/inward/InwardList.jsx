@@ -1,53 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { PageHeader, PageSubHeader } from "../../../component/Headers";
-import CustomButton from "../../../component/CustomButton";
-import CustomSearch from "../../../component/CustomSearch";
-import {
-  useDeletePartyRecordMutation,
-  useGetPartyRecordsQuery,
-} from "../../../redux/api/user/partyRecordApiSlice";
-import getTableColumns from "./getTableColumns";
-import CustomTable from "../../../component/CustomTable";
-import { AddIcon } from "../../../component/ActionComponent";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import { Select } from "antd";
-import filterOption from "../../../helpers/filterOption";
-import { useGetBrokersAsOptionQuery } from "../../../redux/api/user/brokerApiSlice";
-import {
-  useGetCitiesAsOptionQuery,
-  useGetCountriesAsOptionQuery,
-  useGetStatesAsOptionQuery,
-} from "../../../redux/api/user/locationApiSlice";
+import { PageHeader, PageSubHeader } from "../../../../component/Headers";
+import CustomButton from "../../../../component/CustomButton";
+import { AddIcon } from "../../../../component/ActionComponent";
+import CustomSearch from "../../../../component/CustomSearch";
+import CustomTable from "../../../../component/CustomTable";
+import getTableColumns from "./getTableColumns";
 
-const CompanyList = () => {
+const InwardList = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState({
     page: 1,
     size: 25,
-    selectedCountry: "IN",
   });
-  const { data, isLoading, refetch } = useGetPartyRecordsQuery({ ...query });
-  const { data: borkerOptions, isLoading: isBrokerOptionsLoading } =
-    useGetBrokersAsOptionQuery({});
-  const { data: countryOptions, isLoading: isCountryOptionLoading } =
-    useGetCountriesAsOptionQuery({});
-  const { data: stateOption, isLoading: isStateOptionLoading } =
-    useGetStatesAsOptionQuery(
-      { countryCode: query?.selectedCountry },
-      { skip: !query?.selectedCountry }
-    );
-  const { data: cityOption, isLoading: isCityOptionLoading } =
-    useGetCitiesAsOptionQuery(
-      { countryCode: query?.selectedCountry, stateCode: query?.selectedState },
-      { skip: !query?.selectedCountry || !query?.selectedState }
-    );
-  const [deleteParty, { isLoading: isPartyDeleting }] =
-    useDeletePartyRecordMutation();
-
-  useEffect(() => {
-    refetch();
-  }, [query]);
 
   const onPageChange = (pageNumber, pageSize) => {
     setQuery({
@@ -58,34 +23,23 @@ const CompanyList = () => {
     return;
   };
 
-  const handleDeleteRecord = async (recordId) => {
-    try {
-      await deleteParty(recordId).unwrap();
-      toast.success("Party deleted successfully!");
-    } catch (error) {
-      console.error(error);
-      const errMessage = error?.data?.message || "Couldn't delete party!";
-      toast.error(errMessage);
-    }
-  };
-
-  const handleNavigateComapnyForm = () => {
-    navigate("/home/companyDetails/new");
+  const handleNavigateInwardForm = () => {
+    navigate("/home/inward/new");
   };
 
   return (
     <div>
       <div className="flex-row-space-between">
         <div>
-          <PageHeader>Company List</PageHeader>
+          <PageHeader>Inward Material</PageHeader>
           <PageSubHeader>
-            Create and edit companies for better connect!
+            Record new stock received and update inventory seamlessly
           </PageSubHeader>
         </div>
         <CustomButton
           size="large"
           icon={<AddIcon color="#FFF" />}
-          onClick={handleNavigateComapnyForm}
+          onClick={handleNavigateInwardForm}
         >
           Add New
         </CustomButton>
@@ -94,10 +48,10 @@ const CompanyList = () => {
         style={{ marginTop: "20px" }}
         query={query}
         setQuery={setQuery}
-        placeholder="Search by company"
+        placeholder="Search by inward records"
       />
 
-      <div className="filter-row flex-row-space-between">
+      {/* <div className="filter-row flex-row-space-between">
         <div className="filter-row-left">
           <Select
             style={{ width: 120 }}
@@ -201,19 +155,21 @@ const CompanyList = () => {
             filterOption={filterOption}
           />
         </div>
-      </div>
+      </div> */}
 
       <CustomTable
-        data={data?.partyRecords || []}
-        total={data?.total}
+        // data={data?.partyRecords || []}
+        data={[]}
+        // total={data?.total}
+        total={0}
         page={query?.page}
         size={query?.size}
-        isLoading={isLoading}
-        columns={getTableColumns({ handleDeleteRecord })}
+        // isLoading={isLoading}
+        columns={getTableColumns({  })}
         onPageChange={onPageChange}
       />
     </div>
   );
 };
 
-export default CompanyList;
+export default InwardList;
