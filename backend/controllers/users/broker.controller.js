@@ -1,9 +1,12 @@
 import createActivityLog from "../../helpers/createActivityLog.js";
 import Broker from "./../../models/broker.model.js";
 import decryptData from "../../lib/decryptData.js";
+import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
 
 export const getBrokersAsOption = async (req, res) => {
   try {
+    const { payload } = req.query;
+    const { sameAsLabel = false } = decryptUrlPayload(payload);
     const result = await Broker.aggregate([
       {
         $sort: { name: 1 },
@@ -12,7 +15,7 @@ export const getBrokersAsOption = async (req, res) => {
         $project: {
           _id: 0,
           label: "$name",
-          value: "$_id",
+          value: sameAsLabel ? "$name" : "$_id",
         },
       },
     ]);

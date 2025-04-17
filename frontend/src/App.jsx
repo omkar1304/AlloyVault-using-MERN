@@ -1,4 +1,5 @@
 import "./App.css";
+import { ConfigProvider } from "antd";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/users/home";
 import Login from "./pages/auth/login";
@@ -12,21 +13,35 @@ import ResetPassword from "./pages/auth/ResetPassword";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route element={<Auth />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/resetPassword" element={<ResetPassword />} />
-          <Route path="/onboarding" element={<InActivePage />} />
-        </Route>
-        <Route path="/home/:module" element={<MainComponent />}>
-          <Route path="/home/:module/:id" />
-        </Route>
-        <Route path="/admin/:module" element={<AdminComponent />} />
-        <Route path="*" element={<CustomResult statusCode={404} />} />
-      </Routes>
-    </Router>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: "#000", 
+        },
+        components: {
+          Menu: {
+            itemSelectedBg: "#E0E0E0", 
+            itemSelectedColor: "#000",
+          },
+        },
+      }}
+    >
+      <Router>
+        <Routes>
+          <Route element={<Auth />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/resetPassword" element={<ResetPassword />} />
+            <Route path="/onboarding" element={<InActivePage />} />
+          </Route>
+          <Route path="/home/:module" element={<MainComponent />}>
+            <Route path="/home/:module/:id" />
+          </Route>
+          <Route path="/admin/:module" element={<AdminComponent />} />
+          <Route path="*" element={<CustomResult statusCode={404} />} />
+        </Routes>
+      </Router>
+    </ConfigProvider>
   );
 }
 

@@ -16,6 +16,16 @@ export const partyRecordApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["getPartyRecords"],
     }),
+    getPartyRecordsAsOption: builder.query({
+      query: () => ({
+        url: `${USER_URL}/getPartyRecordsAsOption`,
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
     getPartyDetails: builder.query({
       query: (recordId) => ({
         url: `${USER_URL}/getPartyDetails/${recordId}`,
@@ -64,6 +74,7 @@ export const partyRecordApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetPartyRecordsQuery,
+  useGetPartyRecordsAsOptionQuery,
   useGetPartyDetailsQuery,
   useAddPartyRecordMutation,
   useUpdatePartyRecordMutation,

@@ -25,6 +25,7 @@ import {
   deletePartyRecord,
   getPartyDetails,
   getPartyRecords,
+  getPartyRecordsAsOption,
   updatePartyRecord,
 } from "../controllers/users/partyRecord.controller.js";
 import { getAsOption } from "../controllers/users/option.controller.js";
@@ -53,6 +54,7 @@ router.get("/getCitiesAsOption", authenticate, getCitiesAsOption);
 
 // Party Record Routes ->
 router.get("/getPartyRecords", authenticate, getPartyRecords);
+router.get("/getPartyRecordsAsOption", authenticate, getPartyRecordsAsOption);
 router.get("/getPartyDetails/:recordId", authenticate, getPartyDetails);
 router.post("/addPartyRecord", authenticate, addPartyRecord);
 router.put("/updatePartyRecord/:recordId", authenticate, updatePartyRecord);

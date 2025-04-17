@@ -52,7 +52,6 @@ const ResetPassword = () => {
   };
 
   const handleVerifyOtp = async () => {
-    console.log("otp", otp);
     if (!otp) return toast.error("Please enter the OTP");
     try {
       await verifyOTP({ email, otp }).unwrap();
@@ -93,7 +92,7 @@ const ResetPassword = () => {
   return (
     <section className="flex-col-center full-height">
       <div className="flex-col-center reset-password-container">
-        <Steps size="small" current={step} className="w-96 mb-6">
+        <Steps size="small" current={step}>
           <Steps.Step title="Enter Email" icon={<ResetIcon size={22} />} />
           <Steps.Step title="Verify OTP" icon={<EmailOpenIcon size={22} />} />
           <Steps.Step

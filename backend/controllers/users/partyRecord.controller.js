@@ -169,6 +169,27 @@ export const getPartyRecords = async (req, res) => {
   }
 };
 
+export const getPartyRecordsAsOption = async (req, res) => {
+  try {
+    const result = await PartyRecord.aggregate([
+      {
+        $sort: { name: 1 },
+      },
+      {
+        $project: {
+          _id: 0,
+          label: "$name",
+          value: "$name",
+        },
+      },
+    ]);
+    return res.status(200).send(result);
+  } catch (error) {
+    console.log("Error in get party records option controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 export const getPartyDetails = async (req, res) => {
   try {
     const { recordId = undefined } = req.params;

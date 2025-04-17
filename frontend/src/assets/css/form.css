@@ -1,18 +1,31 @@
-.form-section{
-    width: 100%;
-    margin-top: 1.25rem;
-    background-color: #F9FAFB;
-    padding: 1rem;
-    border-radius: 1rem;
+.form-section {
+  width: 100%;
+  margin-top: 1.25rem;
+  background-color: #f9fafb;
+  padding: 1rem;
+  border-radius: 1rem;
 }
 
-.form-heading{
-    font-size: 1.25rem;
-    font-weight: 600;
-    line-height: 1.75rem;
-    color: #1E1E1E
+.form-heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.75rem;
+  color: #1e1e1e;
 }
 
-.form-layout{
-    
+.form-layout {
+  margin-block: 1rem;
+}
+
+.steps-right-section {
+  width: 60%;
+}
+
+.steps-left-section {
+  width: 25%;
+  height: 100%;
+}
+
+.steps-block {
+    height: 300px;
 }

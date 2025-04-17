@@ -4,7 +4,8 @@ import Options from "./../../models/options.model.js";
 export const getAsOption = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { type = undefined } = decryptUrlPayload(payload);
+    const { type = undefined, sameAsLabel = false } =
+      decryptUrlPayload(payload);
 
     if (!type) {
       return res.status(400).json({ message: "Type is required" });
@@ -14,6 +15,7 @@ export const getAsOption = async (req, res) => {
       {
         $match: {
           type,
+          isEnabled: true,
         },
       },
       {
@@ -23,7 +25,7 @@ export const getAsOption = async (req, res) => {
         $project: {
           _id: 0,
           label: "$name",
-          value: "$_id",
+          value: sameAsLabel ? "$name" : "$_id",
         },
       },
     ]);
@@ -34,5 +36,3 @@ export const getAsOption = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
-
