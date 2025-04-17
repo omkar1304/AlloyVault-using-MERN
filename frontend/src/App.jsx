@@ -1,7 +1,6 @@
 import "./App.css";
 import { ConfigProvider } from "antd";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/auth/login";
 import MainComponent from "./pages/users/main/MainComponent";
 import AdminComponent from "./pages/admin/main/AdminComponent";
 import InActivePage from "./pages/auth/InActivePage";
@@ -9,6 +8,7 @@ import Register from "./pages/auth/Register";
 import Auth from "./pages/auth/Auth";
 import CustomResult from "./component/CustomResult";
 import ResetPassword from "./pages/auth/ResetPassword";
+import Login from './pages/auth/Login';
 
 function App() {
   return (
