@@ -168,6 +168,7 @@ const Register = () => {
                   isLoading={isLoading}
                   htmlType="submit"
                   width="100%"
+                  size="large"
                 >
                   Create Account
                 </CustomButton>

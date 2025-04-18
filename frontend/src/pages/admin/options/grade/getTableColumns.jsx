@@ -1,5 +1,5 @@
-import { Popconfirm } from "antd";
-import { DeleteIcon, EditIcon } from "../../../../component/ActionComponent";
+import { Popconfirm, Tooltip } from "antd";
+import { DeleteIcon } from "../../../../component/ActionComponent";
 import EnabledSwitchComponent from "../optionComponents/EnabledSwitchComponent";
 import getFormattedDate from "../../../../helpers/getFormattedDate";
 import EditFieldComponent from "../../../../component/EditFieldComponent";
@@ -44,14 +44,16 @@ const getTableColumns = ({ updateOptionField, isOptionFieldUpdating, handleDelet
       render: (row) => (
         <div className="flex-row-start">
           <Popconfirm
-            title="Delete the role"
-            description="Are you sure to delete this role?"
+            title="Delete the option"
+            description="Are you sure to delete this option?"
             onConfirm={() => handleDeleteOption(row?._id)}
             onCancel={null}
             okText="Yes"
             cancelText="No"
           >
-            <DeleteIcon />
+            <Tooltip title="Delete">
+              <DeleteIcon />
+            </Tooltip>
           </Popconfirm>
         </div>
       ),

@@ -76,7 +76,9 @@ const MaterialClass = () => {
             Add and edit matrial class options here!
           </PageSubHeader>
         </div>
-        <CustomButton onClick={openAddOptionModal}>Create Option</CustomButton>
+        <CustomButton size="large" onClick={openAddOptionModal}>
+          Create Option
+        </CustomButton>
       </div>
       <CustomSearch
         query={query}

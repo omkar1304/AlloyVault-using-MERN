@@ -56,7 +56,7 @@ const AdminDrawer = ({ module, collapsed, setCollapsed }) => {
       navigate("/admin/emailLogs")
     ),
     getItem("Main Portal", "mainPortal", <AiOutlineHome />, null, () =>
-      navigate("/home/inward")
+      navigate(import.meta.env.VITE_INITIAL_ROUTE)
     ),
   ];
   return (

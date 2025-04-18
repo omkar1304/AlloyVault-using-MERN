@@ -3,7 +3,7 @@ import { DeleteIcon, EditIcon } from "../../../component/ActionComponent";
 import getInitials from "../../../helpers/getInitials";
 import { useNavigate } from "react-router-dom";
 
-const getTableColumns = ({handleDeleteRecord}) => {
+const getTableColumns = ({ handleDeleteRecord }) => {
   const navigate = useNavigate();
 
   return [
@@ -81,20 +81,24 @@ const getTableColumns = ({handleDeleteRecord}) => {
       width: 50,
       render: (row) => (
         <div className="flex-row-start">
-          <EditIcon
-            onClick={() =>
-              navigate(`/home/companyDetails/edit?recordId=${row?._id}`)
-            }
-          />
+          <Tooltip title="Edit">
+            <EditIcon
+              onClick={() =>
+                navigate(`/home/companyDetails/edit?recordId=${row?._id}`)
+              }
+            />
+          </Tooltip>
           <Popconfirm
-            title="Delete the role"
+            title="Delete the company"
             description="Are you sure to delete?"
             onConfirm={() => handleDeleteRecord(row?._id)}
             onCancel={null}
             okText="Yes"
             cancelText="No"
           >
-            <DeleteIcon />
+            <Tooltip title="Delete">
+              <DeleteIcon />
+            </Tooltip>
           </Popconfirm>
         </div>
       ),

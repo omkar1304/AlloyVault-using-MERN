@@ -30,7 +30,7 @@ const adminModule = {
   materialType: <MaterialType />,
   materialClass: <MaterialClass />,
   grade: <Grade />,
-  partyType: <PartyType />
+  partyType: <PartyType />,
 };
 
 const AdminComponent = () => {
@@ -60,7 +60,7 @@ const AdminComponent = () => {
 
     // If the user is not an admin, redirect to the home page
     if (userData && !/super admin/i.test(userData?.roleName)) {
-      return navigate("/home/inward");
+      return navigate(import.meta.env.VITE_INITIAL_ROUTE);
     }
   }, [userData]);
 

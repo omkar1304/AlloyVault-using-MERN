@@ -25,7 +25,7 @@ const InwardForm = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const recordId = searchParams.get("recordId");
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const [shipmentData, setShipmentData] = useState({});
   const [singleItem, setSingleItem] = useState({});
   const [items, setItems] = useState([]);
@@ -48,7 +48,6 @@ const InwardForm = () => {
     useGetBrokersAsOptionQuery({ sameAsLabel: true });
 
   const handleShipmentSubmit = () => {
-    console.log("shipmentData", shipmentData);
     setStep((prev) => prev + 1);
   };
 

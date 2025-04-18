@@ -1,4 +1,5 @@
 
+import { Tooltip } from "antd";
 import {  EditIcon } from "../../../component/ActionComponent";
 import getFormattedDate from '../../../helpers/getFormattedDate';
 
@@ -35,7 +36,7 @@ const getTableColumns = ({
       width: 50,
       render: (row) => (
         <div className="flex-row-start">
-          <EditIcon />
+          <Tooltip title="Edit"><EditIcon /></Tooltip>
         </div>
       ),
     },

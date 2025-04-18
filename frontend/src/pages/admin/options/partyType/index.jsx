@@ -74,7 +74,9 @@ const PartyType = () => {
           <PageHeader>PartyType Options</PageHeader>
           <PageSubHeader>Add and edit party type options here!</PageSubHeader>
         </div>
-        <CustomButton onClick={openAddOptionModal}>Create Option</CustomButton>
+        <CustomButton size="large" onClick={openAddOptionModal}>
+          Create Option
+        </CustomButton>
       </div>
       <CustomSearch
         query={query}

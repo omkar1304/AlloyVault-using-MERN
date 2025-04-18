@@ -17,7 +17,7 @@ const Login = () => {
   // If the user is logged in, redirect to the home page
   useEffect(() => {
     if (verifyToken()) {
-      navigate("/home/inward");
+      navigate(import.meta.env.VITE_INITIAL_ROUTE);
     }
   }, []);
 
@@ -26,7 +26,7 @@ const Login = () => {
       const res = await login(values).unwrap();
       localStorage.setItem("token", res?.token);
       toast.success("Login successful!");
-      navigate("/home/inward");
+      navigate(import.meta.env.VITE_INITIAL_ROUTE);
     } catch (error) {
       console.error(error);
       toast.error("Login failed!");
@@ -119,6 +119,7 @@ const Login = () => {
                   isLoading={isLoading}
                   htmlType="submit"
                   width="100%"
+                  size="large"
                 >
                   Login
                 </CustomButton>

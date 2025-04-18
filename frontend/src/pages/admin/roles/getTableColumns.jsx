@@ -1,4 +1,4 @@
-import { Popconfirm } from "antd";
+import { Popconfirm, Tooltip } from "antd";
 import { DeleteIcon, EditIcon } from "../../../component/ActionComponent";
 import CustomButton from "./../../../component/CustomButton";
 import EditFieldComponent from "../../../component/EditFieldComponent";
@@ -50,7 +50,10 @@ const getTableColumns = ({
       width: 50,
       render: (row) => (
         <div className="flex-row-start">
-          <EditIcon onClick={() => openPermissionModal(row)} />
+          <Tooltip title="Edit">
+            <EditIcon onClick={() => openPermissionModal(row)} />
+          </Tooltip>
+
           <Popconfirm
             title="Delete the role"
             description="Are you sure to delete this role?"
@@ -59,7 +62,9 @@ const getTableColumns = ({
             okText="Yes"
             cancelText="No"
           >
-            <DeleteIcon />
+            <Tooltip title="Delete">
+              <DeleteIcon />
+            </Tooltip>
           </Popconfirm>
         </div>
       ),

@@ -23,7 +23,7 @@ const InActivePage = () => {
   }, [userData]);
 
   if (authenticatedUser.isAdminApproved) {
-    return navigate("/home/inward");
+    return navigate(import.meta.env.VITE_INITIAL_ROUTE);
   }
   return <CustomResult statusCode={100} />;
 };

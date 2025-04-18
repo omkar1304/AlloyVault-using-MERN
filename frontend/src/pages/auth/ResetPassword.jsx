@@ -137,6 +137,7 @@ const ResetPassword = () => {
                   />
                 </Form.Item>
                 <CustomButton
+                  size="large"
                   isLoading={isOTPsending}
                   type="primary"
                   onClick={handleSendOtp}
@@ -177,6 +178,7 @@ const ResetPassword = () => {
                   />
                 </Form.Item>
                 <CustomButton
+                  size="large"
                   isLoading={isOTPverifying}
                   type="primary"
                   onClick={handleVerifyOtp}
@@ -222,6 +224,7 @@ const ResetPassword = () => {
                 </Form.Item>
 
                 <CustomButton
+                  size="large"
                   isLoading={isPasswordResetting}
                   type="primary"
                   onClick={handleResetPassword}
@@ -232,49 +235,6 @@ const ResetPassword = () => {
               </Form>
             </div>
           )}
-
-          {/* {step === 2 && (
-            <div className="flex-col-center">
-              <div className="reset-password-header">
-                <PageHeader>Create a new password</PageHeader>
-                <PageSubHeader>
-                  New password must be different from current password
-                </PageSubHeader>
-              </div>
-              <Form
-                className="full-width"
-                layout="vertical"
-                disabled={isPasswordResetting}
-              >
-                <Form.Item label="New Password">
-                  <Input.Password
-                    size="large"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="********"
-                  />
-                </Form.Item>
-
-                <Form.Item label="Confirm New Password">
-                  <Input.Password
-                    size="large"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="********"
-                  />
-                </Form.Item>
-
-                <CustomButton
-                  isLoading={isPasswordResetting}
-                  type="primary"
-                  onClick={handleResetPassword}
-                  block
-                >
-                  Update Password
-                </CustomButton>
-              </Form>
-            </div>
-          )} */}
         </div>
       </div>
     </section>

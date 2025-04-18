@@ -37,7 +37,9 @@ const CustomResult = ({ statusCode }) => {
       resultImg = NotFoundImg;
       resultHeading = "Page Not Found";
       resultSubheading = "Sorry, the page you visited does not exist.";
-      resultTroubleshoot = <Link to={"/home/inward"}>Back to Home</Link>;
+      resultTroubleshoot = (
+        <Link to={import.meta.env.VITE_INITIAL_ROUTE}>Back to Home</Link>
+      );
       break;
     case 403:
       resultImg = AccessDeinedImg;

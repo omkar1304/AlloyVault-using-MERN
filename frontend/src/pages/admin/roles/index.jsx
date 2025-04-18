@@ -111,7 +111,9 @@ const Roles = () => {
             Create and edit roles to access application smoothly!
           </PageSubHeader>
         </div>
-        <CustomButton onClick={openAddRoleModal}>Create Role</CustomButton>
+        <CustomButton size="large" onClick={openAddRoleModal}>
+          Create Role
+        </CustomButton>
       </div>
       <CustomSearch
         query={query}
@@ -129,7 +131,7 @@ const Roles = () => {
           openPermissionModal,
           handleDeleteRole,
           updateRoleField,
-          isRoleFieldUpdating
+          isRoleFieldUpdating,
         })}
         onPageChange={onPageChange}
       />

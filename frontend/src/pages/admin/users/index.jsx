@@ -41,7 +41,7 @@ const Users = () => {
             Create and edit users for application to grow!
           </PageSubHeader>
         </div>
-        <CustomButton >Create User</CustomButton>
+        <CustomButton size="large">Create User</CustomButton>
       </div>
       <CustomSearch
         query={query}

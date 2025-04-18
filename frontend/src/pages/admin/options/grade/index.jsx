@@ -6,7 +6,11 @@ import getTableColumns from "./getTableColumns";
 import AddOptionModal from "../optionComponents/AddOptionModal";
 import CustomButton from "../../../../component/CustomButton";
 import toast from "react-hot-toast";
-import { useDeleteOptionMutation, useGetOptionsQuery, useUpdateOptionFieldMutation } from "../../../../redux/api/admin/optionsApiSlice";
+import {
+  useDeleteOptionMutation,
+  useGetOptionsQuery,
+  useUpdateOptionFieldMutation,
+} from "../../../../redux/api/admin/optionsApiSlice";
 
 const Grade = () => {
   const [query, setQuery] = useState({
@@ -70,7 +74,9 @@ const Grade = () => {
           <PageHeader>Grade Options</PageHeader>
           <PageSubHeader>Add and edit grade options here!</PageSubHeader>
         </div>
-        <CustomButton onClick={openAddOptionModal}>Create Option</CustomButton>
+        <CustomButton size="large" onClick={openAddOptionModal}>
+          Create Option
+        </CustomButton>
       </div>
       <CustomSearch
         query={query}

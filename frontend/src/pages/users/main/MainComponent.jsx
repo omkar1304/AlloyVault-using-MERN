@@ -112,6 +112,7 @@ const MainComponent = () => {
     }
   };
 
+  //TODO: Add custom loader
   if (userDataLoading) {
     return <div>Loading...</div>;
   }
