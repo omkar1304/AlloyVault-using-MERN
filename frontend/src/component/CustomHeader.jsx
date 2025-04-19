@@ -9,6 +9,7 @@ import getInitials from "../helpers/getInitials";
 import { useLogoutMutation } from "../redux/api/user/authApiSlice";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import LOGO from "../assets/images/logo/company.svg";
 
 const { Header } = Layout;
 
@@ -44,7 +45,7 @@ const CustomHeader = () => {
 
   return (
     <Header className="flex-row-space-between custom-header">
-      <Avatar size={40} className="avatar" />
+      <img src={LOGO} alt="logo" style={{ marginInline: "4px" }} />
 
       <div className="flex-row-center right-icons">
         <Badge size="default" count={3}>
