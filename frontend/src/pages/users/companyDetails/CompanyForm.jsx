@@ -34,7 +34,7 @@ const CompanyForm = () => {
   const stateCode = useWatch("state", form);
 
   const { data: partyDetails, refetch: fetchPartyRecordDetails } =
-    useGetPartyDetailsQuery(recordId, { skip: !recordId });
+    useGetPartyDetailsQuery({ recordId }, { skip: !recordId });
   const { data: partyTypeOptions, isLoading: isPartyTypeOptionsLoading } =
     useGetAsOptionQuery({ type: 5 });
   const { data: borkerOptions, isLoading: isBrokerOptionsLoading } =

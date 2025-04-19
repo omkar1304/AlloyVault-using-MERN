@@ -13,6 +13,7 @@ const CustomTable = ({
   isLoading,
   columns,
   onPageChange,
+  isPaginationAllowed = true,
 }) => {
   const nextDisabled = page >= Math.ceil(total / size);
   const prevDisabled = page === 1;
@@ -30,49 +31,51 @@ const CustomTable = ({
             loading={isLoading}
             pagination={false}
             rowClassName="custom-row"
-            rowKey="_id"
+            rowKey={(record) => record._id}
           />
-          <Pagination
-            current={page}
-            pageSize={size}
-            className="custom-pagination"
-            total={total}
-            showSizeChanger={false}
-            onChange={(newPage, pageSize) => onPageChange(newPage, pageSize)}
-            itemRender={(page, type, originalElement) => {
-              if (type === "prev")
-                return (
-                  <button
-                    onClick={() =>
-                      !prevDisabled && onPageChange(page - 1, size)
-                    }
-                    className="pagination-btn"
-                    disabled={prevDisabled}
-                    style={{
-                      cursor: `${prevDisabled ? "not-allowed" : "pointer"}`,
-                    }}
-                  >
-                    ❮ Previous
-                  </button>
-                );
-              if (type === "next")
-                return (
-                  <button
-                    onClick={() =>
-                      !nextDisabled && onPageChange(page + 1, size)
-                    }
-                    className="pagination-btn"
-                    disabled={nextDisabled}
-                    style={{
-                      cursor: `${nextDisabled ? "not-allowed" : "pointer"}`,
-                    }}
-                  >
-                    Next ❯
-                  </button>
-                );
-              return originalElement;
-            }}
-          />
+          {isPaginationAllowed && (
+            <Pagination
+              current={page}
+              pageSize={size}
+              className="custom-pagination"
+              total={total}
+              showSizeChanger={false}
+              onChange={(newPage, pageSize) => onPageChange(newPage, pageSize)}
+              itemRender={(page, type, originalElement) => {
+                if (type === "prev")
+                  return (
+                    <button
+                      onClick={() =>
+                        !prevDisabled && onPageChange(page - 1, size)
+                      }
+                      className="pagination-btn"
+                      disabled={prevDisabled}
+                      style={{
+                        cursor: `${prevDisabled ? "not-allowed" : "pointer"}`,
+                      }}
+                    >
+                      ❮ Previous
+                    </button>
+                  );
+                if (type === "next")
+                  return (
+                    <button
+                      onClick={() =>
+                        !nextDisabled && onPageChange(page + 1, size)
+                      }
+                      className="pagination-btn"
+                      disabled={nextDisabled}
+                      style={{
+                        cursor: `${nextDisabled ? "not-allowed" : "pointer"}`,
+                      }}
+                    >
+                      Next ❯
+                    </button>
+                  );
+                return originalElement;
+              }}
+            />
+          )}
         </div>
       )}
     </>

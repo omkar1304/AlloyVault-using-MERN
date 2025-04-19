@@ -27,8 +27,8 @@ export const partyRecordApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getPartyDetails: builder.query({
-      query: (recordId) => ({
-        url: `${USER_URL}/getPartyDetails/${recordId}`,
+      query: (data) => ({
+        url: `${USER_URL}/getPartyDetails${encodeUrlPayload(data)}`,
         method: "GET",
         credentials: "include",
         headers: {

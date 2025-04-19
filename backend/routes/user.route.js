@@ -55,7 +55,7 @@ router.get("/getCitiesAsOption", authenticate, getCitiesAsOption);
 // Party Record Routes ->
 router.get("/getPartyRecords", authenticate, getPartyRecords);
 router.get("/getPartyRecordsAsOption", authenticate, getPartyRecordsAsOption);
-router.get("/getPartyDetails/:recordId", authenticate, getPartyDetails);
+router.get("/getPartyDetails", authenticate, getPartyDetails);
 router.post("/addPartyRecord", authenticate, addPartyRecord);
 router.put("/updatePartyRecord/:recordId", authenticate, updatePartyRecord);
 router.delete("/deletePartyRecord/:recordId", authenticate, deletePartyRecord);

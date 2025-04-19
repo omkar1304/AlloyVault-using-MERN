@@ -27,5 +27,21 @@
 }
 
 .steps-block {
-    height: 300px;
+  height: 300px;
+}
+
+.details-container {
+  margin-block: 1rem;
+}
+
+.details-heading {
+  color: #667085;
+  font-weight: 400;
+  font-size: 0.75rem;
+}
+
+.details-value {
+  color: #333843;
+  font-weight: 600;
+  font-size: 0.85rem;
 }

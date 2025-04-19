@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const PartyRecordSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, unique: true, required: true },
     partyType: { type: mongoose.Types.ObjectId, ref: "Option" },
     broker: { type: mongoose.Types.ObjectId, ref: "Broker" },
     gstNo: { type: String, required: true },

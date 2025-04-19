@@ -192,13 +192,34 @@ export const getPartyRecordsAsOption = async (req, res) => {
 
 export const getPartyDetails = async (req, res) => {
   try {
-    const { recordId = undefined } = req.params;
+    const { payload } = req.query;
+    const {
+      recordId = undefined,
+      searchBy = "id",
+      partyName = undefined,
+    } = decryptUrlPayload(payload);
 
-    if (!recordId) {
+    console.log("payload", decryptUrlPayload(payload));
+
+    if (searchBy === "id" && !recordId) {
       return res.status(400).json({ message: "Party record ID is missing" });
     }
 
-    const partyRecord = await PartyRecord.findById(recordId);
+    if (searchBy === "name" && !partyName) {
+      return res.status(400).json({ message: "Party name is missing" });
+    }
+
+    let partyRecord = null;
+    switch (searchBy) {
+      case "id":
+        partyRecord = await PartyRecord.findById(recordId);
+        break;
+      case "name":
+        partyRecord = await PartyRecord.findOne({ name: partyName });
+        break;
+      default:
+        partyRecord = null;
+    }
 
     if (!partyRecord) {
       return res.status(404).json({ message: "Party record not found" });

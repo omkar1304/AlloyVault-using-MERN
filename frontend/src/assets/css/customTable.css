@@ -2,6 +2,7 @@
   background: #ffffff;
   position: relative;
   margin-top: 12px;
+  width: 100%;
 }
 
 .custom-row td {
