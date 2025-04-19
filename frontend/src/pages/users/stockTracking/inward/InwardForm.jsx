@@ -29,6 +29,7 @@ import CustomTable from "../../../../component/CustomTable";
 import getItemColumns from "./getItemColumns";
 import toast from "react-hot-toast";
 import getFormattedDate from "../../../../helpers/getFormattedDate";
+import { useAddStockEntryMutation } from "../../../../redux/api/user/stockEntryApiSlice";
 
 const InwardForm = () => {
   const navigate = useNavigate();
@@ -60,6 +61,8 @@ const InwardForm = () => {
     useGetAsOptionQuery({ type: 4, sameAsLabel: true });
   const { data: borkerOptions, isLoading: isBrokerOptionsLoading } =
     useGetBrokersAsOptionQuery({ sameAsLabel: true });
+  const [addStockEntry, { isLoading: isStockEntrtyAdding }] =
+    useAddStockEntryMutation();
 
   const handleShipmentSubmit = (values) => {
     setShipmentData(values);
@@ -91,9 +94,16 @@ const InwardForm = () => {
     setStep(0);
   };
 
-  const handleStockSubmit = () => {
-    console.log("shipmentData", shipmentData);
-    console.log("items", items);
+  const handleStockSubmit = async () => {
+    try {
+      await addStockEntry({ shipmentData, items, type: "Inward" }).unwrap();
+      toast.success("Record added successfully!");
+    } catch (error) {
+      console.error(error);
+      const errMessage = error?.data?.message || "Couldn't add record!";
+      toast.error(errMessage);
+    }
+    navigate(`/home/inward`);
   };
 
   return (
@@ -568,10 +578,16 @@ const InwardForm = () => {
 
       {step === 2 && (
         <div className="flex-row-start">
-          <CustomButton width={150} size="large" onClick={handleStockSubmit}>
+          <CustomButton
+            disabled={isStockEntrtyAdding}
+            width={150}
+            size="large"
+            onClick={handleStockSubmit}
+          >
             Save
           </CustomButton>
           <CustomButton
+            disabled={isStockEntrtyAdding}
             width={150}
             size="large"
             type="Secondary"

@@ -71,7 +71,7 @@ const PartyType = () => {
       />
       <div className="flex-row-space-between">
         <div>
-          <PageHeader>PartyType Options</PageHeader>
+          <PageHeader>Party Type Options</PageHeader>
           <PageSubHeader>Add and edit party type options here!</PageSubHeader>
         </div>
         <CustomButton size="large" onClick={openAddOptionModal}>

@@ -29,6 +29,10 @@ import {
   updatePartyRecord,
 } from "../controllers/users/partyRecord.controller.js";
 import { getAsOption } from "../controllers/users/option.controller.js";
+import {
+  addStockEntry,
+  getStockEntries,
+} from "../controllers/users/stockEntry.controller.js";
 
 const router = express.Router();
 
@@ -62,5 +66,9 @@ router.delete("/deletePartyRecord/:recordId", authenticate, deletePartyRecord);
 
 // Options Routes ->
 router.get("/getAsOption", authenticate, getAsOption);
+
+// Stock Entry Routes ->
+router.get("/getStockEntries", authenticate, getStockEntries);
+router.post("/addStockEntry", authenticate, addStockEntry);
 
 export default router;

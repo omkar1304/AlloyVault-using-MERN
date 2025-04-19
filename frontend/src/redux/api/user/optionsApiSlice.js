@@ -13,6 +13,7 @@ export const optionsApiSlice = apiSlice.injectEndpoints({
           "Content-Type": "application/json",
         },
       }),
+      providesTags: ["getOptionsUserSide"]
     }),
   }),
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageHeader, PageSubHeader } from "../../../../component/Headers";
 import CustomButton from "../../../../component/CustomButton";
@@ -6,6 +6,7 @@ import { AddIcon } from "../../../../component/ActionComponent";
 import CustomSearch from "../../../../component/CustomSearch";
 import CustomTable from "../../../../component/CustomTable";
 import getTableColumns from "./getTableColumns";
+import { useGetStockEntriesQuery } from "../../../../redux/api/user/stockEntryApiSlice";
 
 const InwardList = () => {
   const navigate = useNavigate();
@@ -13,6 +14,11 @@ const InwardList = () => {
     page: 1,
     size: 25,
   });
+  const { data, isLoading, refetch } = useGetStockEntriesQuery({ ...query });
+
+  useEffect(() => {
+    refetch();
+  }, [query]);
 
   const onPageChange = (pageNumber, pageSize) => {
     setQuery({
@@ -158,14 +164,12 @@ const InwardList = () => {
       </div> */}
 
       <CustomTable
-        // data={data?.partyRecords || []}
-        data={[]}
-        // total={data?.total}
-        total={0}
+        data={data?.stockEntryRecords || []}
+        total={data?.total}
         page={query?.page}
         size={query?.size}
-        // isLoading={isLoading}
-        columns={getTableColumns({  })}
+        isLoading={isLoading}
+        columns={getTableColumns({})}
         onPageChange={onPageChange}
       />
     </div>

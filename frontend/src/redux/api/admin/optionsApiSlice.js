@@ -26,7 +26,7 @@ export const optionsApiSlice = apiSlice.injectEndpoints({
         },
         body: { payload: encryptData(data) },
       }),
-      invalidatesTags: ["getOptions"],
+      invalidatesTags: ["getOptions", "getOptionsUserSide"],
     }),
     updateOptionField: builder.mutation({
       query: (data) => ({
@@ -38,7 +38,7 @@ export const optionsApiSlice = apiSlice.injectEndpoints({
         },
         body: { payload: encryptData(data) },
       }),
-      invalidatesTags: ["getOptions"],
+      invalidatesTags: ["getOptions", "getOptionsUserSide"],
     }),
     deleteOption: builder.mutation({
       query: (optionId) => ({
@@ -49,7 +49,7 @@ export const optionsApiSlice = apiSlice.injectEndpoints({
           "Content-Type": "application/json",
         },
       }),
-      invalidatesTags: ["getOptions"],
+      invalidatesTags: ["getOptions", "getOptionsUserSide"],
     }),
   }),
 });
