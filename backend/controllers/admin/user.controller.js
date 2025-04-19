@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import User from "../../models/user.model.js";
 import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
 import decryptData from "./../../lib/decryptData.js";
+import createActivityLog from "../../helpers/createActivityLog.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -62,6 +63,7 @@ export const getUsers = async (req, res) => {
                 email: 1,
                 createdAt: 1,
                 updatedAt: 1,
+                isAdminApproved: 1
               },
             },
           ],
@@ -86,7 +88,7 @@ export const getUserDetails = async (req, res) => {
       return res.status(400).json({ message: "User Id is missing!" });
     }
 
-    const user = await User.findByIdAndDelete(userId)?.select("-password");
+    const user = await User.findById(userId)?.select("-password");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -95,6 +97,38 @@ export const getUserDetails = async (req, res) => {
     return res.status(200).json(user);
   } catch (error) {
     console.log("Error in user details controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const { recordId = undefined } = req.params;
+    const payload = decryptData(req.body.payload);
+    const { userId } = req?.user;
+
+    if (!recordId) {
+      return res.status(400).json({ message: "User ID is missing" });
+    }
+
+    const user = await User.findByIdAndUpdate(recordId, {
+      $set: {
+        ...payload,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await createActivityLog(
+      userId,
+      `User updated records for ${user?.displayName}`
+    );
+
+    return res.status(200).json({ message: "User updated successfully" });
+  } catch (error) {
+    console.log("Error in update user controller:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

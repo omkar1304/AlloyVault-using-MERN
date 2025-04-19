@@ -44,7 +44,9 @@ function App() {
           <Route path="/home/:module" element={<MainComponent />}>
             <Route path="/home/:module/:id" />
           </Route>
-          <Route path="/admin/:module" element={<AdminComponent />} />
+          <Route path="/admin/:module" element={<AdminComponent />}>
+            <Route path="/admin/:module/:id" />
+          </Route>
           <Route path="*" element={<CustomResult statusCode={404} />} />
         </Routes>
       </Router>

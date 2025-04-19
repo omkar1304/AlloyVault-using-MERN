@@ -16,6 +16,16 @@ export const roleApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["getRoles"],
     }),
+    getRolesAsOption: builder.query({
+      query: () => ({
+        url: `${ADMIN_URL}/getRolesAsOption`,
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
     addRole: builder.mutation({
       query: (data) => ({
         url: `${ADMIN_URL}/addRole`,
@@ -68,6 +78,7 @@ export const roleApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetRolesQuery,
+  useGetRolesAsOptionQuery,
   useAddRoleMutation,
   useUpdatePermissionMutation,
   useUpdateRoleFieldMutation,

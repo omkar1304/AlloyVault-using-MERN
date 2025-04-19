@@ -98,6 +98,28 @@ export const getRoles = async (req, res) => {
   }
 };
 
+export const getRolesAsOption = async (req, res) => {
+  try {
+    const result = await Role.aggregate([
+      {
+        $sort: { name: 1 },
+      },
+      {
+        $project: {
+          _id: 0,
+          label: "$name",
+          value: "$_id",
+        },
+      },
+    ]);
+
+    return res.status(200).send(result);
+  } catch (error) {
+    console.log("Error in get role as option controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 export const addRole = async (req, res) => {
   try {
     const { name } = decryptData(req.body.payload);

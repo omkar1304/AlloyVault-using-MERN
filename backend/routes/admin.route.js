@@ -4,12 +4,14 @@ import {
   addRole,
   deleteRole,
   getRoles,
+  getRolesAsOption,
   updatePermission,
   updateRoleField,
 } from "../controllers/admin/role.controller.js";
 import {
   getUserDetails,
   getUsers,
+  updateUser,
 } from "../controllers/admin/user.controller.js";
 import { getActivityLogs } from "../controllers/admin/activityLogs.controller.js";
 import { getEmailLogs } from "../controllers/admin/emailLogs.controller.js";
@@ -25,9 +27,11 @@ const router = express.Router();
 // User routes
 router.get("/getUsers", authenticate, getUsers);
 router.get("/getUserDetails/:userId", authenticate, getUserDetails);
+router.put("/updateUser/:recordId", authenticate, updateUser);
 
 // Role routes
 router.get("/getRoles", authenticate, getRoles);
+router.get("/getRolesAsOption", authenticate, getRolesAsOption);
 router.post("/addRole", authenticate, addRole);
 router.post("/updatePermission", authenticate, updatePermission);
 router.put("/updateRoleField", authenticate, updateRoleField);

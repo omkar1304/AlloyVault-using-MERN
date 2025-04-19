@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: mongoose.Types.ObjectId, ref: "Role" },
+    branch: { type: mongoose.Types.ObjectId, ref: "Option" },
     isAdminApproved: { type: Boolean, default: false },
     otp: { type: String },
     otpExpires: { type: Date },

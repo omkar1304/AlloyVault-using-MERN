@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 const seedUserDatabase = async () => {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/alloy");
+    await mongoose.connect("mongodb+srv://Omkar1304:Omkar1304@cluster0.mrq1llb.mongodb.net/Alloy?retryWrites=true&w=majority&appName=Cluster0");
     const hashedPassword = await getHashedPassword("Omkar@1304");
     const role = await Role.findOne({name: "Super Admin"})
     if(!role){
