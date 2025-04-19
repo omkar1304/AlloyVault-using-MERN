@@ -7,14 +7,33 @@ import CustomSearch from "../../../../component/CustomSearch";
 import CustomTable from "../../../../component/CustomTable";
 import getTableColumns from "./getTableColumns";
 import { useGetStockEntriesQuery } from "../../../../redux/api/user/stockEntryApiSlice";
+import { useGetAsOptionQuery } from "../../../../redux/api/user/optionsApiSlice";
+import { DatePicker, Select } from "antd";
+import filterOption from "../../../../helpers/filterOption";
+import { shapeOptions } from "../../../../helpers/formOptions";
+import moment from "moment";
+
+const { RangePicker } = DatePicker;
 
 const InwardList = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState({
     page: 1,
     size: 25,
+    dateRange: {
+      start: moment().add(-7, "days").toISOString(),
+      end: moment().toISOString(),
+    },
   });
   const { data, isLoading, refetch } = useGetStockEntriesQuery({ ...query });
+  const { data: branchOptions, isLoading: isBranchOptionsLoading } =
+    useGetAsOptionQuery({ type: 1, sameAsLabel: true });
+  const { data: gradeOptions, isLoading: isGradeOptionsLoading } =
+    useGetAsOptionQuery({ type: 4, sameAsLabel: true });
+  const {
+    data: materialTypeOptions,
+    isLoading: isMaterialTypesOptionsLoading,
+  } = useGetAsOptionQuery({ type: 2, sameAsLabel: true });
 
   useEffect(() => {
     refetch();
@@ -39,7 +58,8 @@ const InwardList = () => {
         <div>
           <PageHeader>Inward Material</PageHeader>
           <PageSubHeader>
-            Record new stock received and update inventory seamlessly
+            Log new materials received into inventory. Track sources,
+            quantities, and branch storage—fast and easy.
           </PageSubHeader>
         </div>
         <CustomButton
@@ -57,26 +77,26 @@ const InwardList = () => {
         placeholder="Search by inward records"
       />
 
-      {/* <div className="filter-row flex-row-space-between">
+      <div className="filter-row flex-row-space-between">
         <div className="filter-row-left">
           <Select
-            style={{ width: 120 }}
-            placeholder="Broker"
-            disabled={isBrokerOptionsLoading}
-            options={borkerOptions}
+            style={{ width: 150 }}
+            placeholder="Branch"
+            disabled={isBranchOptionsLoading}
+            options={branchOptions}
             allowClear
-            onChange={(selectedBroker) => {
+            onChange={(selectedBranch) => {
               setQuery((old) => {
                 let temp = JSON.parse(JSON.stringify(old));
                 if (
-                  (selectedBroker && !temp.selectedBroker) ||
-                  (selectedBroker &&
-                    temp.selectedBroker &&
-                    selectedBroker !== temp.selectedBroker)
+                  (selectedBranch && !temp.selectedBranch) ||
+                  (selectedBranch &&
+                    temp.selectedBranch &&
+                    selectedBranch !== temp.selectedBranch)
                 ) {
-                  temp["selectedBroker"] = selectedBroker;
-                } else if (!selectedBroker && temp.selectedBroker) {
-                  delete temp.selectedBroker;
+                  temp["selectedBranch"] = selectedBranch;
+                } else if (!selectedBranch && temp.selectedBranch) {
+                  delete temp.selectedBranch;
                 }
                 return temp;
               });
@@ -85,24 +105,47 @@ const InwardList = () => {
             filterOption={filterOption}
           />
           <Select
-            style={{ width: 120 }}
-            placeholder="Country"
-            options={countryOptions}
-            disabled={isCountryOptionLoading}
-            defaultValue={query?.selectedCountry}
-            allowClear
-            onChange={(selectedCountry) => {
+            style={{ width: 150 }}
+            placeholder="Grade"
+            options={gradeOptions}
+            disabled={isGradeOptionsLoading}
+            onChange={(selectedGrade) => {
               setQuery((old) => {
                 let temp = JSON.parse(JSON.stringify(old));
                 if (
-                  (selectedCountry && !temp.selectedCountry) ||
-                  (selectedCountry &&
-                    temp.selectedCountry &&
-                    selectedCountry !== temp.selectedCountry)
+                  (selectedGrade && !temp.selectedGrade) ||
+                  (selectedGrade &&
+                    temp.selectedGrade &&
+                    selectedGrade !== temp.selectedGrade)
                 ) {
-                  temp["selectedCountry"] = selectedCountry;
-                } else if (!selectedCountry && temp.selectedCountry) {
-                  delete temp.selectedCountry;
+                  temp["selectedGrade"] = selectedGrade;
+                } else if (!selectedGrade && temp.selectedGrade) {
+                  delete temp.selectedGrade;
+                }
+                return temp;
+              });
+            }}
+            allowClear
+            showSearch
+            filterOption={filterOption}
+          />
+          <Select
+            style={{ width: 150 }}
+            placeholder="Shape"
+            options={shapeOptions}
+            allowClear
+            onChange={(selectedShape) => {
+              setQuery((old) => {
+                let temp = JSON.parse(JSON.stringify(old));
+                if (
+                  (selectedShape && !temp.selectedShape) ||
+                  (selectedShape &&
+                    temp.selectedShape &&
+                    selectedShape !== temp.selectedShape)
+                ) {
+                  temp["selectedShape"] = selectedShape;
+                } else if (!selectedShape && temp.selectedShape) {
+                  delete temp.selectedShape;
                 }
                 return temp;
               });
@@ -111,48 +154,23 @@ const InwardList = () => {
             filterOption={filterOption}
           />
           <Select
-            style={{ width: 120 }}
-            placeholder="State"
-            options={stateOption}
-            disabled={isStateOptionLoading}
+            style={{ width: 150 }}
+            placeholder="Purchase"
+            options={materialTypeOptions}
+            disabled={isMaterialTypesOptionsLoading}
             allowClear
-            onChange={(selectedState) => {
+            onChange={(selectedMaterialType) => {
               setQuery((old) => {
                 let temp = JSON.parse(JSON.stringify(old));
                 if (
-                  (selectedState && !temp.selectedState) ||
-                  (selectedState &&
-                    temp.selectedState &&
-                    selectedState !== temp.selectedState)
+                  (selectedMaterialType && !temp.selectedMaterialType) ||
+                  (selectedMaterialType &&
+                    temp.selectedMaterialType &&
+                    selectedMaterialType !== temp.selectedMaterialType)
                 ) {
-                  temp["selectedState"] = selectedState;
-                } else if (!selectedState && temp.selectedState) {
-                  delete temp.selectedState;
-                }
-                return temp;
-              });
-            }}
-            showSearch
-            filterOption={filterOption}
-          />
-          <Select
-            style={{ width: 120 }}
-            placeholder="City"
-            options={cityOption}
-            disabled={isCityOptionLoading}
-            allowClear
-            onChange={(selectedCity) => {
-              setQuery((old) => {
-                let temp = JSON.parse(JSON.stringify(old));
-                if (
-                  (selectedCity && !temp.selectedCity) ||
-                  (selectedCity &&
-                    temp.selectedCity &&
-                    selectedCity !== temp.selectedCity)
-                ) {
-                  temp["selectedCity"] = selectedCity;
-                } else if (!selectedCity && temp.selectedCity) {
-                  delete temp.selectedCity;
+                  temp["selectedMaterialType"] = selectedMaterialType;
+                } else if (!selectedMaterialType && temp.selectedMaterialType) {
+                  delete temp.selectedMaterialType;
                 }
                 return temp;
               });
@@ -161,7 +179,27 @@ const InwardList = () => {
             filterOption={filterOption}
           />
         </div>
-      </div> */}
+
+        <RangePicker
+          style={{ width: 250 }}
+          format="DD MMM YY"
+          onChange={(dates, dateStrings) => {
+            if (dates) {
+              const newDateRange = {
+                start: moment(dateStrings[0], "DD MMM YY").toISOString(),
+                end: moment(dateStrings[1], "DD MMM YY").toISOString(),
+              };
+              setQuery((old) => ({ ...old, dateRange: newDateRange }));
+            } else {
+              setQuery((old) => {
+                const newQuery = { ...old };
+                delete newQuery.dateRange;
+                return newQuery;
+              });
+            }
+          }}
+        />
+      </div>
 
       <CustomTable
         data={data?.stockEntryRecords || []}

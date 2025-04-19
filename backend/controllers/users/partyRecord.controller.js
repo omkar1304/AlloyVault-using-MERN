@@ -51,7 +51,6 @@ export const getPartyRecords = async (req, res) => {
     }
 
     const result = await PartyRecord.aggregate([
-      // Keyword filter
       ...(matchQueryStage.length
         ? [{ $match: { $and: matchQueryStage } }]
         : []),

@@ -3,7 +3,7 @@ import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
 import decryptData from "../../lib/decryptData.js";
 import StockEntry from "../../models/stockEntry.model.js";
 import mongoose from "mongoose";
-import moment from "moment"
+import moment from "moment";
 
 export const getStockEntries = async (req, res) => {
   try {
@@ -12,7 +12,14 @@ export const getStockEntries = async (req, res) => {
       page = 1,
       size = 25,
       keyword = undefined,
+      selectedBranch = undefined,
+      selectedGrade = undefined,
+      selectedShape = undefined,
+      selectedMaterialType = undefined,
+      dateRange = undefined,
     } = decryptUrlPayload(payload);
+
+    console.log("payload", decryptUrlPayload(payload))
 
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;
@@ -23,7 +30,11 @@ export const getStockEntries = async (req, res) => {
     if (keyword !== undefined) {
       const words = keyword.split(" ");
       const searchConditions = words.map((word) => ({
-        $or: [{ name: { $regex: word, $options: "i" } }],
+        $or: [
+          { grade: { $regex: word, $options: "i" } },
+          { company: { $regex: word, $options: "i" } },
+          { rackNo: { $regex: word, $options: "i" } },
+        ],
       }));
 
       matchQueryStage.push({
@@ -31,8 +42,46 @@ export const getStockEntries = async (req, res) => {
       });
     }
 
+    // Dropdown filters
+    if (selectedBranch) {
+      matchQueryStage.push({
+        branch: selectedBranch,
+      });
+    }
+    if (selectedGrade) {
+      matchQueryStage.push({ grade: selectedGrade });
+    }
+    if (selectedShape) {
+      matchQueryStage.push({ shape: selectedShape });
+    }
+    if (selectedMaterialType) {
+      matchQueryStage.push({ materialType: selectedMaterialType });
+    }
+
     const result = await StockEntry.aggregate([
-      // Keyword filter
+      // Date range filter
+      ...(dateRange != undefined
+        ? [
+            {
+              $match: {
+                $and: [
+                  {
+                    entryDate: {
+                      $gte: new Date(moment(dateRange.start).toISOString()),
+                    },
+                  },
+                  {
+                    entryDate: {
+                      $lte: new Date(
+                        moment(dateRange.end).add(24, "hours").toISOString()
+                      ),
+                    },
+                  },
+                ],
+              },
+            },
+          ]
+        : []),
       ...(matchQueryStage.length
         ? [{ $match: { $and: matchQueryStage } }]
         : []),
@@ -114,6 +163,7 @@ export const addStockEntry = async (req, res) => {
       return {
         ...shipmentData,
         ...item,
+        type,
         createdBy: userId,
       };
     });
