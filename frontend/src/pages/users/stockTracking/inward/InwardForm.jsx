@@ -24,7 +24,6 @@ import filterOption from "../../../../helpers/filterOption";
 import { useGetAsOptionQuery } from "../../../../redux/api/user/optionsApiSlice";
 import { useGetBrokersAsOptionQuery } from "../../../../redux/api/user/brokerApiSlice";
 import CustomButton from "../../../../component/CustomButton";
-import { shapeOptions } from "../../../../component/FormOptions";
 import CustomTable from "../../../../component/CustomTable";
 import getItemColumns from "./getItemColumns";
 import toast from "react-hot-toast";
@@ -66,6 +65,8 @@ const InwardForm = () => {
   } = useGetAsOptionQuery({ type: 3, sameAsLabel: true });
   const { data: gradeOptions, isLoading: isGradeOptionsLoading } =
     useGetAsOptionQuery({ type: 4, sameAsLabel: true });
+  const { data: shapeOptions, isLoading: isShapeOptionsLoading } =
+    useGetAsOptionQuery({ type: 6, sameAsLabel: true });
   const { data: borkerOptions, isLoading: isBrokerOptionsLoading } =
     useGetBrokersAsOptionQuery({ sameAsLabel: true });
   const [addStockEntry, { isLoading: isStockEntrtyAdding }] =
@@ -231,7 +232,7 @@ const InwardForm = () => {
                           optionFilterProp="children"
                           filterOption={filterOption}
                           options={branchOptions}
-                          disabled={isBranchOptionsLoading}
+                          loading={isBranchOptionsLoading}
                           allowClear
                         />
                       </Form.Item>
@@ -256,7 +257,7 @@ const InwardForm = () => {
                           optionFilterProp="children"
                           filterOption={filterOption}
                           options={materialTypeOptions}
-                          disabled={isMaterialTypesOptionsLoading}
+                          loading={isMaterialTypesOptionsLoading}
                           allowClear
                         />
                       </Form.Item>
@@ -281,7 +282,7 @@ const InwardForm = () => {
                           optionFilterProp="children"
                           filterOption={filterOption}
                           options={partyOptions}
-                          disabled={isPartyOptionsLoading}
+                          loading={isPartyOptionsLoading}
                           allowClear
                         />
                       </Form.Item>
@@ -306,7 +307,7 @@ const InwardForm = () => {
                           optionFilterProp="children"
                           filterOption={filterOption}
                           options={borkerOptions}
-                          disabled={isBrokerOptionsLoading}
+                          loading={isBrokerOptionsLoading}
                           allowClear
                         />
                       </Form.Item>
@@ -396,7 +397,7 @@ const InwardForm = () => {
                           optionFilterProp="children"
                           filterOption={filterOption}
                           options={materialClassOptions}
-                          disabled={isMaterialClassOptionsLoading}
+                          loading={isMaterialClassOptionsLoading}
                           allowClear
                         />
                       </Form.Item>
@@ -421,7 +422,7 @@ const InwardForm = () => {
                           optionFilterProp="children"
                           filterOption={filterOption}
                           options={gradeOptions}
-                          disabled={isGradeOptionsLoading}
+                          loading={isGradeOptionsLoading}
                           allowClear
                         />
                       </Form.Item>
@@ -459,10 +460,16 @@ const InwardForm = () => {
                           },
                         ]}
                       >
-                        <Radio.Group
+                        <Select
                           size="large"
+                          style={{ width: "100%" }}
+                          showSearch
+                          placeholder="Select a shape"
+                          optionFilterProp="children"
+                          filterOption={filterOption}
                           options={shapeOptions}
-                          optionType="button"
+                          loading={isShapeOptionsLoading}
+                          allowClear
                         />
                       </Form.Item>
                     </Col>

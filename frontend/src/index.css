@@ -161,11 +161,28 @@
   box-shadow: none;
 }
 
+/* Range Picker */
+/* Background for dates between the start and end in RangePicker */
+.ant-picker-cell-in-range::before {
+  background-color: #E0E0E0 !important; /* Your custom color */
+}
+
+/* Background for start and end date */
+.ant-picker-cell-range-start::before,
+.ant-picker-cell-range-end::before {
+  background-color: #BDBDBD !important; /* Start/End date color */
+}
+
+
 /* Select */
 .ant-select-selector:hover,
 .ant-select-selector:focus-within {
   border-color: rgba(0, 0, 0, 0.5) !important;
   box-shadow: none !important;
+}
+
+.ant-select-item-option-selected {
+  background-color: #E0E0E0 !important;
 }
 
 /* Scroll Bar */

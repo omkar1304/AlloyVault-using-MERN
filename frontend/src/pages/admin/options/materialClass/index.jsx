@@ -25,14 +25,14 @@ const MaterialClass = () => {
   const [deleteOption, { isLoading: isOptionDeleting }] =
     useDeleteOptionMutation();
   const {
-    data: branchOptions,
+    data: options,
     isLoading: isOptionsLoading,
     isError: isErrorInOptions,
-    refetch: getBranchOptionsRefetch,
+    refetch: getOptionsRefetch,
   } = useGetOptionsQuery({ ...query });
 
   useEffect(() => {
-    getBranchOptionsRefetch();
+    getOptionsRefetch();
   }, [query]);
 
   const handleDeleteOption = async (optionId) => {
@@ -86,8 +86,8 @@ const MaterialClass = () => {
         placeholder="Search by name"
       />
       <CustomTable
-        data={branchOptions?.options || []}
-        total={branchOptions?.total}
+        data={options?.options || []}
+        total={options?.total}
         page={query?.page}
         size={query?.size}
         isLoading={isOptionsLoading}

@@ -10,6 +10,7 @@ import { IoGitBranchOutline, IoOptionsSharp } from "react-icons/io5";
 import { SiMaterialformkdocs } from "react-icons/si";
 import { VscSymbolClass } from "react-icons/vsc";
 import { GoOrganization } from "react-icons/go";
+import { LuShapes } from "react-icons/lu";
 
 const { Sider } = Layout;
 
@@ -47,6 +48,9 @@ const AdminDrawer = ({ module, collapsed, setCollapsed }) => {
       ),
       getItem("Party Type", "partyType", <GoOrganization />, null, () =>
         navigate("/admin/partyType")
+      ),
+      getItem("Shape", "shape", <LuShapes />, null, () =>
+        navigate("/admin/shape")
       ),
     ], null),
     getItem("Activity Logs", "activityLogs", <TbLogs />, null, () =>

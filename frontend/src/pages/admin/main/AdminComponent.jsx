@@ -18,6 +18,7 @@ import MaterialType from "../options/materialType";
 import MaterialClass from "../options/materialClass";
 import Grade from "../options/grade";
 import PartyType from "../options/partyType";
+import Shape from "../options/shape";
 
 const { Content } = Layout;
 
@@ -31,6 +32,7 @@ const adminModule = {
   materialClass: <MaterialClass />,
   grade: <Grade />,
   partyType: <PartyType />,
+  shape: <Shape />
 };
 
 const AdminComponent = () => {

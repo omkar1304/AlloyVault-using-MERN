@@ -12,11 +12,11 @@ import {
   useUpdateOptionFieldMutation,
 } from "../../../../redux/api/admin/optionsApiSlice";
 
-const PartyType = () => {
+const Shape = () => {
   const [query, setQuery] = useState({
     page: 1,
     size: 25,
-    type: 5,
+    type: 6,
   });
   const [isAddOptionModalOpen, setIsAddOptionModalOpen] = useState(false);
 
@@ -67,12 +67,12 @@ const PartyType = () => {
       <AddOptionModal
         open={isAddOptionModalOpen}
         onClose={closeAddOptionModal}
-        type={5}
+        type={6}
       />
       <div className="flex-row-space-between">
         <div>
-          <PageHeader>Party Type Options</PageHeader>
-          <PageSubHeader>Add and edit party type options here!</PageSubHeader>
+          <PageHeader>Shape</PageHeader>
+          <PageSubHeader>Add and edit shape options here!</PageSubHeader>
         </div>
         <CustomButton size="large" onClick={openAddOptionModal}>
           Create Option
@@ -100,4 +100,4 @@ const PartyType = () => {
   );
 };
 
-export default PartyType;
+export default Shape;
