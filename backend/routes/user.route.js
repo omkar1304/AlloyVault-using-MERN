@@ -31,7 +31,10 @@ import {
 import { getAsOption } from "../controllers/users/option.controller.js";
 import {
   addStockEntry,
+  deleteStockEntry,
   getStockEntries,
+  getStockEntryDetails,
+  updateStockEntry,
 } from "../controllers/users/stockEntry.controller.js";
 
 const router = express.Router();
@@ -70,5 +73,8 @@ router.get("/getAsOption", authenticate, getAsOption);
 // Stock Entry Routes ->
 router.get("/getStockEntries", authenticate, getStockEntries);
 router.post("/addStockEntry", authenticate, addStockEntry);
+router.get("/getStockEntryDetails", authenticate, getStockEntryDetails);
+router.put("/updateStockEntry/:recordId", authenticate, updateStockEntry);
+router.delete("/deleteStockEntry/:recordId", authenticate, deleteStockEntry);
 
 export default router;

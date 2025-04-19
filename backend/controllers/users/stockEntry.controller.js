@@ -19,8 +19,6 @@ export const getStockEntries = async (req, res) => {
       dateRange = undefined,
     } = decryptUrlPayload(payload);
 
-    console.log("payload", decryptUrlPayload(payload))
-
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;
 
@@ -185,6 +183,96 @@ export const addStockEntry = async (req, res) => {
     return res.status(200).json({ message: "Stock record added successfully" });
   } catch (error) {
     console.log("Error in add stock entry record controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getStockEntryDetails = async (req, res) => {
+  try {
+    const { payload } = req.query;
+    const { recordId = undefined } = decryptUrlPayload(payload);
+
+    if (!recordId) {
+      return res.status(400).json({ message: "Stock record ID is missing" });
+    }
+
+    console.log("recordId", recordId)
+
+    const stockEntryRecord = await StockEntry.findById(recordId);
+
+    if (!stockEntryRecord) {
+      return res.status(404).json({ message: "Stock entry not found" });
+    }
+
+    return res.status(200).send(stockEntryRecord);
+  } catch (error) {
+    console.log("Error in stock entry record controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const updateStockEntry = async (req, res) => {
+  try {
+    const { recordId = undefined } = req.params;
+    const payload = decryptData(req.body.payload);
+    const { userId } = req?.user;
+
+    if (!recordId) {
+      return res.status(400).json({ message: "Stock record ID is missing" });
+    }
+
+    const stockEntryRecord = await StockEntry.findByIdAndUpdate(recordId, {
+      $set: {
+        ...payload,
+      },
+    });
+
+    if (!stockEntryRecord) {
+      return res.status(404).json({ message: "Stock entry not found" });
+    }
+
+    await createActivityLog(
+      userId,
+      `User updated ${stockEntryRecord?.type} stock for branch ${stockEntryRecord?.branch}`
+    );
+
+    return res
+      .status(200)
+      .json({ message: "stock Entry Record updated successfully" });
+  } catch (error) {
+    console.log(
+      "Error in update stock entry record controller:",
+      error.message
+    );
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const deleteStockEntry = async (req, res) => {
+  try {
+    const { recordId = undefined } = req.params;
+    const { userId } = req?.user;
+
+    if (!recordId) {
+      return res.status(400).json({ message: "Stock record ID is missing" });
+    }
+
+    const deletedStockEntry = await StockEntry.findByIdAndDelete(recordId);
+
+    if (!deletedStockEntry) {
+      return res.status(404).json({ message: "Stock entry not found" });
+    }
+
+    await createActivityLog(
+      userId,
+      `User deleted stock for branch ${deletedStockEntry?.branch}`
+    );
+
+    return res
+      .status(200)
+      .json({ message: "Stock entry deleted successfully" });
+  } catch (error) {
+    console.log("Error in delete Stock entry controller:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

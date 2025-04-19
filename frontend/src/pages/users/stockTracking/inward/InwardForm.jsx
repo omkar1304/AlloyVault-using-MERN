@@ -10,7 +10,7 @@ import {
   Select,
   Steps,
 } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { PageHeader, PageSubHeader } from "../../../../component/Headers";
 import { GoOrganization } from "react-icons/go";
@@ -29,7 +29,12 @@ import CustomTable from "../../../../component/CustomTable";
 import getItemColumns from "./getItemColumns";
 import toast from "react-hot-toast";
 import getFormattedDate from "../../../../helpers/getFormattedDate";
-import { useAddStockEntryMutation } from "../../../../redux/api/user/stockEntryApiSlice";
+import {
+  useAddStockEntryMutation,
+  useGetStockEntryDetailsQuery,
+  useUpdateStockEntryMutation,
+} from "../../../../redux/api/user/stockEntryApiSlice";
+import dayjs from "dayjs";
 
 const InwardForm = () => {
   const navigate = useNavigate();
@@ -41,6 +46,8 @@ const InwardForm = () => {
   const [shipmentForm] = Form.useForm();
   const [itemForm] = Form.useForm();
 
+  const { data: stockEntryDetails, refetch: fetchStockEntryDetails } =
+    useGetStockEntryDetailsQuery({ recordId }, { skip: !recordId });
   const { data: partyDetails } = useGetPartyDetailsQuery(
     { searchBy: "name", partyName: shipmentData?.company },
     { skip: !shipmentData?.company } // Skip till we reach last page
@@ -63,6 +70,24 @@ const InwardForm = () => {
     useGetBrokersAsOptionQuery({ sameAsLabel: true });
   const [addStockEntry, { isLoading: isStockEntrtyAdding }] =
     useAddStockEntryMutation();
+  const [updateStockEntry, { isLoading: isStockEntrtyUpdating }] =
+    useUpdateStockEntryMutation();
+
+  useEffect(() => {
+    if (recordId) {
+      fetchStockEntryDetails();
+    }
+  }, [recordId]);
+
+  useEffect(() => {
+    if (stockEntryDetails) {
+      shipmentForm.setFieldsValue({
+        ...stockEntryDetails,
+        entryDate: dayjs(stockEntryDetails?.entryDate || null),
+      });
+      itemForm.setFieldsValue(stockEntryDetails);
+    }
+  }, [stockEntryDetails]);
 
   const handleShipmentSubmit = (values) => {
     setShipmentData(values);
@@ -82,7 +107,15 @@ const InwardForm = () => {
     setItems((prevItems) => {
       return [{ ...item, uniqueKey: Date.now() }, ...prevItems];
     });
-    itemForm.resetFields();
+
+    // If update, then move to next stage
+    if (recordId) {
+      setStep((prev) => prev + 1);
+    }
+    // if add, just reset for new item to add
+    else {
+      itemForm.resetFields();
+    }
   };
 
   const handleRemoveItem = (uniqueKey) => {
@@ -94,13 +127,29 @@ const InwardForm = () => {
     setStep(0);
   };
 
-  const handleStockSubmit = async () => {
+  const handleAddStock = async () => {
     try {
       await addStockEntry({ shipmentData, items, type: "Inward" }).unwrap();
       toast.success("Record added successfully!");
     } catch (error) {
       console.error(error);
       const errMessage = error?.data?.message || "Couldn't add record!";
+      toast.error(errMessage);
+    }
+    navigate(`/home/inward`);
+  };
+
+  const handleUpdateStock = async () => {
+    try {
+      await updateStockEntry({
+        recordId,
+        ...shipmentData,
+        ...items[0],
+      }).unwrap();
+      toast.success("Record updated successfully!");
+    } catch (error) {
+      console.error(error);
+      const errMessage = error?.data?.message || "Couldn't update record!";
       toast.error(errMessage);
     }
     navigate(`/home/inward`);
@@ -470,21 +519,33 @@ const InwardForm = () => {
                     </Col>
 
                     <div className="flex-row-start">
-                      <CustomButton
-                        width={150}
-                        size="large"
-                        type="Secondary"
-                        htmlType="submit"
-                      >
-                        Add Entry
-                      </CustomButton>
-                      <CustomButton
-                        width={150}
-                        size="large"
-                        onClick={handleItemSubmit}
-                      >
-                        Save
-                      </CustomButton>
+                      {recordId ? (
+                        <CustomButton
+                          width={150}
+                          size="large"
+                          htmlType="submit"
+                        >
+                          Save
+                        </CustomButton>
+                      ) : (
+                        <>
+                          <CustomButton
+                            width={150}
+                            size="large"
+                            type="Secondary"
+                            htmlType="submit"
+                          >
+                            Add Entry
+                          </CustomButton>
+                          <CustomButton
+                            width={150}
+                            size="large"
+                            onClick={handleItemSubmit}
+                          >
+                            Save
+                          </CustomButton>
+                        </>
+                      )}
                     </div>
                   </Row>
                 </Form>
@@ -579,22 +640,25 @@ const InwardForm = () => {
       {step === 2 && (
         <div className="flex-row-start">
           <CustomButton
-            disabled={isStockEntrtyAdding}
+            disabled={isStockEntrtyAdding || isStockEntrtyUpdating}
             width={150}
             size="large"
-            onClick={handleStockSubmit}
+            onClick={recordId ? handleUpdateStock : handleAddStock}
           >
-            Save
+            {recordId ? "Update" : "Save"}
           </CustomButton>
-          <CustomButton
-            disabled={isStockEntrtyAdding}
-            width={150}
-            size="large"
-            type="Secondary"
-            onClick={handleResetStep}
-          >
-            Edit
-          </CustomButton>
+          {/* Only show while adding */}
+          {!recordId && (
+            <CustomButton
+              isLoading={isStockEntrtyAdding}
+              width={150}
+              size="large"
+              type="Secondary"
+              onClick={handleResetStep}
+            >
+              Edit
+            </CustomButton>
+          )}
         </div>
       )}
     </section>

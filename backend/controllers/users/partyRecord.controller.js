@@ -198,8 +198,6 @@ export const getPartyDetails = async (req, res) => {
       partyName = undefined,
     } = decryptUrlPayload(payload);
 
-    console.log("payload", decryptUrlPayload(payload));
-
     if (searchBy === "id" && !recordId) {
       return res.status(400).json({ message: "Party record ID is missing" });
     }

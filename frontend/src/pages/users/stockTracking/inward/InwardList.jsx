@@ -6,12 +6,16 @@ import { AddIcon } from "../../../../component/ActionComponent";
 import CustomSearch from "../../../../component/CustomSearch";
 import CustomTable from "../../../../component/CustomTable";
 import getTableColumns from "./getTableColumns";
-import { useGetStockEntriesQuery } from "../../../../redux/api/user/stockEntryApiSlice";
+import {
+  useDeleteStockEntryMutation,
+  useGetStockEntriesQuery,
+} from "../../../../redux/api/user/stockEntryApiSlice";
 import { useGetAsOptionQuery } from "../../../../redux/api/user/optionsApiSlice";
 import { DatePicker, Select } from "antd";
 import filterOption from "../../../../helpers/filterOption";
 import { shapeOptions } from "../../../../helpers/formOptions";
 import moment from "moment";
+import toast from "react-hot-toast";
 
 const { RangePicker } = DatePicker;
 
@@ -20,10 +24,6 @@ const InwardList = () => {
   const [query, setQuery] = useState({
     page: 1,
     size: 25,
-    dateRange: {
-      start: moment().add(-7, "days").toISOString(),
-      end: moment().toISOString(),
-    },
   });
   const { data, isLoading, refetch } = useGetStockEntriesQuery({ ...query });
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
@@ -34,6 +34,8 @@ const InwardList = () => {
     data: materialTypeOptions,
     isLoading: isMaterialTypesOptionsLoading,
   } = useGetAsOptionQuery({ type: 2, sameAsLabel: true });
+  const [deleteStockEntry, { isLoading: isStockEntryDeleting }] =
+    useDeleteStockEntryMutation();
 
   useEffect(() => {
     refetch();
@@ -50,6 +52,17 @@ const InwardList = () => {
 
   const handleNavigateInwardForm = () => {
     navigate("/home/inward/new");
+  };
+
+  const handleDeleteStock = async (recordId) => {
+    try {
+      await deleteStockEntry(recordId).unwrap();
+      toast.success("Stock deleted successfully!");
+    } catch (error) {
+      console.error(error);
+      const errMessage = error?.data?.message || "Couldn't delete stock entry!";
+      toast.error(errMessage);
+    }
   };
 
   return (
@@ -207,7 +220,7 @@ const InwardList = () => {
         page={query?.page}
         size={query?.size}
         isLoading={isLoading}
-        columns={getTableColumns({})}
+        columns={getTableColumns({handleDeleteStock})}
         onPageChange={onPageChange}
       />
     </div>

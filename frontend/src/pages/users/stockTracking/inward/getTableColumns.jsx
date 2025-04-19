@@ -4,7 +4,7 @@ import getFormattedDate from "../../../../helpers/getFormattedDate";
 import { DeleteIcon, EditIcon } from "../../../../component/ActionComponent";
 import getInitials from "../../../../helpers/getInitials";
 
-const getTableColumns = ({ handleDeleteRecord }) => {
+const getTableColumns = ({ handleDeleteStock }) => {
   const navigate = useNavigate();
 
   return [
@@ -88,7 +88,7 @@ const getTableColumns = ({ handleDeleteRecord }) => {
           <Popconfirm
             title="Delete the record"
             description="Are you sure to delete?"
-            // onConfirm={() => handleDeleteRecord(row?._id)}
+            onConfirm={() => handleDeleteStock(row?._id)}
             onCancel={null}
             okText="Yes"
             cancelText="No"

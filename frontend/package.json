@@ -14,6 +14,7 @@
     "@urlpack/json": "^2.0.0",
     "antd": "^5.24.3",
     "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.13",
     "jsencrypt": "^3.3.2",
     "less": "^4.3.0",
     "less-loader": "^12.2.0",
