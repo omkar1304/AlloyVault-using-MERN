@@ -25,6 +25,8 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
+// To serve static files
+app.use("/uploads/companyImages", express.static("./uploads/companyImages"));
 
 //* Routes
 app.use("/api/users", userRouter);

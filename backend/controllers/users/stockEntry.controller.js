@@ -196,8 +196,6 @@ export const getStockEntryDetails = async (req, res) => {
       return res.status(400).json({ message: "Stock record ID is missing" });
     }
 
-    console.log("recordId", recordId)
-
     const stockEntryRecord = await StockEntry.findById(recordId);
 
     if (!stockEntryRecord) {

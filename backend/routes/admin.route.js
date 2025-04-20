@@ -21,6 +21,14 @@ import {
   getOptions,
   updateOptionField,
 } from "../controllers/admin/option.controller.js";
+import {
+  addCompany,
+  deleteCompany,
+  getCompanies,
+  getCompanyDetails,
+  updateCompany,
+} from "../controllers/admin/company.controller.js";
+import uploadCompanyImg from "../middleware/uploadCompanyImg.middleware.js";
 
 const router = express.Router();
 
@@ -36,6 +44,23 @@ router.post("/addRole", authenticate, addRole);
 router.post("/updatePermission", authenticate, updatePermission);
 router.put("/updateRoleField", authenticate, updateRoleField);
 router.delete("/deleteRole/:roleId", authenticate, deleteRole);
+
+// Company routes
+router.get("/getCompanies", authenticate, getCompanies);
+router.get("/getCompanyDetails", authenticate, getCompanyDetails);
+router.post(
+  "/addCompany",
+  authenticate,
+  uploadCompanyImg.single("imgURL"),
+  addCompany
+);
+router.put(
+  "/updateCompany/:recordId",
+  authenticate,
+  uploadCompanyImg.single("imgURL"),
+  updateCompany
+);
+router.delete("/deleteCompany/:recordId", authenticate, deleteCompany);
 
 // Options routes
 router.get("/getOptions", authenticate, getOptions);

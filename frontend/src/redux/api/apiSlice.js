@@ -11,7 +11,8 @@ const apiSlice = createApi({
     "getStockEntries",
     "getOptionsUserSide",
     "getUsers",
-    "getUsersDetails"
+    "getUsersDetails",
+    "getCompanies"
   ],
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,

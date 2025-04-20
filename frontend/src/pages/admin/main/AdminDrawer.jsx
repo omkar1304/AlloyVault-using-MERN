@@ -5,7 +5,7 @@ import { PiUsersThreeBold } from "react-icons/pi";
 import { GrShieldSecurity } from "react-icons/gr";
 import { TbLogs } from "react-icons/tb";
 import { AiOutlineHome } from "react-icons/ai";
-import { MdOutlineMarkEmailRead, MdOutlineGrade  } from "react-icons/md";
+import { MdOutlineMarkEmailRead, MdOutlineGrade } from "react-icons/md";
 import { IoGitBranchOutline, IoOptionsSharp } from "react-icons/io5";
 import { SiMaterialformkdocs } from "react-icons/si";
 import { VscSymbolClass } from "react-icons/vsc";
@@ -33,26 +33,43 @@ const AdminDrawer = ({ module, collapsed, setCollapsed }) => {
     getItem("Roles", "roles", <GrShieldSecurity />, null, () =>
       navigate("/admin/roles")
     ),
-    getItem("Options", "options", <IoOptionsSharp  />, [
-      getItem("Branch", "branch", <IoGitBranchOutline />, null, () =>
-        navigate("/admin/branch")
-      ),
-      getItem("Material Type", "materialType", <SiMaterialformkdocs />, null, () =>
-        navigate("/admin/materialType")
-      ),
-      getItem("Material Class", "materialClass", <VscSymbolClass />, null, () =>
-        navigate("/admin/materialClass")
-      ),
-      getItem("Grade", "grade", <MdOutlineGrade />, null, () =>
-        navigate("/admin/grade")
-      ),
-      getItem("Party Type", "partyType", <GoOrganization />, null, () =>
-        navigate("/admin/partyType")
-      ),
-      getItem("Shape", "shape", <LuShapes />, null, () =>
-        navigate("/admin/shape")
-      ),
-    ], null),
+    getItem("Company", "company", <GoOrganization />, null, () =>
+      navigate("/admin/company")
+    ),
+    getItem(
+      "Options",
+      "options",
+      <IoOptionsSharp />,
+      [
+        getItem("Branch", "branch", <IoGitBranchOutline />, null, () =>
+          navigate("/admin/branch")
+        ),
+        getItem(
+          "Material Type",
+          "materialType",
+          <SiMaterialformkdocs />,
+          null,
+          () => navigate("/admin/materialType")
+        ),
+        getItem(
+          "Material Class",
+          "materialClass",
+          <VscSymbolClass />,
+          null,
+          () => navigate("/admin/materialClass")
+        ),
+        getItem("Grade", "grade", <MdOutlineGrade />, null, () =>
+          navigate("/admin/grade")
+        ),
+        getItem("Party Type", "partyType", <GoOrganization />, null, () =>
+          navigate("/admin/partyType")
+        ),
+        getItem("Shape", "shape", <LuShapes />, null, () =>
+          navigate("/admin/shape")
+        ),
+      ],
+      null
+    ),
     getItem("Activity Logs", "activityLogs", <TbLogs />, null, () =>
       navigate("/admin/activityLogs")
     ),

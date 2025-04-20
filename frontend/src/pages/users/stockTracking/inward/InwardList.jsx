@@ -95,7 +95,7 @@ const InwardList = () => {
           <Select
             style={{ width: 150 }}
             placeholder="Branch"
-            disabled={isBranchOptionsLoading}
+            loading={isBranchOptionsLoading}
             options={branchOptions}
             allowClear
             onChange={(selectedBranch) => {
@@ -121,7 +121,7 @@ const InwardList = () => {
             style={{ width: 150 }}
             placeholder="Grade"
             options={gradeOptions}
-            disabled={isGradeOptionsLoading}
+            loading={isGradeOptionsLoading}
             onChange={(selectedGrade) => {
               setQuery((old) => {
                 let temp = JSON.parse(JSON.stringify(old));
@@ -170,7 +170,7 @@ const InwardList = () => {
             style={{ width: 150 }}
             placeholder="Purchase"
             options={materialTypeOptions}
-            disabled={isMaterialTypesOptionsLoading}
+            loading={isMaterialTypesOptionsLoading}
             allowClear
             onChange={(selectedMaterialType) => {
               setQuery((old) => {

@@ -45,3 +45,10 @@
   font-weight: 600;
   font-size: 0.85rem;
 }
+
+.form-image {
+  border-radius: 8px;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}

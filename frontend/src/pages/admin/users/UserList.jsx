@@ -4,7 +4,6 @@ import { PageHeader, PageSubHeader } from "../../../component/Headers";
 import CustomSearch from "../../../component/CustomSearch";
 import CustomTable from "../../../component/CustomTable";
 import getTableColumns from "./getTableColumns";
-import CustomButton from "../../../component/CustomButton";
 
 const UserList = () => {
   const [query, setQuery] = useState({
@@ -41,7 +40,6 @@ const UserList = () => {
             Create and edit users for application to grow!
           </PageSubHeader>
         </div>
-        <CustomButton size="large">Create User</CustomButton>
       </div>
       <CustomSearch
         query={query}
