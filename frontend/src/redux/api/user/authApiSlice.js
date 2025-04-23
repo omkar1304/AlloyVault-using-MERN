@@ -14,6 +14,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         },
         body: { payload: encryptData(payload) },
       }),
+      invalidatesTags: ["getAuthenticatedUser"],
     }),
     login: builder.mutation({
       query: (payload) => ({
@@ -25,6 +26,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         },
         body: { payload: encryptData(payload) },
       }),
+      invalidatesTags: ["getAuthenticatedUser"],
     }),
     logout: builder.mutation({
       query: () => ({
@@ -74,6 +76,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: `${USER_URL}/getAuthenticatedUser`,
         credentials: "include",
       }),
+      providesTags: ["getAuthenticatedUser"],
     }),
   }),
 });

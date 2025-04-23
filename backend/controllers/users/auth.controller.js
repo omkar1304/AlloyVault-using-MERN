@@ -132,7 +132,7 @@ export const sendOTP = async (req, res) => {
     const { subject, intro } = sendOTPTemplate(otp);
     await sendEmail({ to: user.email, subject, intro: intro });
 
-    res.status(200).json({ message: "OTP sent to your email"});
+    res.status(200).json({ message: "OTP sent to your email" });
   } catch (error) {
     console.log("Error in send otp controller:", error.message);
     res.status(500).json({ message: "Internal Server Error" });

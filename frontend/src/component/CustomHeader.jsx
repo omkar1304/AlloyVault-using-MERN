@@ -7,11 +7,13 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import getInitials from "../helpers/getInitials";
 import { useLogoutMutation } from "../redux/api/user/authApiSlice";
+import Cookies from "universal-cookie";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import LOGO from "../assets/images/logo/company.svg";
 
 const { Header } = Layout;
+const cookies = new Cookies();
 
 const CustomHeader = () => {
   const navigate = useNavigate();
@@ -23,6 +25,7 @@ const CustomHeader = () => {
       await logout();
       toast.success("You have been logged out successfully.");
       localStorage.clear();
+      cookies.remove("jwt", { path: "/" });
       navigate("/login");
     } catch (error) {
       console.error(error);

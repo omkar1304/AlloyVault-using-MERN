@@ -4,6 +4,7 @@ import { BASE_URL } from "../constant";
 const apiSlice = createApi({
   reducerPath: "api",
   tagTypes: [
+    "getAuthenticatedUser",
     "getRoles",
     "getOptions",
     "getBrokersAsOption",
