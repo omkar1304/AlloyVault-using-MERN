@@ -7,8 +7,17 @@ import StockSummary from "../stockSummary/index";
 import JobWork from "../jobWork/index";
 import ProcessingUnit from "../processingUnit/index";
 import History from "../history/index";
+import Dashboard from "../dashboard";
 
 export const ModuleComponents = {
+
+  //* Dashbord
+  dashboard: {
+    component: Dashboard,
+    pageTitle: "Dashboard",
+    pageKey: "dashboard",
+    index: 0,
+  },
 
   //* Stock Tracking
   inward: {
@@ -38,7 +47,7 @@ export const ModuleComponents = {
     component: CompanyDetails,
     pageTitle: "Company Details",
     pageKey: "companyDetails",
-    index: 2,
+    index: 3,
   },
 
   //* Challan Generation
@@ -46,7 +55,7 @@ export const ModuleComponents = {
     component: ChallanGeneration,
     pageTitle: "Challan Generation",
     pageKey: "challanGeneration",
-    index: 3,
+    index: 4,
   },
 
   //* Stock Summary
@@ -54,7 +63,7 @@ export const ModuleComponents = {
     component: StockSummary,
     pageTitle: "Stock Summary",
     pageKey: "stockSummary",
-    index: 4
+    index: 5
   },
 
   //* Job Work
@@ -62,7 +71,7 @@ export const ModuleComponents = {
     component: JobWork,
     pageTitle: "Job Work",
     pageKey: "jobWork",
-    index: 5
+    index: 6
   },
 
   //* Processing Unit
@@ -70,7 +79,7 @@ export const ModuleComponents = {
     component: ProcessingUnit,
     pageTitle: "Processing Unit",
     pageKey: "processingUnit",
-    index: 6
+    index: 7
   },
 
   //* History
@@ -78,6 +87,6 @@ export const ModuleComponents = {
     component: History,
     pageTitle: "History",
     pageKey: "history",
-    index: 7
+    index: 8
   },
 };

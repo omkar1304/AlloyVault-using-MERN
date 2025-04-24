@@ -1,4 +1,4 @@
-import { RxAvatar } from "react-icons/rx";
+import { RxAvatar, RxDashboard } from "react-icons/rx";
 import { FiBox } from "react-icons/fi";
 import { IoIosArrowRoundDown } from "react-icons/io";
 import { IoIosArrowRoundUp } from "react-icons/io";
@@ -12,6 +12,7 @@ import { GrHistory } from "react-icons/gr";
 
 export const MenuComponents = {
   adminSettings: <RxAvatar />,
+  dashboard: <RxDashboard />,
   stockTracking: <FiBox />,
   inward: <IoIosArrowRoundDown />,
   outward: <IoIosArrowRoundUp />,

@@ -6,10 +6,16 @@ const perms = [
     order: 1,
   },
   {
+    name: "Dashboard",
+    key: "dashboard",
+    access: true,
+    order: 2,
+  },
+  {
     name: "Stock Tracking",
     key: "stockTracking",
     access: true,
-    order: 2,
+    order: 3,
     children: [
       {
         name: "Inward",
@@ -35,37 +41,37 @@ const perms = [
     name: "Company Details",
     key: "companyDetails",
     access: true,
-    order: 3,
+    order: 4,
   },
   {
     name: "Challan Generation",
     key: "challanGeneration",
     access: true,
-    order: 4,
+    order: 5,
   },
   {
     name: "Stock Summary",
     key: "stockSummary",
     access: true,
-    order: 5,
+    order: 6,
   },
   {
     name: "Job Work",
     key: "jobWork",
     access: true,
-    order: 6,
+    order: 7,
   },
   {
     name: "Processing Unit",
     key: "processingUnit",
     access: true,
-    order: 7,
+    order: 8,
   },
   {
     name: "History",
     key: "history",
     access: true,
-    order: 8,
+    order: 9,
   },
 ];
 
