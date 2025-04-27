@@ -8,6 +8,10 @@
   height: 100vh;
 }
 
+.lg-mt{
+  margin-top: 0.5rem;
+}
+
 .flex-row-center {
   display: flex;
   justify-content: center;

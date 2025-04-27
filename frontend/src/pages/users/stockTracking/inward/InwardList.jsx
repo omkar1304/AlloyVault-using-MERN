@@ -23,6 +23,7 @@ const InwardList = () => {
   const [query, setQuery] = useState({
     page: 1,
     size: 25,
+    type: "Inward"
   });
   const { data, isLoading, refetch } = useGetStockEntriesQuery({ ...query });
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
@@ -32,9 +33,9 @@ const InwardList = () => {
   const { data: shapeOptions, isLoading: isShapeOptionsLoading } =
     useGetAsOptionQuery({ type: 6 });
   const {
-    data: materialTypeOptions,
-    isLoading: isMaterialTypesOptionsLoading,
-  } = useGetAsOptionQuery({ type: 2 });
+      data: inwardTypeOptions,
+      isLoading: isInwardTypeOptionsLoading,
+    } = useGetAsOptionQuery({ type: 2 });
   const [deleteStockEntry, { isLoading: isStockEntryDeleting }] =
     useDeleteStockEntryMutation();
 
@@ -170,22 +171,22 @@ const InwardList = () => {
           />
           <Select
             style={{ width: 150 }}
-            placeholder="Purchase"
-            options={materialTypeOptions}
-            loading={isMaterialTypesOptionsLoading}
+            placeholder="Inward Type"
+            options={inwardTypeOptions}
+            loading={isInwardTypeOptionsLoading}
             allowClear
-            onChange={(selectedMaterialType) => {
+            onChange={(selectedInwardType) => {
               setQuery((old) => {
                 let temp = JSON.parse(JSON.stringify(old));
                 if (
-                  (selectedMaterialType && !temp.selectedMaterialType) ||
-                  (selectedMaterialType &&
-                    temp.selectedMaterialType &&
-                    selectedMaterialType !== temp.selectedMaterialType)
+                  (selectedInwardType && !temp.selectedInwardType) ||
+                  (selectedInwardType &&
+                    temp.selectedInwardType &&
+                    selectedInwardType !== temp.selectedInwardType)
                 ) {
-                  temp["selectedMaterialType"] = selectedMaterialType;
-                } else if (!selectedMaterialType && temp.selectedMaterialType) {
-                  delete temp.selectedMaterialType;
+                  temp["selectedInwardType"] = selectedInwardType;
+                } else if (!selectedInwardType && temp.selectedInwardType) {
+                  delete temp.selectedInwardType;
                 }
                 return temp;
               });

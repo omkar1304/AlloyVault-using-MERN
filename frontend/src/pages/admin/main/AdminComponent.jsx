@@ -20,6 +20,7 @@ import Shape from "../options/shape";
 import Company from "../company";
 import InwardType from "../options/inwardType";
 import MaterialType from "../options/materialType";
+import OutwardType from "../options/outwardType";
 
 const { Content } = Layout;
 
@@ -31,6 +32,7 @@ const adminModule = {
   emailLogs: <EmailLogs />,
   branch: <Branch />,
   inwardType: <InwardType />,
+  outwardType: <OutwardType />,
   materialType: <MaterialType />,
   grade: <Grade />,
   partyType: <PartyType />,

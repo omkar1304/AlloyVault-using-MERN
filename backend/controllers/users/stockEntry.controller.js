@@ -11,11 +11,13 @@ export const getStockEntries = async (req, res) => {
     const {
       page = 1,
       size = 25,
+      type = "Inward",
       keyword = undefined,
       selectedBranch = undefined,
       selectedGrade = undefined,
       selectedShape = undefined,
-      selectedMaterialType = undefined,
+      selectedInwardType = undefined,
+      selectedOutwardType = undefined,
       dateRange = undefined,
     } = decryptUrlPayload(payload);
 
@@ -63,13 +65,24 @@ export const getStockEntries = async (req, res) => {
         shape: new mongoose.Types.ObjectId(selectedShape),
       });
     }
-    if (selectedMaterialType) {
+    if (selectedInwardType) {
       matchQueryStage.push({
-        inwardType: new mongoose.Types.ObjectId(selectedMaterialType),
+        inwardType: new mongoose.Types.ObjectId(selectedInwardType),
+      });
+    }
+
+    if (selectedOutwardType) {
+      matchQueryStage.push({
+        outwardType: new mongoose.Types.ObjectId(selectedOutwardType),
       });
     }
 
     const result = await StockEntry.aggregate([
+      {
+        $match: {
+          type
+        }
+      },
       // Date range filter
       ...(dateRange != undefined
         ? [

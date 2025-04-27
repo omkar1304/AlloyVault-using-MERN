@@ -5,7 +5,6 @@ import {
   Form,
   Input,
   InputNumber,
-  Radio,
   Row,
   Select,
   Steps,
@@ -17,17 +16,14 @@ import { GoOrganization } from "react-icons/go";
 import { TbListDetails } from "react-icons/tb";
 import { BsBoxSeam } from "react-icons/bs";
 import {
-  useGetPartyDetailsQuery,
   useGetPartyRecordsAsOptionQuery,
 } from "../../../../redux/api/user/partyRecordApiSlice";
 import filterOption from "../../../../helpers/filterOption";
 import { useGetAsOptionQuery } from "../../../../redux/api/user/optionsApiSlice";
-import { useGetBrokersAsOptionQuery } from "../../../../redux/api/user/brokerApiSlice";
 import CustomButton from "../../../../component/CustomButton";
 import CustomTable from "../../../../component/CustomTable";
 import getItemColumns from "./getItemColumns";
 import toast from "react-hot-toast";
-import getFormattedDate from "../../../../helpers/getFormattedDate";
 import {
   useAddStockEntryMutation,
   useGetStockEntryDetailsQuery,
@@ -41,7 +37,6 @@ const InwardForm = () => {
   const [searchParams] = useSearchParams();
   const recordId = searchParams.get("recordId");
   const [step, setStep] = useState(0);
-  const [shipmentData, setShipmentData] = useState({});
   const [items, setItems] = useState([]);
   const [singleItem, setSingleItem] = useState({});
   const [totalWeight, setTotalWeight] = useState(0);
@@ -642,6 +637,7 @@ const InwardForm = () => {
           <CustomTable
             data={items}
             columns={getItemColumns({
+              recordId,
               handleRemoveItem,
               openItemModal,
               materialTypeOptions,
@@ -658,7 +654,7 @@ const InwardForm = () => {
       ) : null}
 
       {step === 2 && (
-        <div className="flex-row-start">
+        <div className="flex-row-start lg-mt">
           <CustomButton
             disabled={isStockEntrtyAdding || isStockEntrtyUpdating}
             width={150}

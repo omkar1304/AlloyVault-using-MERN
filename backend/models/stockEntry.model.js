@@ -5,8 +5,10 @@ const StockEntrySchema = mongoose.Schema(
     type: { type: String }, // Types : 1. Inward | 2. Outward
     entryDate: { type: Date, required: true },
     invoiceNo: { type: String },
+    challanNo: { type: String },
     branch: { type: mongoose.Types.ObjectId, ref: "Option" },
     inwardType: { type: mongoose.Types.ObjectId, ref: "Option" },
+    outwardType: { type: mongoose.Types.ObjectId, ref: "Option" },
     company: { type: mongoose.Types.ObjectId, ref: "PartyRecord" },
     broker: { type: mongoose.Types.ObjectId, ref: "Broker" },
     transportName: { type: String },
