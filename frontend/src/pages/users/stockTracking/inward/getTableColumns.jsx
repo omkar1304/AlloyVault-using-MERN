@@ -11,61 +11,52 @@ const getTableColumns = ({ handleDeleteStock }) => {
     {
       title: "Date",
       dataIndex: "entryDate",
-      width: 100,
+      width: 60,
       render: (x) => x && getFormattedDate(x),
     },
     {
       title: "Branch",
       dataIndex: "branch",
-      width: 100,
+      width: 70,
+      render: (x) => x,
+    },
+    {
+      title: "Inward Type",
+      dataIndex: "materialType",
+      width: 70,
       render: (x) => x,
     },
     {
       title: "Customer",
       dataIndex: "customer",
       width: 100,
+      ellipsis: {
+        showTitle: false,
+      },
       render: (x) => x,
     },
     {
       title: "Material Type",
-      dataIndex: "materialType",
-      width: 100,
+      dataIndex: "materialClass",
+      width: 70,
       render: (x) => x,
     },
     {
       title: "Item Detail",
-      width: 200,
+      width: 120,
       render: (row) =>
-        `${row?.grade || ""} ${row?.size || ""} ${row?.shape || ""}`,
+        `${row?.grade || ""} ${row?.size || 0}mm ${row?.shape || ""}`,
     },
     {
       title: "Weight",
       dataIndex: "weight",
-      width: 100,
-      render: (x) => x,
-    },
-    {
-      title: "Rack no.",
-      dataIndex: "rackNo",
-      width: 100,
-      render: (x) => x,
-    },
-    {
-      title: "Class",
-      dataIndex: "materialClass",
-      width: 100,
-      render: (x) => x,
-    },
-    {
-      title: "Transport",
-      dataIndex: "transportName",
-      width: 100,
-      render: (x) => x,
+      width: 60,
+      render: (x) => <span>{`${parseFloat(x).toFixed(2)} kg`}</span>,
     },
     {
       title: "Done By",
       dataIndex: "createdBy",
-      width: 100,
+      width: 50,
       render: (x) => (
         <Tooltip title={x}>
           <Avatar

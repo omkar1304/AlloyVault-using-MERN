@@ -1,7 +1,7 @@
 import { Popconfirm, Tooltip } from "antd";
-import { DeleteIcon } from "../../../../component/ActionComponent";
+import { DeleteIcon, EditIcon } from "../../../../component/ActionComponent";
 
-const getItemColumns = ({ handleRemoveItem }) => {
+const getItemColumns = ({ handleRemoveItem, openItemModal }) => {
   return [
     {
       title: "Class",
@@ -50,6 +50,9 @@ const getItemColumns = ({ handleRemoveItem }) => {
       width: 100,
       render: (row) => (
         <div className="flex-row-start">
+          <Tooltip title="Edit">
+            <EditIcon onClick={() => openItemModal(row)} />
+          </Tooltip>
           <Popconfirm
             title="Delete the Item"
             description="Are you sure to delete?"

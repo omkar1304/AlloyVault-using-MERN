@@ -34,6 +34,7 @@ import {
   useUpdateStockEntryMutation,
 } from "../../../../redux/api/user/stockEntryApiSlice";
 import dayjs from "dayjs";
+import ItemModal from "./ItemModal";
 
 const InwardForm = () => {
   const navigate = useNavigate();
@@ -42,15 +43,14 @@ const InwardForm = () => {
   const [step, setStep] = useState(0);
   const [shipmentData, setShipmentData] = useState({});
   const [items, setItems] = useState([]);
+  const [singleItem, setSingleItem] = useState({});
+  const [totalWeight, setTotalWeight] = useState(0);
+  const [isItemModalOpen, setIsItemModalOpen] = useState(false);
   const [shipmentForm] = Form.useForm();
   const [itemForm] = Form.useForm();
 
   const { data: stockEntryDetails, refetch: fetchStockEntryDetails } =
     useGetStockEntryDetailsQuery({ recordId }, { skip: !recordId });
-  const { data: partyDetails } = useGetPartyDetailsQuery(
-    { searchBy: "name", partyName: shipmentData?.company },
-    { skip: !shipmentData?.company } // Skip till we reach last page
-  );
   const { data: partyOptions, isLoading: isPartyOptionsLoading } =
     useGetPartyRecordsAsOptionQuery();
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
@@ -91,7 +91,6 @@ const InwardForm = () => {
   }, [stockEntryDetails]);
 
   const handleShipmentSubmit = (values) => {
-    setShipmentData(values);
     setStep((prev) => prev + 1);
   };
 
@@ -108,6 +107,7 @@ const InwardForm = () => {
     setItems((prevItems) => {
       return [{ ...item, uniqueKey: Date.now() }, ...prevItems];
     });
+    setTotalWeight((prev) => prev + item?.weight);
 
     // If update, then move to next stage
     if (recordId) {
@@ -121,6 +121,8 @@ const InwardForm = () => {
 
   const handleRemoveItem = (uniqueKey) => {
     const filteredItems = items?.filter((item) => item.uniqueKey !== uniqueKey);
+    const deletedItems = items?.find((item) => item.uniqueKey === uniqueKey);
+    setTotalWeight((prev) => prev - deletedItems?.weight);
     setItems(filteredItems);
   };
 
@@ -130,7 +132,11 @@ const InwardForm = () => {
 
   const handleAddStock = async () => {
     try {
-      await addStockEntry({ shipmentData, items, type: "Inward" }).unwrap();
+      await addStockEntry({
+        shipmentData: shipmentForm.getFieldsValue(),
+        items,
+        type: "Inward",
+      }).unwrap();
       toast.success("Record added successfully!");
     } catch (error) {
       console.error(error);
@@ -144,7 +150,7 @@ const InwardForm = () => {
     try {
       await updateStockEntry({
         recordId,
-        ...shipmentData,
+        ...shipmentForm.getFieldsValue(),
         ...items[0],
       }).unwrap();
       toast.success("Record updated successfully!");
@@ -156,8 +162,28 @@ const InwardForm = () => {
     navigate(`/home/inward`);
   };
 
+  const openItemModal = (item) => {
+    setSingleItem(item);
+    setIsItemModalOpen(true);
+  };
+
+  const closeItemModal = () => {
+    setSingleItem({});
+    setIsItemModalOpen(false);
+  };
+
   return (
     <section className="flex-col-start">
+      <ItemModal
+        open={isItemModalOpen}
+        onCancel={closeItemModal}
+        initialValue={singleItem}
+        setItems={setItems}
+        setTotalWeight={setTotalWeight}
+        materialClassOptions={materialClassOptions}
+        gradeOptions={gradeOptions}
+        shapeOptions={shapeOptions}
+      />
       <div>
         <Breadcrumb
           separator=">"
@@ -194,7 +220,7 @@ const InwardForm = () => {
                   // disabled={isOTPsending}
                 >
                   <Row gutter={[16]}>
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                       <Form.Item
                         label="Date"
                         name="entryDate"
@@ -210,13 +236,7 @@ const InwardForm = () => {
                       </Form.Item>
                     </Col>
 
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item label="Invoice No." name="invoiceNo">
-                        <Input size="large" placeholder="PKHT/01" />
-                      </Form.Item>
-                    </Col>
-
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                       <Form.Item
                         label="Branch"
                         name="branch"
@@ -238,14 +258,14 @@ const InwardForm = () => {
                       </Form.Item>
                     </Col>
 
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                       <Form.Item
-                        label="Type"
+                        label="Inward Type"
                         name="materialType"
                         rules={[
                           {
                             required: true,
-                            message: "Please select a material type",
+                            message: "Please select a type",
                           },
                         ]}
                       >
@@ -263,7 +283,7 @@ const InwardForm = () => {
                       </Form.Item>
                     </Col>
 
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                       <Form.Item
                         label="Company"
                         name="company"
@@ -289,68 +309,19 @@ const InwardForm = () => {
                     </Col>
 
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item
-                        label="Broker"
-                        name="broker"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select a broker",
-                          },
-                        ]}
-                      >
-                        <Select
-                          size="large"
-                          style={{ width: "100%" }}
-                          showSearch
-                          placeholder="Select a broker"
-                          optionFilterProp="children"
-                          filterOption={filterOption}
-                          options={borkerOptions}
-                          loading={isBrokerOptionsLoading}
-                          allowClear
-                        />
+                      <Form.Item label="Transport Name" name="transportName">
+                        <Input size="large" placeholder="" />
                       </Form.Item>
                     </Col>
 
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item
-                        label="Transport Name"
-                        name="transportName"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please enter transport name",
-                          },
-                        ]}
-                      >
-                        <Input
-                          size="large"
-                          value={shipmentData?.transportName}
-                          placeholder=""
-                        />
+                      <Form.Item label="Vehicle No." name="vehicleNo">
+                        <Input size="large" placeholder="" />
                       </Form.Item>
                     </Col>
-
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item
-                        label="Vehicle No."
-                        name="vehicleNo"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please enter vehicle no",
-                          },
-                        ]}
-                      >
-                        <Input
-                          size="large"
-                          value={shipmentData?.vehicleNo}
-                          placeholder=""
-                        />
-                      </Form.Item>
-                    </Col>
-
+                  </Row>
+                  <br />
+                  <Row>
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                       <Form.Item>
                         <CustomButton
@@ -369,7 +340,7 @@ const InwardForm = () => {
 
             {step === 1 && (
               <>
-                <h3 className="form-heading">Shipment Details</h3>
+                <h3 className="form-heading">Item Details</h3>
                 <Form
                   className="full-width form-layout"
                   layout="vertical"
@@ -404,6 +375,12 @@ const InwardForm = () => {
                     </Col>
 
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                      <Form.Item label="HSN Code" name="HSNCode">
+                        <Input size="large" placeholder="" />
+                      </Form.Item>
+                    </Col>
+
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                       <Form.Item
                         label="Grade"
                         name="grade"
@@ -428,7 +405,7 @@ const InwardForm = () => {
                       </Form.Item>
                     </Col>
 
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                       <Form.Item
                         label="Size"
                         name="size"
@@ -449,7 +426,7 @@ const InwardForm = () => {
                       </Form.Item>
                     </Col>
 
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                       <Form.Item
                         label="Shape"
                         name="shape"
@@ -474,7 +451,7 @@ const InwardForm = () => {
                       </Form.Item>
                     </Col>
 
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                       <Form.Item
                         label="Weight"
                         name="weight"
@@ -495,36 +472,20 @@ const InwardForm = () => {
                       </Form.Item>
                     </Col>
 
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item
-                        label="Rack no."
-                        name="rackNo"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please enter a rack no",
-                          },
-                        ]}
-                      >
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
+                      <Form.Item label="Rack no." name="rackNo">
                         <Input size="large" placeholder="" />
                       </Form.Item>
                     </Col>
 
                     <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                      <Form.Item
-                        label="Description"
-                        name="description"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please enter a description",
-                          },
-                        ]}
-                      >
+                      <Form.Item label="Description" name="description">
                         <Input size="large" placeholder="" />
                       </Form.Item>
                     </Col>
-
+                  </Row>
+                  <br />
+                  <Row>
                     <div className="flex-row-start">
                       {recordId ? (
                         <CustomButton
@@ -561,68 +522,115 @@ const InwardForm = () => {
 
             {step === 2 && (
               <>
-                <h3 className="form-heading">Details</h3>
-                <div className="details-container flex-row-space-between">
-                  <div className="flex-col-start">
-                    <div className="flex-col-start">
-                      <span className="details-heading">Branch</span>
-                      <span className="details-value">
-                        {shipmentData?.branch || ""}
-                      </span>
-                    </div>
-                    <br />
-                    <div className="flex-col-start">
-                      <span className="details-heading">Billing Address</span>
-                      <span className="details-value">
-                        {partyDetails?.name || ""}
-                      </span>
-                      {partyDetails?.address1 && (
-                        <span className="details-heading">
-                          {partyDetails?.address1}
-                        </span>
-                      )}
-                      {partyDetails?.address2 && (
-                        <span className="details-heading">
-                          {partyDetails?.address2}
-                        </span>
-                      )}
-                      {partyDetails?.mobile && partyDetails?.email && (
-                        <span className="details-heading">
-                          {partyDetails?.mobile} | {partyDetails?.email}
-                        </span>
-                      )}
-                      <span className="details-value">
-                        GSTIN : {partyDetails?.gstNo || ""}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex-col-start">
-                    <div className="flex-col-start">
-                      <span className="details-heading">Bill Date</span>
-                      <span className="details-value">
-                        {getFormattedDate(shipmentData?.entryDate)}
-                      </span>
-                    </div>
-                    <div className="flex-col-start">
-                      <span className="details-heading">Entry Type</span>
-                      <span className="details-value">
-                        {shipmentData?.materialType || ""}
-                      </span>
-                    </div>
-                    <div className="flex-col-start">
-                      <span className="details-heading">Broker</span>
-                      <span className="details-value">
-                        {shipmentData?.broker || ""}
-                      </span>
-                    </div>
-                    <div className="flex-col-start">
-                      <span className="details-heading">Transport Name</span>
-                      <span className="details-value">
-                        {shipmentData?.transportName || ""}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <h3 className="form-heading">Inward Overview</h3>
+                <Form
+                  className="full-width form-layout"
+                  layout="vertical"
+                  form={shipmentForm}
+                  onFinish={handleShipmentSubmit}
+                >
+                  <Row gutter={[16]}>
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
+                      <Form.Item
+                        label="Date"
+                        name="entryDate"
+                        rules={[
+                          { required: true, message: "Please select a date" },
+                        ]}
+                      >
+                        <DatePicker
+                          format="DD/MM/YYYY"
+                          style={{ width: "100%" }}
+                          size="large"
+                        />
+                      </Form.Item>
+                    </Col>
+
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
+                      <Form.Item
+                        label="Branch"
+                        name="branch"
+                        rules={[
+                          { required: true, message: "Please select a branch" },
+                        ]}
+                      >
+                        <Select
+                          size="large"
+                          style={{ width: "100%" }}
+                          showSearch
+                          placeholder="Select a branch"
+                          optionFilterProp="children"
+                          filterOption={filterOption}
+                          options={branchOptions}
+                          loading={isBranchOptionsLoading}
+                          allowClear
+                        />
+                      </Form.Item>
+                    </Col>
+
+                    <Col xs={24} sm={24} md={24} lg={8} xl={8}>
+                      <Form.Item
+                        label="Inward Type"
+                        name="materialType"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select a type",
+                          },
+                        ]}
+                      >
+                        <Select
+                          size="large"
+                          style={{ width: "100%" }}
+                          showSearch
+                          placeholder="Select a type"
+                          optionFilterProp="children"
+                          filterOption={filterOption}
+                          options={materialTypeOptions}
+                          loading={isMaterialTypesOptionsLoading}
+                          allowClear
+                        />
+                      </Form.Item>
+                    </Col>
+
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                      <Form.Item
+                        label="Company"
+                        name="company"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please select a company",
+                          },
+                        ]}
+                      >
+                        <Select
+                          size="large"
+                          style={{ width: "100%" }}
+                          showSearch
+                          placeholder="Select a company"
+                          optionFilterProp="children"
+                          filterOption={filterOption}
+                          options={partyOptions}
+                          loading={isPartyOptionsLoading}
+                          allowClear
+                        />
+                      </Form.Item>
+                    </Col>
+
+                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                      <Form.Item label="Transport Name" name="transportName">
+                        <Input size="large" placeholder="" />
+                      </Form.Item>
+                    </Col>
+
+                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                      <Form.Item label="Vehicle No." name="vehicleNo">
+                        <Input size="large" placeholder="" />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Form>
               </>
             )}
           </div>
@@ -637,11 +645,17 @@ const InwardForm = () => {
       </div>
 
       {items && items.length ? (
-        <CustomTable
-          data={items}
-          columns={getItemColumns({ handleRemoveItem })}
-          isPaginationAllowed={false}
-        />
+        <>
+          <CustomTable
+            data={items}
+            columns={getItemColumns({ handleRemoveItem, openItemModal })}
+            isPaginationAllowed={false}
+          />
+          <div className=" full-width flex-row-space-between total-weight-container">
+            <span>Total Weight</span>
+            <span>{`${totalWeight} kg`}</span>
+          </div>
+        </>
       ) : null}
 
       {step === 2 && (
@@ -654,18 +668,6 @@ const InwardForm = () => {
           >
             {recordId ? "Update" : "Save"}
           </CustomButton>
-          {/* Only show while adding */}
-          {!recordId && (
-            <CustomButton
-              isLoading={isStockEntrtyAdding}
-              width={150}
-              size="large"
-              type="Secondary"
-              onClick={handleResetStep}
-            >
-              Edit
-            </CustomButton>
-          )}
         </div>
       )}
     </section>

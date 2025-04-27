@@ -55,7 +55,17 @@
   font-weight: bold;
   text-align: left;
   padding: 12px;
+  height: 40px !important; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+.ant-table-tbody > tr > td {
+  font-size: 13px !important;
+  height: 4.5rem !important;
+}
+
 .ant-table-tbody > tr {
   transition: all 0.3s ease;
 }

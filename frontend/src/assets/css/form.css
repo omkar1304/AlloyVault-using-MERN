@@ -52,3 +52,11 @@
   height: 100px;
   object-fit: contain;
 }
+
+.total-weight-container {
+  background-color: #F3F4F6;
+  padding: 1rem 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+}
