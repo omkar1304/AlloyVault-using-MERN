@@ -16,7 +16,7 @@ const MaterialType = () => {
   const [query, setQuery] = useState({
     page: 1,
     size: 25,
-    type: 2,
+    type: 3,
   });
   const [isAddOptionModalOpen, setIsAddOptionModalOpen] = useState(false);
 
@@ -67,12 +67,14 @@ const MaterialType = () => {
       <AddOptionModal
         open={isAddOptionModalOpen}
         onClose={closeAddOptionModal}
-        type={2}
+        type={3}
       />
       <div className="flex-row-space-between">
         <div>
           <PageHeader>Material Type Options</PageHeader>
-          <PageSubHeader>Add and edit matrial type options here!</PageSubHeader>
+          <PageSubHeader>
+            Add and edit matrial type options here!
+          </PageSubHeader>
         </div>
         <CustomButton size="large" onClick={openAddOptionModal}>
           Create Option

@@ -14,12 +14,12 @@ import CustomHeader from "../../../component/CustomHeader";
 import CustomResult from "../../../component/CustomResult";
 import { useGetAuthenticatedUserQuery } from "../../../redux/api/user/authApiSlice";
 import Branch from "../options/branch";
-import MaterialType from "../options/materialType";
-import MaterialClass from "../options/materialClass";
 import Grade from "../options/grade";
 import PartyType from "../options/partyType";
 import Shape from "../options/shape";
 import Company from "../company";
+import InwardType from "../options/inwardType";
+import MaterialType from "../options/materialType";
 
 const { Content } = Layout;
 
@@ -30,8 +30,8 @@ const adminModule = {
   activityLogs: <ActivityLogs />,
   emailLogs: <EmailLogs />,
   branch: <Branch />,
+  inwardType: <InwardType />,
   materialType: <MaterialType />,
-  materialClass: <MaterialClass />,
   grade: <Grade />,
   partyType: <PartyType />,
   shape: <Shape />,

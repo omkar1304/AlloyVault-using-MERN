@@ -19,6 +19,8 @@ export const getStockEntries = async (req, res) => {
       dateRange = undefined,
     } = decryptUrlPayload(payload);
 
+    console.log("decryptUrlPayload", decryptUrlPayload(payload));
+
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;
 
@@ -29,9 +31,14 @@ export const getStockEntries = async (req, res) => {
       const words = keyword.split(" ");
       const searchConditions = words.map((word) => ({
         $or: [
-          { grade: { $regex: word, $options: "i" } },
-          { company: { $regex: word, $options: "i" } },
-          { rackNo: { $regex: word, $options: "i" } },
+          { "companyInfo.name": { $regex: word, $options: "i" } },
+          { "gradeInfo.name": { $regex: word, $options: "i" } },
+          { "shapeInfo.name": { $regex: word, $options: "i" } },
+          { size: { $regex: word, $options: "i" } },
+          // If possible then convert into number and add condition
+          ...(!isNaN(words) && str.trim() !== ""
+            ? [{ size: { $regex: Number(word), $options: "i" } }]
+            : []),
         ],
       }));
 
@@ -43,17 +50,23 @@ export const getStockEntries = async (req, res) => {
     // Dropdown filters
     if (selectedBranch) {
       matchQueryStage.push({
-        branch: selectedBranch,
+        branch: new mongoose.Types.ObjectId(selectedBranch),
       });
     }
     if (selectedGrade) {
-      matchQueryStage.push({ grade: selectedGrade });
+      matchQueryStage.push({
+        grade: new mongoose.Types.ObjectId(selectedGrade),
+      });
     }
     if (selectedShape) {
-      matchQueryStage.push({ shape: selectedShape });
+      matchQueryStage.push({
+        shape: new mongoose.Types.ObjectId(selectedShape),
+      });
     }
     if (selectedMaterialType) {
-      matchQueryStage.push({ materialType: selectedMaterialType });
+      matchQueryStage.push({
+        inwardType: new mongoose.Types.ObjectId(selectedMaterialType),
+      });
     }
 
     const result = await StockEntry.aggregate([
@@ -80,6 +93,51 @@ export const getStockEntries = async (req, res) => {
             },
           ]
         : []),
+      {
+        $lookup: {
+          from: "partyrecords",
+          localField: "company",
+          foreignField: "_id",
+          as: "companyInfo",
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: "options",
+          localField: "grade",
+          foreignField: "_id",
+          as: "gradeInfo",
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: "options",
+          localField: "shape",
+          foreignField: "_id",
+          as: "shapeInfo",
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+              },
+            },
+          ],
+        },
+      },
       ...(matchQueryStage.length
         ? [{ $match: { $and: matchQueryStage } }]
         : []),
@@ -92,6 +150,51 @@ export const getStockEntries = async (req, res) => {
           paginatedResults: [
             { $skip: skip },
             { $limit: size },
+            {
+              $lookup: {
+                from: "options",
+                localField: "branch",
+                foreignField: "_id",
+                as: "branchInfo",
+                pipeline: [
+                  {
+                    $project: {
+                      name: 1,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: "options",
+                localField: "inwardType",
+                foreignField: "_id",
+                as: "inwardInfo",
+                pipeline: [
+                  {
+                    $project: {
+                      name: 1,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: "options",
+                localField: "materialType",
+                foreignField: "_id",
+                as: "materialTypeInfo",
+                pipeline: [
+                  {
+                    $project: {
+                      name: 1,
+                    },
+                  },
+                ],
+              },
+            },
             {
               $lookup: {
                 from: "users",
@@ -112,13 +215,25 @@ export const getStockEntries = async (req, res) => {
               $project: {
                 _id: 1,
                 entryDate: 1,
-                branch: 1,
-                customer: "$company",
-                materialType: 1,
-                materialClass: 1,
-                grade: 1,
+                branch: {
+                  $arrayElemAt: ["$branchInfo.name", 0],
+                },
+                inwardType: {
+                  $arrayElemAt: ["$inwardInfo.name", 0],
+                },
+                customer: {
+                  $arrayElemAt: ["$companyInfo.name", 0],
+                },
+                materialType: {
+                  $arrayElemAt: ["$materialTypeInfo.name", 0],
+                },
+                grade: {
+                  $arrayElemAt: ["$gradeInfo.name", 0],
+                },
                 size: 1,
-                shape: 1,
+                shape: {
+                  $arrayElemAt: ["$shapeInfo.name", 0],
+                },
                 weight: 1,
                 rackNo: 1,
                 transportName: 1,

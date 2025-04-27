@@ -1,19 +1,26 @@
 import { Popconfirm, Tooltip } from "antd";
 import { DeleteIcon, EditIcon } from "../../../../component/ActionComponent";
+import getLabelFromValue from "../../../../helpers/getLabelFromValue";
 
-const getItemColumns = ({ handleRemoveItem, openItemModal }) => {
+const getItemColumns = ({
+  handleRemoveItem,
+  openItemModal,
+  materialTypeOptions,
+  gradeOptions,
+  shapeOptions,
+}) => {
   return [
     {
-      title: "Class",
-      dataIndex: "materialClass",
+      title: "Material Type",
+      dataIndex: "materialType",
       width: 100,
-      render: (x) => x,
+      render: (x) => getLabelFromValue(x, materialTypeOptions),
     },
     {
       title: "Grade",
       dataIndex: "grade",
       width: 150,
-      render: (x) => x,
+      render: (x) => getLabelFromValue(x, gradeOptions),
     },
     {
       title: "Size",
@@ -25,7 +32,7 @@ const getItemColumns = ({ handleRemoveItem, openItemModal }) => {
       title: "Shape",
       dataIndex: "shape",
       width: 100,
-      render: (x) => x,
+      render: (x) => getLabelFromValue(x, shapeOptions),
     },
     {
       title: "Weight",

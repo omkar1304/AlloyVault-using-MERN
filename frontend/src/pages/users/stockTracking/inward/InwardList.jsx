@@ -13,7 +13,6 @@ import {
 import { useGetAsOptionQuery } from "../../../../redux/api/user/optionsApiSlice";
 import { DatePicker, Select } from "antd";
 import filterOption from "../../../../helpers/filterOption";
-import { shapeOptions } from "../../../../helpers/formOptions";
 import moment from "moment";
 import toast from "react-hot-toast";
 
@@ -27,13 +26,15 @@ const InwardList = () => {
   });
   const { data, isLoading, refetch } = useGetStockEntriesQuery({ ...query });
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
-    useGetAsOptionQuery({ type: 1, sameAsLabel: true });
+    useGetAsOptionQuery({ type: 1 });
   const { data: gradeOptions, isLoading: isGradeOptionsLoading } =
-    useGetAsOptionQuery({ type: 4, sameAsLabel: true });
+    useGetAsOptionQuery({ type: 4 });
+  const { data: shapeOptions, isLoading: isShapeOptionsLoading } =
+    useGetAsOptionQuery({ type: 6 });
   const {
     data: materialTypeOptions,
     isLoading: isMaterialTypesOptionsLoading,
-  } = useGetAsOptionQuery({ type: 2, sameAsLabel: true });
+  } = useGetAsOptionQuery({ type: 2 });
   const [deleteStockEntry, { isLoading: isStockEntryDeleting }] =
     useDeleteStockEntryMutation();
 
@@ -146,6 +147,7 @@ const InwardList = () => {
             style={{ width: 150 }}
             placeholder="Shape"
             options={shapeOptions}
+            loading={isShapeOptionsLoading}
             allowClear
             onChange={(selectedShape) => {
               setQuery((old) => {
@@ -220,7 +222,7 @@ const InwardList = () => {
         page={query?.page}
         size={query?.size}
         isLoading={isLoading}
-        columns={getTableColumns({handleDeleteStock})}
+        columns={getTableColumns({ handleDeleteStock })}
         onPageChange={onPageChange}
       />
     </div>

@@ -22,7 +22,7 @@ const getTableColumns = ({ handleDeleteStock }) => {
     },
     {
       title: "Inward Type",
-      dataIndex: "materialType",
+      dataIndex: "inwardType",
       width: 70,
       render: (x) => x,
     },
@@ -37,7 +37,7 @@ const getTableColumns = ({ handleDeleteStock }) => {
     },
     {
       title: "Material Type",
-      dataIndex: "materialClass",
+      dataIndex: "materialType",
       width: 70,
       render: (x) => x,
     },

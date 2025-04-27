@@ -4,11 +4,7 @@ import EnabledSwitchComponent from "../optionComponents/EnabledSwitchComponent";
 import getFormattedDate from "../../../../helpers/getFormattedDate";
 import EditFieldComponent from "../../../../component/EditFieldComponent";
 
-const getTableColumns = ({
-  updateOptionField,
-  isOptionFieldUpdating,
-  handleDeleteOption,
-}) => {
+const getTableColumns = ({ updateOptionField, isOptionFieldUpdating, handleDeleteOption }) => {
   return [
     {
       title: "Name",

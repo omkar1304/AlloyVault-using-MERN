@@ -45,18 +45,18 @@ const AdminDrawer = ({ module, collapsed, setCollapsed }) => {
           navigate("/admin/branch")
         ),
         getItem(
-          "Material Type",
-          "materialType",
+          "Inward Type",
+          "inwardType",
           <SiMaterialformkdocs />,
           null,
-          () => navigate("/admin/materialType")
+          () => navigate("/admin/inwardType")
         ),
         getItem(
-          "Material Class",
-          "materialClass",
+          "Material Type",
+          "materialType",
           <VscSymbolClass />,
           null,
-          () => navigate("/admin/materialClass")
+          () => navigate("/admin/materialType")
         ),
         getItem("Grade", "grade", <MdOutlineGrade />, null, () =>
           navigate("/admin/grade")

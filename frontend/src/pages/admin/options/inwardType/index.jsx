@@ -12,11 +12,11 @@ import {
   useUpdateOptionFieldMutation,
 } from "../../../../redux/api/admin/optionsApiSlice";
 
-const MaterialClass = () => {
+const InwardType = () => {
   const [query, setQuery] = useState({
     page: 1,
     size: 25,
-    type: 3,
+    type: 2,
   });
   const [isAddOptionModalOpen, setIsAddOptionModalOpen] = useState(false);
 
@@ -67,14 +67,12 @@ const MaterialClass = () => {
       <AddOptionModal
         open={isAddOptionModalOpen}
         onClose={closeAddOptionModal}
-        type={3}
+        type={2}
       />
       <div className="flex-row-space-between">
         <div>
-          <PageHeader>Material Class Options</PageHeader>
-          <PageSubHeader>
-            Add and edit matrial class options here!
-          </PageSubHeader>
+          <PageHeader>Inward Type Options</PageHeader>
+          <PageSubHeader>Add and edit inward type options here!</PageSubHeader>
         </div>
         <CustomButton size="large" onClick={openAddOptionModal}>
           Create Option
@@ -102,4 +100,4 @@ const MaterialClass = () => {
   );
 };
 
-export default MaterialClass;
+export default InwardType;

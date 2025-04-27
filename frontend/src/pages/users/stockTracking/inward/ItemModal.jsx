@@ -9,7 +9,7 @@ const ItemModal = ({
   initialValue,
   setItems,
   setTotalWeight,
-  materialClassOptions,
+  materialTypeOptions,
   gradeOptions,
   shapeOptions,
 }) => {
@@ -54,12 +54,12 @@ const ItemModal = ({
         <Row gutter={[16]}>
           <Col xs={24} sm={24} md={24} lg={12} xl={12}>
             <Form.Item
-              name="materialClass"
-              label="Material Class"
+              name="materialType"
+              label="Material Type"
               rules={[
                 {
                   required: true,
-                  message: "Please select a material class",
+                  message: "Please select a material type",
                 },
               ]}
             >
@@ -67,10 +67,10 @@ const ItemModal = ({
                 size="large"
                 style={{ width: "100%" }}
                 showSearch
-                placeholder="Select a material class"
+                placeholder="Select a material type"
                 optionFilterProp="children"
                 filterOption={filterOption}
-                options={materialClassOptions}
+                options={materialTypeOptions}
                 allowClear
               />
             </Form.Item>

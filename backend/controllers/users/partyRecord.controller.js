@@ -178,7 +178,7 @@ export const getPartyRecordsAsOption = async (req, res) => {
         $project: {
           _id: 0,
           label: "$name",
-          value: "$name",
+          value: "$_id",
         },
       },
     ]);

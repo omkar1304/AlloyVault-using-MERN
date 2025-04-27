@@ -54,21 +54,19 @@ const InwardForm = () => {
   const { data: partyOptions, isLoading: isPartyOptionsLoading } =
     useGetPartyRecordsAsOptionQuery();
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
-    useGetAsOptionQuery({ type: 1, sameAsLabel: true });
+    useGetAsOptionQuery({ type: 1 });
+  const {
+    data: inwardTypeOptions,
+    isLoading: isInwardTypeOptionsLoading,
+  } = useGetAsOptionQuery({ type: 2 });
   const {
     data: materialTypeOptions,
-    isLoading: isMaterialTypesOptionsLoading,
-  } = useGetAsOptionQuery({ type: 2, sameAsLabel: true });
-  const {
-    data: materialClassOptions,
-    isLoading: isMaterialClassOptionsLoading,
-  } = useGetAsOptionQuery({ type: 3, sameAsLabel: true });
+    isLoading: isMaterialTypeOptionsLoading,
+  } = useGetAsOptionQuery({ type: 3 });
   const { data: gradeOptions, isLoading: isGradeOptionsLoading } =
-    useGetAsOptionQuery({ type: 4, sameAsLabel: true });
+    useGetAsOptionQuery({ type: 4 });
   const { data: shapeOptions, isLoading: isShapeOptionsLoading } =
-    useGetAsOptionQuery({ type: 6, sameAsLabel: true });
-  const { data: borkerOptions, isLoading: isBrokerOptionsLoading } =
-    useGetBrokersAsOptionQuery({ sameAsLabel: true });
+    useGetAsOptionQuery({ type: 6 });
   const [addStockEntry, { isLoading: isStockEntrtyAdding }] =
     useAddStockEntryMutation();
   const [updateStockEntry, { isLoading: isStockEntrtyUpdating }] =
@@ -126,10 +124,6 @@ const InwardForm = () => {
     setItems(filteredItems);
   };
 
-  const handleResetStep = () => {
-    setStep(0);
-  };
-
   const handleAddStock = async () => {
     try {
       await addStockEntry({
@@ -180,7 +174,7 @@ const InwardForm = () => {
         initialValue={singleItem}
         setItems={setItems}
         setTotalWeight={setTotalWeight}
-        materialClassOptions={materialClassOptions}
+        materialTypeOptions={materialTypeOptions}
         gradeOptions={gradeOptions}
         shapeOptions={shapeOptions}
       />
@@ -261,7 +255,7 @@ const InwardForm = () => {
                     <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                       <Form.Item
                         label="Inward Type"
-                        name="materialType"
+                        name="inwardType"
                         rules={[
                           {
                             required: true,
@@ -276,8 +270,8 @@ const InwardForm = () => {
                           placeholder="Select a type"
                           optionFilterProp="children"
                           filterOption={filterOption}
-                          options={materialTypeOptions}
-                          loading={isMaterialTypesOptionsLoading}
+                          options={inwardTypeOptions}
+                          loading={isInwardTypeOptionsLoading}
                           allowClear
                         />
                       </Form.Item>
@@ -346,17 +340,16 @@ const InwardForm = () => {
                   layout="vertical"
                   form={itemForm}
                   onFinish={handleAddItem}
-                  // disabled={isOTPsending}
                 >
                   <Row gutter={[16]}>
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                       <Form.Item
-                        name="materialClass"
-                        label="Material Class"
+                        name="materialType"
+                        label="Material Type"
                         rules={[
                           {
                             required: true,
-                            message: "Please select a material class",
+                            message: "Please select a material type",
                           },
                         ]}
                       >
@@ -364,11 +357,11 @@ const InwardForm = () => {
                           size="large"
                           style={{ width: "100%" }}
                           showSearch
-                          placeholder="Select a material class"
+                          placeholder="Select a material type"
                           optionFilterProp="children"
                           filterOption={filterOption}
-                          options={materialClassOptions}
-                          loading={isMaterialClassOptionsLoading}
+                          options={materialTypeOptions}
+                          loading={isMaterialTypeOptionsLoading}
                           allowClear
                         />
                       </Form.Item>
@@ -571,7 +564,7 @@ const InwardForm = () => {
                     <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                       <Form.Item
                         label="Inward Type"
-                        name="materialType"
+                        name="inwardType"
                         rules={[
                           {
                             required: true,
@@ -586,8 +579,8 @@ const InwardForm = () => {
                           placeholder="Select a type"
                           optionFilterProp="children"
                           filterOption={filterOption}
-                          options={materialTypeOptions}
-                          loading={isMaterialTypesOptionsLoading}
+                          options={inwardTypeOptions}
+                          loading={isInwardTypeOptionsLoading}
                           allowClear
                         />
                       </Form.Item>
@@ -648,7 +641,13 @@ const InwardForm = () => {
         <>
           <CustomTable
             data={items}
-            columns={getItemColumns({ handleRemoveItem, openItemModal })}
+            columns={getItemColumns({
+              handleRemoveItem,
+              openItemModal,
+              materialTypeOptions,
+              gradeOptions,
+              shapeOptions,
+            })}
             isPaginationAllowed={false}
           />
           <div className=" full-width flex-row-space-between total-weight-container">
