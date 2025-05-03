@@ -67,7 +67,7 @@ const CustomHeader = () => {
                 </p>
                 <IoIosArrowDown
                   size={16}
-                  color="#374151"
+                  color="#FFF"
                   style={{ marginTop: "4px" }}
                 />
               </Space>

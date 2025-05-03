@@ -37,14 +37,19 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  background-color: #fff;
   line-height: 2.5rem !important;
   padding: 0.25rem;
   border-radius: 0.5rem;
 }
 
+.user-section > .ant-btn-variant-outlined,
+.user-section > .ant-btn-variant-dashed{
+  background-color: transparent !important;
+}
+
 .dropdown-button {
   border: none;
+  padding-inline: 0.5rem;
 }
 
 .dropdown-button:focus {
@@ -54,8 +59,10 @@
 .user-avatar {
   background-color: #111827;
   font-size: 1.25rem;
+  border: 1px solid #FFF;
 }
 
 .username {
-  color: #374151;
+  color: #FFF;
+  font-size: 1rem;
 }

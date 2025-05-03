@@ -2,9 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/company.svg" />
+    <link rel="icon" type="image/svg+xml" href="/companyDark.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alloy Vault</title>
+    <script>
+      function setFaviconBasedOnTheme(e) {
+        const favicon = document.getElementById("favicon");
+        if (e.matches) {
+          favicon.href = "/company.svg";
+        } else {
+          favicon.href = "/company-dark.svg";
+        }
+      }
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      setFaviconBasedOnTheme(mediaQuery);
+      mediaQuery.addEventListener("change", setFaviconBasedOnTheme);
+    </script>
   </head>
   <body>
     <div id="root"></div>

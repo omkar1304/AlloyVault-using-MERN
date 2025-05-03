@@ -38,7 +38,7 @@ const Register = () => {
     <section className="flex-col-center full-height">
       <div className="flex-col-center auth-container">
         <div className="flex-col-space-between">
-          <CustomLogo />
+          <CustomLogo isDark={true} />
           <div className="auth-header">
             <PageHeader>Create Account</PageHeader>
             <PageSubHeader>

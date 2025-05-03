@@ -55,7 +55,7 @@
   font-weight: bold;
   text-align: left;
   padding: 12px;
-  height: 40px !important; 
+  height: 40px !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -116,6 +116,11 @@
   background-color: #000;
   color: #fff;
 }
+
+/* .ant-btn-variant-outlined,
+.ant-btn-variant-dashed {
+  background-color: transparent !important;
+} */
 
 /* Input */
 .ant-input-outlined:focus,
