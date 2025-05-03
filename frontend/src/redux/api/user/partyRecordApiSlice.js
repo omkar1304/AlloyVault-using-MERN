@@ -25,6 +25,7 @@ export const partyRecordApiSlice = apiSlice.injectEndpoints({
           "Content-Type": "application/json",
         },
       }),
+      providesTags: ["getPartyRecordsAsOption"],
     }),
     getPartyDetails: builder.query({
       query: (data) => ({
@@ -46,6 +47,7 @@ export const partyRecordApiSlice = apiSlice.injectEndpoints({
         },
         body: { payload: encryptData(data) },
       }),
+      invalidatesTags: ["getPartyRecordsAsOption"]
     }),
     updatePartyRecord: builder.mutation({
       query: (data) => ({

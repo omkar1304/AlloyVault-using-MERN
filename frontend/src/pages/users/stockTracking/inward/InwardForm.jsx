@@ -15,9 +15,7 @@ import { PageHeader, PageSubHeader } from "../../../../component/Headers";
 import { GoOrganization } from "react-icons/go";
 import { TbListDetails } from "react-icons/tb";
 import { BsBoxSeam } from "react-icons/bs";
-import {
-  useGetPartyRecordsAsOptionQuery,
-} from "../../../../redux/api/user/partyRecordApiSlice";
+import { useGetPartyRecordsAsOptionQuery } from "../../../../redux/api/user/partyRecordApiSlice";
 import filterOption from "../../../../helpers/filterOption";
 import { useGetAsOptionQuery } from "../../../../redux/api/user/optionsApiSlice";
 import CustomButton from "../../../../component/CustomButton";
@@ -31,6 +29,8 @@ import {
 } from "../../../../redux/api/user/stockEntryApiSlice";
 import dayjs from "dayjs";
 import ItemModal from "./ItemModal";
+import { AddIcon } from "../../../../component/ActionComponent";
+import AddCompanyModal from "../../companyDetails/AddCompanyModal";
 
 const InwardForm = () => {
   const navigate = useNavigate();
@@ -41,6 +41,7 @@ const InwardForm = () => {
   const [singleItem, setSingleItem] = useState({});
   const [totalWeight, setTotalWeight] = useState(0);
   const [isItemModalOpen, setIsItemModalOpen] = useState(false);
+  const [isCompanyModalVisible, setIsCompanyModalVisible] = useState(false);
   const [shipmentForm] = Form.useForm();
   const [itemForm] = Form.useForm();
 
@@ -50,14 +51,10 @@ const InwardForm = () => {
     useGetPartyRecordsAsOptionQuery();
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
     useGetAsOptionQuery({ type: 1 });
-  const {
-    data: inwardTypeOptions,
-    isLoading: isInwardTypeOptionsLoading,
-  } = useGetAsOptionQuery({ type: 2 });
-  const {
-    data: materialTypeOptions,
-    isLoading: isMaterialTypeOptionsLoading,
-  } = useGetAsOptionQuery({ type: 3 });
+  const { data: inwardTypeOptions, isLoading: isInwardTypeOptionsLoading } =
+    useGetAsOptionQuery({ type: 2 });
+  const { data: materialTypeOptions, isLoading: isMaterialTypeOptionsLoading } =
+    useGetAsOptionQuery({ type: 3 });
   const { data: gradeOptions, isLoading: isGradeOptionsLoading } =
     useGetAsOptionQuery({ type: 4 });
   const { data: shapeOptions, isLoading: isShapeOptionsLoading } =
@@ -161,8 +158,20 @@ const InwardForm = () => {
     setIsItemModalOpen(false);
   };
 
+  const openCompanyModal = () => {
+    setIsCompanyModalVisible(true);
+  };
+
+  const closeCompanyModal = () => {
+    setIsCompanyModalVisible(false);
+  };
+
   return (
     <section className="flex-col-start">
+      <AddCompanyModal
+        open={isCompanyModalVisible}
+        onClose={closeCompanyModal}
+      />
       <ItemModal
         open={isItemModalOpen}
         onCancel={closeItemModal}
@@ -290,10 +299,37 @@ const InwardForm = () => {
                           placeholder="Select a company"
                           optionFilterProp="children"
                           filterOption={filterOption}
-                          options={partyOptions}
                           loading={isPartyOptionsLoading}
                           allowClear
-                        />
+                        >
+                          <Select.Option
+                            value="add-party"
+                            key="add-party"
+                            disabled
+                          >
+                            <div
+                              className="flex-row-space-between"
+                              style={{
+                                color: "#6366F1",
+                                width: "100%",
+                                cursor: "pointer",
+                              }}
+                              onClick={openCompanyModal}
+                            >
+                              <span>Add Party</span>
+                              <AddIcon color="#6366F1" />
+                            </div>
+                          </Select.Option>
+                          {partyOptions?.map((party) => (
+                            <Select.Option
+                              key={party.value}
+                              value={party.value}
+                              label={party.label}
+                            >
+                              {party.label}
+                            </Select.Option>
+                          ))}
+                        </Select>
                       </Form.Item>
                     </Col>
 

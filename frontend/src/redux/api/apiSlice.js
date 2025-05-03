@@ -9,6 +9,7 @@ const apiSlice = createApi({
     "getOptions",
     "getBrokersAsOption",
     "getPartyRecords",
+    "getPartyRecordsAsOption",
     "getStockEntries",
     "getOptionsUserSide",
     "getUsers",

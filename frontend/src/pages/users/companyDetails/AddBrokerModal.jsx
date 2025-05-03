@@ -12,13 +12,13 @@ const AddBrokerModal = ({ open, onClose }) => {
     try {
       await addBroker(values).unwrap();
       toast.success("Broker added successfully!");
+      form.resetFields();
+      onClose();
     } catch (error) {
       console.error(error);
       const errMessage = error?.data?.message || "Couldn't add broker!";
       toast.error(errMessage);
     }
-    form.resetFields();
-    onClose();
   };
   return (
     <Modal

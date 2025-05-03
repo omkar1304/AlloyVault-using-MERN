@@ -4,7 +4,7 @@ import "../../../assets/css/form.css";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { PageHeader, PageSubHeader } from "../../../component/Headers";
-import Input from "antd/es/input/Input";
+import { Input } from "antd";
 import { useGetAsOptionQuery } from "../../../redux/api/user/optionsApiSlice";
 import { useGetBrokersAsOptionQuery } from "../../../redux/api/user/brokerApiSlice";
 import filterOption from "../../../helpers/filterOption";
@@ -22,6 +22,8 @@ import {
   useUpdatePartyRecordMutation,
 } from "../../../redux/api/user/partyRecordApiSlice";
 import toast from "react-hot-toast";
+
+const { TextArea } = Input;
 
 const CompanyForm = () => {
   const [isBrokerModalVisible, setIsBrokerModalVisible] = useState(false);
@@ -223,14 +225,20 @@ const CompanyForm = () => {
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-              <Form.Item label="Address 1" name="address1">
-                <Input size="large" block placeholder="eg. ABC Enterprise" />
+              <Form.Item label="Shipping Address" name="shippingAddress">
+                <TextArea
+                  placeholder="eg. ABC Enterprise"
+                  autoSize={{ minRows: 2, maxRows: 6 }}
+                />
               </Form.Item>
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-              <Form.Item label="Address 2" name="address2">
-                <Input size="large" block placeholder="eg. ABC Street" />
+              <Form.Item label="Billing Address" name="billingAddress">
+              <TextArea
+                  placeholder="eg. ABC Enterprise"
+                  autoSize={{ minRows: 2, maxRows: 6 }}
+                />
               </Form.Item>
             </Col>
 
