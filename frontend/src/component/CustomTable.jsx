@@ -14,6 +14,7 @@ const CustomTable = ({
   columns,
   onPageChange,
   isPaginationAllowed = true,
+  scrollAllwoed= true,
 }) => {
   const nextDisabled = page >= Math.ceil(total / size);
   const prevDisabled = page === 1;
@@ -25,7 +26,7 @@ const CustomTable = ({
       {(data.length || isLoading) && (
         <div className="custom-table-container">
           <Table
-            // scroll={{ x: 2000}}
+            scroll={scrollAllwoed && { x: 1500}}
             columns={columns}
             dataSource={data}
             loading={isLoading}

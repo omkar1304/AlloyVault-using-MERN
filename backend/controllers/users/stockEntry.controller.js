@@ -106,10 +106,12 @@ export const getStockEntries = async (req, res) => {
             },
           ]
         : []),
+      // If inward is type then customer is party key
+      // If onward is type then customer is billTo key
       {
         $lookup: {
           from: "partyrecords",
-          localField: "party",
+          localField: type === "Inward" ? "party" : "billTo",
           foreignField: "_id",
           as: "partyInfo",
           pipeline: [
@@ -196,6 +198,21 @@ export const getStockEntries = async (req, res) => {
             {
               $lookup: {
                 from: "options",
+                localField: "outwardType",
+                foreignField: "_id",
+                as: "outwardInfo",
+                pipeline: [
+                  {
+                    $project: {
+                      name: 1,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: "options",
                 localField: "materialType",
                 foreignField: "_id",
                 as: "materialTypeInfo",
@@ -234,6 +251,9 @@ export const getStockEntries = async (req, res) => {
                 inwardType: {
                   $arrayElemAt: ["$inwardInfo.name", 0],
                 },
+                outwardType: {
+                  $arrayElemAt: ["$outwardInfo.name", 0],
+                },
                 customer: {
                   $arrayElemAt: ["$partyInfo.name", 0],
                 },
@@ -250,6 +270,7 @@ export const getStockEntries = async (req, res) => {
                 weight: 1,
                 rackNo: 1,
                 transportName: 1,
+                challanNo: 1,
                 createdBy: {
                   $arrayElemAt: ["$createdByInfo.displayName", 0],
                 },

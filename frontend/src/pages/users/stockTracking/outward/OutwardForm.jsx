@@ -34,6 +34,7 @@ import AddBrokerModal from "../../companyDetails/AddBrokerModal";
 import { useWatch } from "antd/es/form/Form";
 import CustomTable from "../../../../component/CustomTable";
 import getItemColumns from "./getItemColumns";
+import dayjs from "dayjs";
 
 const OutwardForm = () => {
   const navigate = useNavigate();
@@ -133,12 +134,12 @@ const OutwardForm = () => {
         type: "Outward",
       }).unwrap();
       toast.success("Record added successfully!");
+      navigate(`/home/outward`);
     } catch (error) {
       console.error(error);
       const errMessage = error?.data?.message || "Couldn't add record!";
       toast.error(errMessage);
     }
-    navigate(`/home/outward`);
   };
 
   const handleUpdateStock = async () => {
@@ -149,12 +150,18 @@ const OutwardForm = () => {
         ...items[0],
       }).unwrap();
       toast.success("Record updated successfully!");
+      navigate(`/home/outward`);
     } catch (error) {
       console.error(error);
       const errMessage = error?.data?.message || "Couldn't update record!";
       toast.error(errMessage);
     }
-    navigate(`/home/inward`);
+  };
+
+  const onValuesChange = (changedValues, allValues) => {
+    if("billTo" in changedValues){
+      shipmentForm.setFieldsValue({ shipTo: changedValues?.billTo });
+    }
   };
 
   const openItemModal = (item) => {
@@ -233,7 +240,7 @@ const OutwardForm = () => {
                   layout="vertical"
                   form={shipmentForm}
                   onFinish={handleShipmentSubmit}
-                  // disabled={isOTPsending}
+                  onValuesChange={onValuesChange}
                 >
                   <Row gutter={[16]}>
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
@@ -731,7 +738,6 @@ const OutwardForm = () => {
                   layout="vertical"
                   form={shipmentForm}
                   onFinish={handleShipmentSubmit}
-                  // disabled={isOTPsending}
                 >
                   <Row gutter={[16]}>
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>

@@ -86,7 +86,7 @@ const getTableColumns = ({ handleDeleteStock }) => {
       render: (row) => (
         <div className="flex-row-start">
           <EditIcon
-            onClick={() => navigate(`/home/inward/edit?recordId=${row?._id}`)}
+            onClick={() => navigate(`/home/outward/edit?recordId=${row?._id}`)}
           />
           <Popconfirm
             title="Delete the record"

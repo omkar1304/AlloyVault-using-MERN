@@ -4,9 +4,93 @@ import { PageHeader, PageSubHeader } from "../../../../component/Headers";
 import { Breadcrumb } from "antd";
 import { Link } from "react-router-dom";
 import CustomButton from "../../../../component/CustomButton";
-import LOGO from "../../../../assets/images/logo/company.svg";
+import Dummy from "../../../../assets/images/logo/dummy.svg";
 import html2pdf from "html2pdf.js";
 import html2canvas from "html2canvas";
+import CustomTable from "./../../../../component/CustomTable";
+
+const data = [
+  {
+    unit: "15 bdls/55 nos",
+    item: "EN1A (NL) 11mm Dia",
+    HSNCode: "72155090",
+    weight: "200.00 kg",
+    rate: "78/-",
+    amount: "15600/-",
+  },
+  {
+    unit: "15 bdls/55 nos",
+    item: "EN1A (NL) 11mm Dia",
+    HSNCode: "72155090",
+    weight: "200.00 kg",
+    rate: "78/-",
+    amount: "15600/-",
+  },
+  {
+    unit: "15 bdls/55 nos",
+    item: "EN1A (NL) 11mm Dia",
+    HSNCode: "72155090",
+    weight: "200.00 kg",
+    rate: "78/-",
+    amount: "15600/-",
+  },
+
+  {
+    unit: "15 bdls/55 nos",
+    item: "EN1A (NL) 11mm Dia",
+    HSNCode: "72155090",
+    weight: "200.00 kg",
+    rate: "78/-",
+    amount: "15600/-",
+  },
+  {
+    unit: "15 bdls/55 nos",
+    item: "EN1A (NL) 11mm Dia",
+    HSNCode: "72155090",
+    weight: "200.00 kg",
+    rate: "78/-",
+    amount: "15600/-",
+  },
+];
+
+const columns = [
+  {
+    title: "Pcs/Bdls",
+    dataIndex: "unit",
+    width: 150,
+    render: (x) => x,
+  },
+  {
+    title: "Item",
+    dataIndex: "item",
+    width: 150,
+    render: (x) => x,
+  },
+  {
+    title: "HSN Code",
+    dataIndex: "HSNCode",
+    width: 100,
+    render: (x) => x,
+  },
+  {
+    title: "Weight",
+    dataIndex: "weight",
+    width: 100,
+    render: (x) => x,
+  },
+  {
+    title: "Rate",
+    dataIndex: "rate",
+    width: 60,
+    render: (x) => x,
+  },
+  {
+    title: "Amount",
+    dataIndex: "amount",
+    width: 100,
+    render: (x) => x,
+  },
+];
 
 const OutwardPreview = () => {
   const invoiceRef = useRef();
@@ -89,7 +173,7 @@ const OutwardPreview = () => {
           </PageSubHeader>
         </div>
       </div>
-      <div className="flex-row-end full-width">
+      <div className="flex-row-center full-width">
         <CustomButton width={150} size="large" onClick={handlePrint}>
           Print
         </CustomButton>
@@ -102,150 +186,125 @@ const OutwardPreview = () => {
           Download
         </CustomButton>
       </div>
+
       <div className="invoice-container" ref={invoiceRef}>
-        <div className="header">
-          <div className="logo-section">
-            <img src={LOGO} alt="Logo" className="logo" />
-            <div>
-              <h2>Pranav Bright Bars Pvt Ltd</h2>
-              <p>
-                Plot No. 31, Ram House, Liza Palace, 4, Sum, West Garo Hills,
-                <br />
-                Meghalaya, Pincode-794103
-                <br />
-                848172948 | contact@pbbltd.se
-                <br />
-                GSTIN: 27AAACU0983R1ZV
-                <br />
-                CIN: 27AAACU0983R1ZV
-              </p>
-            </div>
+        <h4 className="invoice-heading">
+          DELIVERY CHALLAN - CUM - TRANSIT INVOICE
+        </h4>
+
+        <div className="flex-row-space-between invoice-company">
+          <div className="invoice-company-image">
+            <img src={Dummy} alt="Company Logo" />
           </div>
-          <div className="invoice-number">
-            <strong>Challan No.</strong>
-            <br />
-            NKHT/001
+          <div className="flex-col-start invoice-company-details">
+            <h3>PRANAV BRIGHT BARS PRIVATE LIMITED</h3>
+            <h5>MANUFACTURER & SUPPLIERS</h5>
+            <p>
+              Bright Bars in EN-Series like EN-8/9/19/24/31/353 SAE8620 & Spring
+              Wires, M.S. Wire, Free Cutting Steels etc.
+            </p>
+            <p>
+              Works : Plot No. 27, Amgaon Industrial Area, Tal. Talasari, Dist.
+              Palghar, Maharashtra - 401 606.
+            </p>
+            <p>
+              REGD. OFF : 90, Ardeshir Dadi Street, 1st Floor, Mumbai,
+              Maharashtra - 400 004. Tel.: 022 2396 9594 Email :
+              pranavbrightbars@gmail.com
+            </p>
+            <h5>
+              GSTIN : 27AADCP1678H1Z3 • MSME : UDYAM - MH19 - 0263589 CIN No. :
+              U51420MH2003PTC143744{" "}
+            </h5>
           </div>
         </div>
 
-        <div className="details-section">
-          <div className="info-block">
-            <p>
-              <strong>Bill Date</strong>
-              <br />
-              03/05/2020
-            </p>
-            <p>
-              <strong>Broker</strong>
-              <br />
-              Mithil Phool
-            </p>
-            <p>
-              <strong>Terms of Payment</strong>
-              <br />
-              Within 15 days
-            </p>
-            <p>
-              <strong>Transport Name</strong>
-              <br />
-              ABC Transport
-            </p>
+        <div className="invoice-details">
+          <div className="flex-row-space-between transport-details">
+            <div className="flex-col-start transport-details-left">
+              <div className="flex-col-start transport-address">
+                <span className="invoice-label">Bill To</span>
+                <h4>Gringotts Steelworks</h4>
+                <p>The Enchanted Yard,No. 13 Grindsteel Lane,</p>
+                <p>Knockturn Docks,London, Wizarding District 9</p>
+                <p>Phone no: 777777777777</p>
+                <p>GST no: 07HOG394MUGWZ</p>
+              </div>
+              <div className="flex-col-start transport-address">
+                <span className="invoice-label">Ship To</span>
+                <h4>Gringotts Steelworks</h4>
+                <p>The Enchanted Yard,No. 13 Grindsteel Lane,</p>
+                <p>Knockturn Docks,London, Wizarding District 9</p>
+                <p>Phone no: 777777777777</p>
+                <p>GST no: 07HOG394MUGWZ</p>
+              </div>
+            </div>
+            <div className="flex-col-start transport-details-right">
+              <div>
+                <span className="invoice-label">Date</span>
+                <p>01/01/2025</p>
+              </div>
+
+              <div>
+                <span className="invoice-label">Challan no.</span>
+                <p>KHT/25-26/0001</p>
+              </div>
+              <div>
+                <span className="invoice-label">Broker</span>
+                <p>Ron Weasley</p>
+              </div>
+              <div>
+                <span className="invoice-label">Transport Name</span>
+                <p>Nimbus Freights</p>
+              </div>
+              <div>
+                <span className="invoice-label">Description</span>
+                <p>Payment term - 30 Days</p>
+              </div>
+            </div>
           </div>
-          <div className="address-block">
-            <div>
-              <p>
-                <strong>Billing Address</strong>
-                <br />
-                Willy Wonka
-                <br />
-                1445 West Norwood Avenue, Itasca, Illinois, USA
-                <br />
-                9722300415 | gm@om.com
-                <br />
-                GSTIN: 27AAACU0983R1ZV
+          <br />
+          <CustomTable
+            data={data}
+            columns={columns}
+            isPaginationAllowed={false}
+            scrollAllwoed={false}
+          />
+        </div>
+
+        <div className="flex-row-space-between payment-details">
+          <div className="flex-col-start payment-details-left">
+            <h4>Payment details</h4>
+            <div className="flex-col-start bank-details">
+              <p className="flex-row-space-between">
+                <strong>Bank name</strong>
+                <span>Union Bank of India</span>
+              </p>
+              <p className="flex-row-space-between">
+                <strong>Branch</strong>
+                <span>Bhuleshwar, Mumbai - 400 004</span>
+              </p>
+              <p className="flex-row-space-between">
+                <strong>IFS code</strong>
+                <span>00000000000000</span>
+              </p>
+              <p className="flex-row-space-between">
+                <strong>Account</strong>
+                <span>UBIN0531600</span>
               </p>
             </div>
-            <div>
-              <p>
-                <strong>Consignee Address</strong>
-                <br />
-                Willy Wonka
-                <br />
-                1445 West Norwood Avenue, Itasca, Illinois, USA
-                <br />
-                9722300415 | gm@om.com
-                <br />
-                GSTIN: 27AAACU0983R1ZV
-              </p>
-            </div>
+          </div>
+          <div className="flex-col-space-between payment-details-right">
+            <h4>For Pranav Bright Bars Pvt Ltd</h4>
+            <h4>Authorized Signatory</h4>
           </div>
         </div>
 
-        <table className="item-table">
-          <thead>
-            <tr>
-              <th>No.</th>
-              <th>Item</th>
-              <th>HSN</th>
-              <th>Quantity</th>
-              <th>Rate</th>
-              <th>Final Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[1, 2, 3].map((num) => (
-              <tr key={num}>
-                <td>{num}</td>
-                <td>
-                  EN1A NL 11 DIA
-                  <br />5 BOLS
-                </td>
-                <td>72155090</td>
-                <td>258.8 kg</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <div className="footer">
-          <p>
-            <strong>Total Price</strong>
-          </p>
-          <div className="payment-info">
-            <div>
-              <p>
-                <strong>Payment details</strong>
-              </p>
-              <p>
-                Bank name: ABCD BANK
-                <br />
-                Branch: ABCDXXXXXXX
-                <br />
-                IFSC code: ABCD000XXX
-                <br />
-                Account: 37440812300011
-              </p>
-            </div>
-            <div className="auth-sign">
-              <p>For Pranav Bright Bars Pvt Ltd</p>
-              <p>
-                <strong>Authorized Signatory</strong>
-              </p>
-            </div>
-          </div>
-          <div className="terms">
-            <p>
-              <strong>Terms & Conditions</strong>
-              <br />
-              Payment is due within 30 days
-              <br />
-              Goods once sold will not be taken back
-              <br />
-              Interest will be charged on overdue payments
-            </p>
-          </div>
+        <div className="flex-col-start term-details">
+          <h4>Terms & Conditions</h4>
+          <p>Payment is due within 30 days</p>
+          <p>Goods once sold will not be taken back</p>
+          <p>Interest will be charged on overdue payments</p>
         </div>
       </div>
     </section>

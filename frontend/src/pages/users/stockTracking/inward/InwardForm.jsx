@@ -124,12 +124,12 @@ const InwardForm = () => {
         type: "Inward",
       }).unwrap();
       toast.success("Record added successfully!");
+      navigate(`/home/inward`);
     } catch (error) {
       console.error(error);
       const errMessage = error?.data?.message || "Couldn't add record!";
       toast.error(errMessage);
     }
-    navigate(`/home/inward`);
   };
 
   const handleUpdateStock = async () => {
@@ -140,12 +140,12 @@ const InwardForm = () => {
         ...items[0],
       }).unwrap();
       toast.success("Record updated successfully!");
+      navigate(`/home/inward`);
     } catch (error) {
       console.error(error);
       const errMessage = error?.data?.message || "Couldn't update record!";
       toast.error(errMessage);
     }
-    navigate(`/home/inward`);
   };
 
   const openItemModal = (item) => {
@@ -215,7 +215,6 @@ const InwardForm = () => {
                   layout="vertical"
                   form={shipmentForm}
                   onFinish={handleShipmentSubmit}
-                  // disabled={isOTPsending}
                 >
                   <Row gutter={[16]}>
                     <Col xs={24} sm={24} md={24} lg={8} xl={8}>
@@ -622,12 +621,12 @@ const InwardForm = () => {
 
                     <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                       <Form.Item
-                        label="Company"
-                        name="company"
+                        label="Party Name"
+                        name="party"
                         rules={[
                           {
                             required: true,
-                            message: "Please select a company",
+                            message: "Please select a party",
                           },
                         ]}
                       >
@@ -635,13 +634,43 @@ const InwardForm = () => {
                           size="large"
                           style={{ width: "100%" }}
                           showSearch
-                          placeholder="Select a company"
+                          placeholder="Select a party"
                           optionFilterProp="children"
                           filterOption={filterOption}
-                          options={partyOptions}
                           loading={isPartyOptionsLoading}
+                          disabled={
+                            isCompanyModalVisible || isPartyOptionsLoading
+                          }
                           allowClear
-                        />
+                        >
+                          <Select.Option
+                            value="add-party"
+                            key="add-party"
+                            disabled
+                          >
+                            <div
+                              className="flex-row-space-between"
+                              style={{
+                                color: "#6366F1",
+                                width: "100%",
+                                cursor: "pointer",
+                              }}
+                              onClick={openCompanyModal}
+                            >
+                              <span>Add Party</span>
+                              <AddIcon color="#6366F1" />
+                            </div>
+                          </Select.Option>
+                          {partyOptions?.map((party) => (
+                            <Select.Option
+                              key={party.value}
+                              value={party.value}
+                              label={party.label}
+                            >
+                              {party.label}
+                            </Select.Option>
+                          ))}
+                        </Select>
                       </Form.Item>
                     </Col>
 
