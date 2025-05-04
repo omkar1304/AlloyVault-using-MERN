@@ -36,7 +36,10 @@ import {
   getStockEntryDetails,
   updateStockEntry,
 } from "../controllers/users/stockEntry.controller.js";
-import { getCompaniesAsOption } from "../controllers/users/company.controller.js";
+import {
+  getCompaniesAsOption,
+  getCompanyDetails,
+} from "../controllers/users/company.controller.js";
 
 const router = express.Router();
 
@@ -79,6 +82,7 @@ router.put("/updateStockEntry/:recordId", authenticate, updateStockEntry);
 router.delete("/deleteStockEntry/:recordId", authenticate, deleteStockEntry);
 
 // Company Routes
-router.get("/getCompaniesAsOption", authenticate, getCompaniesAsOption)
+router.get("/getCompaniesAsOption", authenticate, getCompaniesAsOption);
+router.get("/getCompanyDetails", authenticate, getCompanyDetails);
 
 export default router;

@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../../../assets/css/preview.css";
 import { PageHeader, PageSubHeader } from "../../../../component/Headers";
 import { Breadcrumb } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import CustomButton from "../../../../component/CustomButton";
 import Dummy from "../../../../assets/images/logo/dummy.svg";
 import html2pdf from "html2pdf.js";
@@ -94,6 +94,19 @@ const columns = [
 
 const OutwardPreview = () => {
   const invoiceRef = useRef();
+  const location = useLocation();
+  const { items, shipmentData } = location.state || {};
+  localStorage.setItem("items", JSON.stringify(items));
+  localStorage.setItem("shipmentData", JSON.stringify(shipmentData));
+  const localItems = JSON.parse(localStorage.getItem("items"));
+  const localShipmentData = JSON.parse(localStorage.getItem("shipmentData"));
+  const [itemsState, setItemsState] = useState();
+  const [shipmentDataState, setShipmentDataState] = useState();
+
+  useEffect(() => {
+    setItemsState(localItems);
+    setShipmentDataState(localShipmentData);
+  }, [localItems, localShipmentData]);
 
   const handleDownload = () => {
     const element = invoiceRef.current;

@@ -15,9 +15,20 @@ export const companyApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getCompanyDetails: builder.query({
+      query: (data) => ({
+        url: `${USER_URL}/getCompanyDetails${encodeUrlPayload(data)}`,
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
 export const {
   useGetCompaniesAsOptionQuery,
+  useGetCompanyDetailsQuery,
 } = companyApiSlice;

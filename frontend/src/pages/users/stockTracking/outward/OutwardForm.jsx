@@ -134,7 +134,12 @@ const OutwardForm = () => {
         type: "Outward",
       }).unwrap();
       toast.success("Record added successfully!");
-      navigate(`/home/outward`);
+      navigate(`/home/outward/preview`, {
+        state: {
+          items: items,
+          shipmentData: shipmentForm.getFieldsValue(),
+        },
+      });
     } catch (error) {
       console.error(error);
       const errMessage = error?.data?.message || "Couldn't add record!";
@@ -159,7 +164,7 @@ const OutwardForm = () => {
   };
 
   const onValuesChange = (changedValues, allValues) => {
-    if("billTo" in changedValues){
+    if ("billTo" in changedValues) {
       shipmentForm.setFieldsValue({ shipTo: changedValues?.billTo });
     }
   };

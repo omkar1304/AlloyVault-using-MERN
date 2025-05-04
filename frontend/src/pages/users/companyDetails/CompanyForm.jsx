@@ -77,7 +77,7 @@ const CompanyForm = () => {
       toast.error(errMessage);
     }
     form.resetFields();
-    navigate(`/home/companyDetails`);
+    navigate(`/home/partyDetails`);
   };
 
   const handleUpdateRecord = async (values) => {
@@ -90,7 +90,7 @@ const CompanyForm = () => {
       toast.error(errMessage);
     }
     form.resetFields();
-    navigate(`/home/companyDetails`);
+    navigate(`/home/partyDetails`);
   };
 
   const openBrokerModal = () => {

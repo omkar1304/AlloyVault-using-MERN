@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 const CompanySchema = new mongoose.Schema(
   {
     name: { type: String, unique: true, required: true },
+    desc: { type: String },
+    grades: { type: String },
     imgURL: { type: String },
     branches: { type: [mongoose.Types.ObjectId], default: [] },
     address1: { type: String },

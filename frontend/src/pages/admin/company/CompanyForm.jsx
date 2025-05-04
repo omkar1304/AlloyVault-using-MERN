@@ -214,6 +214,24 @@ const CompanyForm = () => {
               </Form.Item>
             </Col>
 
+            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+              <Form.Item
+                label="Description"
+                name="desc"
+              >
+                <Input size="large" block placeholder="" />
+              </Form.Item>
+            </Col>
+
+            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+              <Form.Item
+                label="Grades"
+                name="grades"
+              >
+                <Input size="large" block placeholder="" />
+              </Form.Item>
+            </Col>
+
             <Col xs={24} sm={24} md={24} lg={8} xl={8}>
               <Form.Item label="Address 1" name="address1">
                 <Input size="large" block placeholder="eg. ABC Enterprise" />

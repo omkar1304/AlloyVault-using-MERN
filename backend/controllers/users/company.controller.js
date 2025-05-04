@@ -23,3 +23,25 @@ export const getCompaniesAsOption = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const getCompanyDetails = async (req, res) => {
+  try {
+    const { payload } = req.query;
+    const { recordId = undefined } = decryptUrlPayload(payload);
+
+    if (!recordId) {
+      return res.status(400).json({ message: "Company ID is missing" });
+    }
+
+    const companyRecord = await Company.findById(recordId);
+
+    if (!companyRecord) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+
+    return res.status(200).send(companyRecord);
+  } catch (error) {
+    console.log("Error in company record controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
