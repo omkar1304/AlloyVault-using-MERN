@@ -36,6 +36,7 @@ import {
   getStockEntryDetails,
   updateStockEntry,
 } from "../controllers/users/stockEntry.controller.js";
+import { getCompaniesAsOption } from "../controllers/users/company.controller.js";
 
 const router = express.Router();
 
@@ -76,5 +77,8 @@ router.post("/addStockEntry", authenticate, addStockEntry);
 router.get("/getStockEntryDetails", authenticate, getStockEntryDetails);
 router.put("/updateStockEntry/:recordId", authenticate, updateStockEntry);
 router.delete("/deleteStockEntry/:recordId", authenticate, deleteStockEntry);
+
+// Company Routes
+router.get("/getCompaniesAsOption", authenticate, getCompaniesAsOption)
 
 export default router;

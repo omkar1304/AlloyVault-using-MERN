@@ -11,7 +11,7 @@ const getTableColumns = ({ handleDeleteStock }) => {
     {
       title: "Date",
       dataIndex: "entryDate",
-      width: 60,
+      width: 70,
       render: (x) => x && getFormattedDate(x),
     },
     {

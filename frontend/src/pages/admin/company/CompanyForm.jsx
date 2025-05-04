@@ -248,6 +248,7 @@ const CompanyForm = () => {
                   filterOption={filterOption}
                   options={branchOptions}
                   loading={isBranchOptionsLoading}
+                  maxTagCount="responsive"
                   allowClear
                 />
               </Form.Item>

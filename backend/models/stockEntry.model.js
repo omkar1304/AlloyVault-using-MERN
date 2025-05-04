@@ -9,11 +9,15 @@ const StockEntrySchema = mongoose.Schema(
     branch: { type: mongoose.Types.ObjectId, ref: "Option" },
     inwardType: { type: mongoose.Types.ObjectId, ref: "Option" },
     outwardType: { type: mongoose.Types.ObjectId, ref: "Option" },
-    company: { type: mongoose.Types.ObjectId, ref: "PartyRecord" },
+    party: { type: mongoose.Types.ObjectId, ref: "PartyRecord" },
+    company: { type: mongoose.Types.ObjectId, ref: "Company" },
     broker: { type: mongoose.Types.ObjectId, ref: "Broker" },
+    billTo: { type: mongoose.Types.ObjectId, ref: "PartyRecord" },
+    shipTo: { type: mongoose.Types.ObjectId, ref: "PartyRecord" },
     transportName: { type: String },
     vehicleNo: { type: String },
     createdBy: { type: mongoose.Types.ObjectId, ref: "User" },
+    shipmentDesc: { type: String },
 
     // item ->
     materialType: { type: mongoose.Types.ObjectId, ref: "Option" },
@@ -24,6 +28,7 @@ const StockEntrySchema = mongoose.Schema(
     weight: { type: Number },
     rate: { type: String },
     rackNo: { type: String },
+    unit: { type: String },
     description: { type: String },
   },
 

@@ -283,12 +283,12 @@ const InwardForm = () => {
 
                     <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                       <Form.Item
-                        label="Company"
-                        name="company"
+                        label="Party Name"
+                        name="party"
                         rules={[
                           {
                             required: true,
-                            message: "Please select a company",
+                            message: "Please select a party",
                           },
                         ]}
                       >
@@ -296,10 +296,13 @@ const InwardForm = () => {
                           size="large"
                           style={{ width: "100%" }}
                           showSearch
-                          placeholder="Select a company"
+                          placeholder="Select a party"
                           optionFilterProp="children"
                           filterOption={filterOption}
                           loading={isPartyOptionsLoading}
+                          disabled={
+                            isCompanyModalVisible || isPartyOptionsLoading
+                          }
                           allowClear
                         >
                           <Select.Option

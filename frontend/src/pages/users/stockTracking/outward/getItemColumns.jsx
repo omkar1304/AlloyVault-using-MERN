@@ -18,6 +18,12 @@ const getItemColumns = ({
       render: (x) => getLabelFromValue(x, materialTypeOptions),
     },
     {
+      title: "HSN Code",
+      dataIndex: "HSNCode",
+      width: 150,
+      render: (x) => x,
+    },
+    {
       title: "Grade",
       dataIndex: "grade",
       width: 150,
@@ -42,15 +48,9 @@ const getItemColumns = ({
       render: (x) => x,
     },
     {
-      title: "Rack No.",
-      dataIndex: "rackNo",
+      title: "Pcs/Bdls",
+      dataIndex: "unit",
       width: 100,
-      render: (x) => x,
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      width: 150,
       render: (x) => x,
     },
     {

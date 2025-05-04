@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FaExclamation } from "react-icons/fa6";
 import getInitials from "../../../helpers/getInitials";
 
-const getTableColumns = ({handleDeleteCompany}) => {
+const getTableColumns = ({ handleDeleteCompany }) => {
   const navigate = useNavigate();
   return [
     {
@@ -30,7 +30,13 @@ const getTableColumns = ({handleDeleteCompany}) => {
       title: "Assigned Branches",
       dataIndex: "branchesInfo",
       width: 150,
-      render: (x) => x?.map((branch) => <Tag>{branch?.name || ""}</Tag>),
+      render: (x) => (
+        <div className="flex-row-start" style={{ flexWrap: "wrap"}}>
+          {x?.map((branch) => (
+            <Tag>{branch?.name || ""}</Tag>
+          ))}
+        </div>
+      ),
     },
     {
       title: "Done By",

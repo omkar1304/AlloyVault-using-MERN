@@ -33,7 +33,7 @@ export const getStockEntries = async (req, res) => {
       const words = keyword.split(" ");
       const searchConditions = words.map((word) => ({
         $or: [
-          { "companyInfo.name": { $regex: word, $options: "i" } },
+          { "partyInfo.name": { $regex: word, $options: "i" } },
           { "gradeInfo.name": { $regex: word, $options: "i" } },
           { "shapeInfo.name": { $regex: word, $options: "i" } },
           { size: { $regex: word, $options: "i" } },
@@ -80,8 +80,8 @@ export const getStockEntries = async (req, res) => {
     const result = await StockEntry.aggregate([
       {
         $match: {
-          type
-        }
+          type,
+        },
       },
       // Date range filter
       ...(dateRange != undefined
@@ -109,9 +109,9 @@ export const getStockEntries = async (req, res) => {
       {
         $lookup: {
           from: "partyrecords",
-          localField: "company",
+          localField: "party",
           foreignField: "_id",
-          as: "companyInfo",
+          as: "partyInfo",
           pipeline: [
             {
               $project: {
@@ -235,7 +235,7 @@ export const getStockEntries = async (req, res) => {
                   $arrayElemAt: ["$inwardInfo.name", 0],
                 },
                 customer: {
-                  $arrayElemAt: ["$companyInfo.name", 0],
+                  $arrayElemAt: ["$partyInfo.name", 0],
                 },
                 materialType: {
                   $arrayElemAt: ["$materialTypeInfo.name", 0],
@@ -303,9 +303,9 @@ export const addStockEntry = async (req, res) => {
 
     await createActivityLog(
       userId,
-      `User added ${type} stock to branch ${shipmentData?.branch} on ${moment(
-        shipmentData?.entryDate
-      ).format("DD/MM/YYYY hh:mm:ss A")}`
+      `User added ${type} stock on ${moment(shipmentData?.entryDate).format(
+        "DD/MM/YYYY hh:mm:ss A"
+      )}`
     );
 
     return res.status(200).json({ message: "Stock record added successfully" });
@@ -359,7 +359,7 @@ export const updateStockEntry = async (req, res) => {
 
     await createActivityLog(
       userId,
-      `User updated ${stockEntryRecord?.type} stock for branch ${stockEntryRecord?.branch}`
+      `User updated ${stockEntryRecord?.type} stock`
     );
 
     return res
@@ -389,10 +389,7 @@ export const deleteStockEntry = async (req, res) => {
       return res.status(404).json({ message: "Stock entry not found" });
     }
 
-    await createActivityLog(
-      userId,
-      `User deleted stock for branch ${deletedStockEntry?.branch}`
-    );
+    await createActivityLog(userId, `User deleted stock`);
 
     return res
       .status(200)

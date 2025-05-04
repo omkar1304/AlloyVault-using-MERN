@@ -120,11 +120,7 @@ export const getCompanyDetails = async (req, res) => {
 
 export const addCompany = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
-    }
-
-    const imgURL = req?.file?.filename;
+    const imgURL = req?.file?.filename || null;
     const payload = req?.body;
     const { name, branches } = payload;
     const { userId } = req?.user;
