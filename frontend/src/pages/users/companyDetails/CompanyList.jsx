@@ -70,16 +70,16 @@ const CompanyList = () => {
   };
 
   const handleNavigateComapnyForm = () => {
-    navigate("/home/companyDetails/new");
+    navigate("/home/partyDetails/new");
   };
 
   return (
     <div>
       <div className="flex-row-space-between">
         <div>
-          <PageHeader>Company List</PageHeader>
+          <PageHeader>Party Details</PageHeader>
           <PageSubHeader>
-            Create and edit companies for better connect!
+            Create and edit parties for better connect!
           </PageSubHeader>
         </div>
         <CustomButton
@@ -94,7 +94,7 @@ const CompanyList = () => {
         style={{ marginTop: "20px" }}
         query={query}
         setQuery={setQuery}
-        placeholder="Search by company"
+        placeholder="Search by party"
       />
 
       <div className="filter-row flex-row-space-between">

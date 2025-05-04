@@ -109,7 +109,7 @@ const CompanyForm = () => {
           separator=">"
           items={[
             {
-              title: <Link to="/home/companyDetails">Company List</Link>,
+              title: <Link to="/home/partyDetails">Party Details</Link>,
             },
             {
               title: recordId ? "Update Party" : "Add New Party",
@@ -127,7 +127,7 @@ const CompanyForm = () => {
       </div>
 
       <div className="form-section">
-        <h3 className="form-heading">Company Details</h3>
+        <h3 className="form-heading">Party Details</h3>
         <Form
           form={form}
           disabled={isPartyRecordAdding || isPartyRecordUpdating}
@@ -135,13 +135,12 @@ const CompanyForm = () => {
           autoComplete="off"
           name="normal_login"
           onFinish={recordId ? handleUpdateRecord : handleAddRecord}
-          style={{ width: "50%" }}
           className="form-layout margin-top"
         >
           <Row gutter={[16]}>
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item
-                label="Company Name"
+                label="Party Name"
                 name="name"
                 rules={[
                   {
@@ -154,7 +153,7 @@ const CompanyForm = () => {
               </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+            <Col xs={24} sm={24} md={24} lg={8} xl={8}>
               <Form.Item label="Party Type" name="partyType">
                 <Select
                   size="large"
@@ -170,7 +169,7 @@ const CompanyForm = () => {
               </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+            <Col xs={24} sm={24} md={24} lg={8} xl={8}>
               <Form.Item label="Broker" name="broker">
                 <Select
                   size="large"
@@ -209,7 +208,7 @@ const CompanyForm = () => {
               </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Col xs={24} sm={24} md={24} lg={8} xl={8}>
               <Form.Item
                 label="GST IN"
                 name="gstNo"
@@ -224,7 +223,7 @@ const CompanyForm = () => {
               </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
               <Form.Item label="Shipping Address" name="shippingAddress">
                 <TextArea
                   placeholder="eg. ABC Enterprise"
@@ -233,7 +232,7 @@ const CompanyForm = () => {
               </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
               <Form.Item label="Billing Address" name="billingAddress">
               <TextArea
                   placeholder="eg. ABC Enterprise"
@@ -242,7 +241,7 @@ const CompanyForm = () => {
               </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+            <Col xs={24} sm={24} md={12} lg={6} xl={6}>
               <Form.Item label="Country" name="country">
                 <Select
                   size="large"
@@ -258,7 +257,7 @@ const CompanyForm = () => {
               </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+            <Col xs={24} sm={24} md={12} lg={6} xl={6}>
               <Form.Item label="State" name="state">
                 <Select
                   size="large"
@@ -274,7 +273,7 @@ const CompanyForm = () => {
               </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+            <Col xs={24} sm={24} md={12} lg={6} xl={6}>
               <Form.Item label="City" name="city">
                 <Select
                   size="large"
@@ -290,21 +289,21 @@ const CompanyForm = () => {
               </Form.Item>
             </Col>
 
-            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+            <Col xs={24} sm={24} md={12} lg={6} xl={6}>
               <Form.Item label="Pin code" name="pincode">
                 <Input size="large" block />
               </Form.Item>
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-              <Form.Item label="Email" name="email">
-                <Input size="large" block placeholder="eg. xyz@gmail.com" />
+              <Form.Item label="Contact No." name="mobile">
+                <Input size="large" block placeholder="000-000-0000" />
               </Form.Item>
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-              <Form.Item label="Phone" name="mobile">
-                <Input size="large" block placeholder="000-000-0000" />
+              <Form.Item label="Email" name="email">
+                <Input size="large" block placeholder="eg. xyz@gmail.com" />
               </Form.Item>
             </Col>
 

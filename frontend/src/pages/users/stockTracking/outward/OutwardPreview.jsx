@@ -162,7 +162,7 @@ const OutwardPreview = () => {
               title: <Link to="/home/outward">Outward Material</Link>,
             },
             {
-              title: "Outward Preview",
+              title: "Preview",
             },
           ]}
         />

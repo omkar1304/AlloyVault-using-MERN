@@ -12,7 +12,7 @@ const CompanySchema = new mongoose.Schema(
     mobile: { type: String },
     gstNo: { type: String },
     cinNo: { type: String },
-    challanPrefix: { type: String },
+    msme: { type: String },
     paymentDetails: {
       paymentDetails: { type: String },
       branch: { type: String },

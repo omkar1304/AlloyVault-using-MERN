@@ -43,10 +43,10 @@ export const ModuleComponents = {
   },
 
   //* Company Details
-  companyDetails: {
+  partyDetails: {
     component: CompanyDetails,
-    pageTitle: "Company Details",
-    pageKey: "companyDetails",
+    pageTitle: "Party Details",
+    pageKey: "partyDetails",
     index: 3,
   },
 

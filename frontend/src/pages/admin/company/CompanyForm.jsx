@@ -286,12 +286,12 @@ const CompanyForm = () => {
 
             <Col xs={24} sm={24} md={24} lg={8} xl={8}>
               <Form.Item
-                label="Challan Prefix"
-                name="challanPrefix"
+                label="MSME"
+                name="msme"
                 rules={[
                   {
                     required: true,
-                    message: "Please enter prefix",
+                    message: "Please enter MSME",
                   },
                 ]}
               >

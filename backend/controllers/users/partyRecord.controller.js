@@ -139,7 +139,7 @@ export const getPartyRecords = async (req, res) => {
             {
               $project: {
                 _id: 1,
-                companyName: "$name",
+                partyName: "$name",
                 partyType: { $arrayElemAt: ["$partyTypeInfo.name", 0] },
                 broker: { $arrayElemAt: ["$brokerInfo.name", 0] },
                 gstNo: 1,

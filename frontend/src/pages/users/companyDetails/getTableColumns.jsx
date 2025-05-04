@@ -8,8 +8,8 @@ const getTableColumns = ({ handleDeleteRecord }) => {
 
   return [
     {
-      title: "Company Name",
-      dataIndex: "companyName",
+      title: "Party Name",
+      dataIndex: "partyName",
       width: 150,
       render: (x) => x,
     },
@@ -84,7 +84,7 @@ const getTableColumns = ({ handleDeleteRecord }) => {
           <Tooltip title="Edit">
             <EditIcon
               onClick={() =>
-                navigate(`/home/companyDetails/edit?recordId=${row?._id}`)
+                navigate(`/home/partyDetails/edit?recordId=${row?._id}`)
               }
             />
           </Tooltip>
