@@ -354,7 +354,7 @@ const CompanyForm = () => {
             <Col xs={24} sm={24} md={12} lg={6} xl={6}>
               <Form.Item
                 label="Bank Name"
-                name="paymentDetails.paymentDetails"
+                name="paymentDetails.bankName"
                 rules={[
                   {
                     required: true,

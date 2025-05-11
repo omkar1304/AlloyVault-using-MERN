@@ -26,7 +26,7 @@ const StockEntrySchema = mongoose.Schema(
     size: { type: Number },
     shape: { type: mongoose.Types.ObjectId, ref: "Option" },
     weight: { type: Number },
-    rate: { type: String },
+    rate: { type: Number },
     rackNo: { type: String },
     unit: { type: String },
     description: { type: String },

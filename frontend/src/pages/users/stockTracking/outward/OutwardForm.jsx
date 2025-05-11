@@ -35,6 +35,7 @@ import { useWatch } from "antd/es/form/Form";
 import CustomTable from "../../../../component/CustomTable";
 import getItemColumns from "./getItemColumns";
 import dayjs from "dayjs";
+import encryptString from "../../../../helpers/encryptString";
 
 const OutwardForm = () => {
   const navigate = useNavigate();
@@ -134,12 +135,11 @@ const OutwardForm = () => {
         type: "Outward",
       }).unwrap();
       toast.success("Record added successfully!");
-      navigate(`/home/outward/preview`, {
-        state: {
-          items: items,
-          shipmentData: shipmentForm.getFieldsValue(),
-        },
-      });
+      navigate(
+        `/home/outward/preview?challan=${encryptString(
+          shipmentForm.getFieldValue("challanNo")
+        )}`
+      );
     } catch (error) {
       console.error(error);
       const errMessage = error?.data?.message || "Couldn't add record!";
@@ -676,7 +676,13 @@ const OutwardForm = () => {
 
                     <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                       <Form.Item label="Rate" name="rate">
-                        <Input size="large" placeholder="" />
+                        <InputNumber
+                          size="large"
+                          style={{ width: "100%" }}
+                          placeholder=""
+                          min={0}
+                          step={0.01}
+                        />
                       </Form.Item>
                     </Col>
 
@@ -1050,7 +1056,7 @@ const OutwardForm = () => {
           />
           <div className=" full-width flex-row-space-between total-weight-container">
             <span>Total Weight</span>
-            <span>{`${totalWeight} kg`}</span>
+            <span>{`${parseFloat(totalWeight).toFixed(2)} kg`}</span>
           </div>
         </>
       ) : null}

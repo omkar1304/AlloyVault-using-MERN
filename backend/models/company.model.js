@@ -16,7 +16,7 @@ const CompanySchema = new mongoose.Schema(
     cinNo: { type: String },
     msme: { type: String },
     paymentDetails: {
-      paymentDetails: { type: String },
+      bankName: { type: String },
       branch: { type: String },
       ifsCode: { type: String },
       accountNumber: { type: String },

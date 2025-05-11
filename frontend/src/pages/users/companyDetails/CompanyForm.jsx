@@ -224,7 +224,7 @@ const CompanyForm = () => {
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-              <Form.Item label="Shipping Address" name="shippingAddress">
+              <Form.Item label="Address 1" name="address1">
                 <TextArea
                   placeholder="eg. ABC Enterprise"
                   autoSize={{ minRows: 2, maxRows: 6 }}
@@ -233,8 +233,8 @@ const CompanyForm = () => {
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-              <Form.Item label="Billing Address" name="billingAddress">
-              <TextArea
+              <Form.Item label="Address 2" name="address2">
+                <TextArea
                   placeholder="eg. ABC Enterprise"
                   autoSize={{ minRows: 2, maxRows: 6 }}
                 />

@@ -1,74 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../../../../assets/css/preview.css";
+import moment from "moment";
 import { PageHeader, PageSubHeader } from "../../../../component/Headers";
 import { Breadcrumb } from "antd";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import CustomButton from "../../../../component/CustomButton";
 import Dummy from "../../../../assets/images/logo/dummy.svg";
 import html2pdf from "html2pdf.js";
 import html2canvas from "html2canvas";
 import CustomTable from "./../../../../component/CustomTable";
-
-const data = [
-  {
-    unit: "15 bdls/55 nos",
-    item: "EN1A (NL) 11mm Dia",
-    HSNCode: "72155090",
-    weight: "200.00 kg",
-    rate: "78/-",
-    amount: "15600/-",
-  },
-  {
-    unit: "15 bdls/55 nos",
-    item: "EN1A (NL) 11mm Dia",
-    HSNCode: "72155090",
-    weight: "200.00 kg",
-    rate: "78/-",
-    amount: "15600/-",
-  },
-  {
-    unit: "15 bdls/55 nos",
-    item: "EN1A (NL) 11mm Dia",
-    HSNCode: "72155090",
-    weight: "200.00 kg",
-    rate: "78/-",
-    amount: "15600/-",
-  },
-
-  {
-    unit: "15 bdls/55 nos",
-    item: "EN1A (NL) 11mm Dia",
-    HSNCode: "72155090",
-    weight: "200.00 kg",
-    rate: "78/-",
-    amount: "15600/-",
-  },
-  {
-    unit: "15 bdls/55 nos",
-    item: "EN1A (NL) 11mm Dia",
-    HSNCode: "72155090",
-    weight: "200.00 kg",
-    rate: "78/-",
-    amount: "15600/-",
-  },
-];
+import decryptString from "../../../../helpers/decryptString";
+import { useGetDetailsForPreviewQuery } from "../../../../redux/api/user/stockEntryApiSlice";
+import { BASE_URL } from "../../../../redux/constant";
 
 const columns = [
   {
     title: "Pcs/Bdls",
     dataIndex: "unit",
-    width: 150,
+    width: 80,
     render: (x) => x,
   },
   {
     title: "Item",
     dataIndex: "item",
-    width: 150,
+    width: 200,
     render: (x) => x,
   },
   {
     title: "HSN Code",
-    dataIndex: "HSNCode",
+    dataIndex: "hsnCode",
     width: 100,
     render: (x) => x,
   },
@@ -94,19 +54,15 @@ const columns = [
 
 const OutwardPreview = () => {
   const invoiceRef = useRef();
-  const location = useLocation();
-  const { items, shipmentData } = location.state || {};
-  localStorage.setItem("items", JSON.stringify(items));
-  localStorage.setItem("shipmentData", JSON.stringify(shipmentData));
-  const localItems = JSON.parse(localStorage.getItem("items"));
-  const localShipmentData = JSON.parse(localStorage.getItem("shipmentData"));
-  const [itemsState, setItemsState] = useState();
-  const [shipmentDataState, setShipmentDataState] = useState();
+  const [searchParams] = useSearchParams();
+  const challanId = decryptString(searchParams.get("challan"));
 
-  useEffect(() => {
-    setItemsState(localItems);
-    setShipmentDataState(localShipmentData);
-  }, [localItems, localShipmentData]);
+  const { data: previewData, isLoading: isDetailsLoading } =
+    useGetDetailsForPreviewQuery({ challanId }, { skip: !challanId });
+
+  const companyImgURL = previewData?.companyDetails?.imgURL
+    ? `${BASE_URL}/uploads/companyImages/${previewData?.companyDetails?.imgURL}`
+    : Dummy;
 
   const handleDownload = () => {
     const element = invoiceRef.current;
@@ -205,29 +161,23 @@ const OutwardPreview = () => {
           DELIVERY CHALLAN - CUM - TRANSIT INVOICE
         </h4>
 
-        <div className="flex-row-space-between invoice-company">
+        <div className="flex-row-start invoice-company">
           <div className="invoice-company-image">
-            <img src={Dummy} alt="Company Logo" />
+            <img src={companyImgURL} alt="Company Logo" />
           </div>
           <div className="flex-col-start invoice-company-details">
-            <h3>PRANAV BRIGHT BARS PRIVATE LIMITED</h3>
-            <h5>MANUFACTURER & SUPPLIERS</h5>
+            <h3>{previewData?.companyDetails?.name?.toUpperCase() ?? ""}</h3>
+            <h5>{previewData?.companyDetails?.desc?.toUpperCase() ?? ""}</h5>
+            <p>{previewData?.companyDetails?.grades ?? ""}</p>
+            <p>{`Works : ${previewData?.companyDetails?.address1 ?? ""}`}</p>
             <p>
-              Bright Bars in EN-Series like EN-8/9/19/24/31/353 SAE8620 & Spring
-              Wires, M.S. Wire, Free Cutting Steels etc.
-            </p>
-            <p>
-              Works : Plot No. 27, Amgaon Industrial Area, Tal. Talasari, Dist.
-              Palghar, Maharashtra - 401 606.
-            </p>
-            <p>
-              REGD. OFF : 90, Ardeshir Dadi Street, 1st Floor, Mumbai,
-              Maharashtra - 400 004. Tel.: 022 2396 9594 Email :
-              pranavbrightbars@gmail.com
+              {`REGD. OFF : ${previewData?.companyDetails?.address2 ?? ""}`}
             </p>
             <h5>
-              GSTIN : 27AADCP1678H1Z3 • MSME : UDYAM - MH19 - 0263589 CIN No. :
-              U51420MH2003PTC143744{" "}
+              {`GSTIN : ${previewData?.companyDetails?.gstNo ?? ""} • MSME : ${
+                previewData?.companyDetails?.msme ?? ""
+              } CIN No. :
+              ${previewData?.companyDetails?.cinNo ?? ""}`}
             </h5>
           </div>
         </div>
@@ -237,52 +187,71 @@ const OutwardPreview = () => {
             <div className="flex-col-start transport-details-left">
               <div className="flex-col-start transport-address">
                 <span className="invoice-label">Bill To</span>
-                <h4>Gringotts Steelworks</h4>
-                <p>The Enchanted Yard,No. 13 Grindsteel Lane,</p>
-                <p>Knockturn Docks,London, Wizarding District 9</p>
-                <p>Phone no: 777777777777</p>
-                <p>GST no: 07HOG394MUGWZ</p>
+                <h4>{previewData?.billDetails?.name?.toUpperCase() ?? ""}</h4>
+                <p>{previewData?.billDetails?.address1 ?? ""}</p>
+                <p>{previewData?.billDetails?.address2 ?? ""}</p>
+                <p>{`Phone no: ${previewData?.billDetails?.mobile ?? ""}`}</p>
+                <p>{`GST no: ${previewData?.billDetails?.gstNo ?? ""}`}</p>
               </div>
               <div className="flex-col-start transport-address">
                 <span className="invoice-label">Ship To</span>
-                <h4>Gringotts Steelworks</h4>
-                <p>The Enchanted Yard,No. 13 Grindsteel Lane,</p>
-                <p>Knockturn Docks,London, Wizarding District 9</p>
-                <p>Phone no: 777777777777</p>
-                <p>GST no: 07HOG394MUGWZ</p>
+                <h4>{previewData?.shipDetails?.name?.toUpperCase() ?? ""}</h4>
+                <p>{previewData?.shipDetails?.address1 ?? ""}</p>
+                <p>{previewData?.shipDetails?.address2 ?? ""}</p>
+                <p>{`Phone no: ${previewData?.shipDetails?.mobile ?? ""}`}</p>
+                <p>{`GST no: ${previewData?.shipDetails?.gstNo ?? ""}`}</p>
               </div>
             </div>
             <div className="flex-col-start transport-details-right">
               <div>
                 <span className="invoice-label">Date</span>
-                <p>01/01/2025</p>
+                <p>
+                  {previewData?.entryDate
+                    ? moment(previewData?.entryDate).format("DD/MM/YYYY")
+                    : ""}
+                </p>
               </div>
 
               <div>
                 <span className="invoice-label">Challan no.</span>
-                <p>KHT/25-26/0001</p>
+                <p>{challanId}</p>
               </div>
               <div>
                 <span className="invoice-label">Broker</span>
-                <p>Ron Weasley</p>
+                <p>{previewData?.brokerDetails?.name ?? ""}</p>
               </div>
               <div>
                 <span className="invoice-label">Transport Name</span>
-                <p>Nimbus Freights</p>
+                <p>{previewData?.transportName ?? ""}</p>
               </div>
               <div>
                 <span className="invoice-label">Description</span>
-                <p>Payment term - 30 Days</p>
+                <p>{previewData?.shipmentDesc ?? ""}</p>
               </div>
             </div>
           </div>
           <br />
           <CustomTable
-            data={data}
+            data={previewData?.items || []}
             columns={columns}
             isPaginationAllowed={false}
             scrollAllwoed={false}
           />
+          <br />
+          <div className="flex-row-space-between">
+            <p className="flex-row-space-between">
+              <strong>Total Weight</strong>
+              <span>
+                {parseFloat(previewData?.totalWeight || 0).toFixed(2)} kg
+              </span>
+            </p>
+            <p className="flex-row-space-between">
+              <strong>Total Amount</strong>
+              <span>
+                {parseFloat(previewData?.totalAmount || 0).toFixed(2)}/-
+              </span>
+            </p>
+          </div>
         </div>
 
         <div className="flex-row-space-between payment-details">
@@ -291,24 +260,33 @@ const OutwardPreview = () => {
             <div className="flex-col-start bank-details">
               <p className="flex-row-space-between">
                 <strong>Bank name</strong>
-                <span>Union Bank of India</span>
+                <span>
+                  {previewData?.companyDetails?.paymentDetails?.bankName || ""}
+                </span>
               </p>
               <p className="flex-row-space-between">
                 <strong>Branch</strong>
-                <span>Bhuleshwar, Mumbai - 400 004</span>
+                <span>
+                  {previewData?.companyDetails?.paymentDetails?.branch || ""}
+                </span>
               </p>
               <p className="flex-row-space-between">
                 <strong>IFS code</strong>
-                <span>00000000000000</span>
+                <span>
+                  {previewData?.companyDetails?.paymentDetails?.ifsCode || ""}
+                </span>
               </p>
               <p className="flex-row-space-between">
                 <strong>Account</strong>
-                <span>UBIN0531600</span>
+                <span>
+                  {previewData?.companyDetails?.paymentDetails?.accountNumber ||
+                    ""}
+                </span>
               </p>
             </div>
           </div>
           <div className="flex-col-space-between payment-details-right">
-            <h4>For Pranav Bright Bars Pvt Ltd</h4>
+            <h4>{`For ${previewData?.companyDetails?.name ?? ""}`}</h4>
             <h4>Authorized Signatory</h4>
           </div>
         </div>

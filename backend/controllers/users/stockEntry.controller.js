@@ -2,8 +2,14 @@ import createActivityLog from "../../helpers/createActivityLog.js";
 import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
 import decryptData from "../../lib/decryptData.js";
 import StockEntry from "../../models/stockEntry.model.js";
+import Company from "../../models/company.model.js";
+import PartyRecord from "../../models/partyRecord.model.js";
+import Broker from "../../models/broker.model.js";
 import mongoose from "mongoose";
 import moment from "moment";
+import generateInvoicePDF from "../../helpers/generateInvoicePDF.js";
+import generateInvoiceDetails from "../../helpers/generateInvoiceDetails.js";
+import getSafeInvoiceFileName from "../../helpers/getSafeInvoiceFileName.js";
 
 export const getStockEntries = async (req, res) => {
   try {
@@ -329,6 +335,19 @@ export const addStockEntry = async (req, res) => {
       )}`
     );
 
+    // If type is outward then genarate invoice
+    if (type === "Outward") {
+      const resultObj = await generateInvoiceDetails(shipmentData?.challanNo);
+      const pdfData = {
+        challanId: shipmentData?.challanNo,
+        previewData: resultObj,
+      };
+      await generateInvoicePDF(
+        pdfData,
+        getSafeInvoiceFileName(shipmentData?.challanNo)
+      );
+    }
+
     return res.status(200).json({ message: "Stock record added successfully" });
   } catch (error) {
     console.log("Error in add stock entry record controller:", error.message);
@@ -354,6 +373,24 @@ export const getStockEntryDetails = async (req, res) => {
     return res.status(200).send(stockEntryRecord);
   } catch (error) {
     console.log("Error in stock entry record controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getDetailsForPreview = async (req, res) => {
+  try {
+    const { payload } = req.query;
+    const { challanId = undefined } = decryptUrlPayload(payload);
+
+    if (!challanId) {
+      return res.status(400).json({ message: "Challan ID is missing" });
+    }
+
+    const resultObj = await generateInvoiceDetails(challanId);
+
+    return res.status(200).send(resultObj);
+  } catch (error) {
+    console.log("Error in details for preview controller:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

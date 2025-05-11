@@ -32,6 +32,7 @@ import { getAsOption } from "../controllers/users/option.controller.js";
 import {
   addStockEntry,
   deleteStockEntry,
+  getDetailsForPreview,
   getStockEntries,
   getStockEntryDetails,
   updateStockEntry,
@@ -78,6 +79,7 @@ router.get("/getAsOption", authenticate, getAsOption);
 router.get("/getStockEntries", authenticate, getStockEntries);
 router.post("/addStockEntry", authenticate, addStockEntry);
 router.get("/getStockEntryDetails", authenticate, getStockEntryDetails);
+router.get("/getDetailsForPreview", authenticate, getDetailsForPreview);
 router.put("/updateStockEntry/:recordId", authenticate, updateStockEntry);
 router.delete("/deleteStockEntry/:recordId", authenticate, deleteStockEntry);
 

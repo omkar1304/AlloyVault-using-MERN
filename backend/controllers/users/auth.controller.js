@@ -9,7 +9,7 @@ import {
 import createActivityLog from "../../helpers/createActivityLog.js";
 import generateOTP from "../../helpers/generateOTP.js";
 import sendEmail from "../../lib/sendEmail.js";
-import sendOTPTemplate from "../../emailTemplates/sendOTPTemplate.js";
+import sendOTPTemplate from "../../templates/sendOTPTemplate.js";
 
 export const register = async (req, res) => {
   try {
