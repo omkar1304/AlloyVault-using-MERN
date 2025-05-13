@@ -36,9 +36,9 @@ const getTableColumns = ({ handleDeleteStock }) => {
       title: "Customer",
       dataIndex: "customer",
       width: 100,
-      ellipsis: {
-        showTitle: false,
-      },
+      // ellipsis: {
+      //   showTitle: false,
+      // },
       render: (x) => x,
     },
     {

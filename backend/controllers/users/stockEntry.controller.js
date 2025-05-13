@@ -346,6 +346,10 @@ export const addStockEntry = async (req, res) => {
         pdfData,
         getSafeInvoiceFileName(shipmentData?.challanNo)
       );
+      await createActivityLog(
+        userId,
+        `Challan - ${shipmentData?.challanNo} invoice generated successfully!`
+      );
     }
 
     return res.status(200).json({ message: "Stock record added successfully" });

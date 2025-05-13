@@ -4,7 +4,11 @@ import EnabledSwitchComponent from "../optionComponents/EnabledSwitchComponent";
 import getFormattedDate from "../../../../helpers/getFormattedDate";
 import EditFieldComponent from "../../../../component/EditFieldComponent";
 
-const getTableColumns = ({ updateOptionField, isOptionFieldUpdating, handleDeleteOption }) => {
+const getTableColumns = ({
+  updateOptionField,
+  isOptionFieldUpdating,
+  handleDeleteOption,
+}) => {
   return [
     {
       title: "Name",
@@ -16,6 +20,19 @@ const getTableColumns = ({ updateOptionField, isOptionFieldUpdating, handleDelet
           recordId={row?._id}
           fieldName={"name"}
           fieldValue={row?.name}
+        />
+      ),
+    },
+    {
+      title: "Prefix",
+      width: 50,
+      render: (row) => (
+        <EditFieldComponent
+          updateFunction={updateOptionField}
+          updateFunctionLoader={isOptionFieldUpdating}
+          recordId={row?._id}
+          fieldName={"prefix"}
+          fieldValue={row?.prefix}
         />
       ),
     },

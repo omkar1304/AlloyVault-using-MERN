@@ -26,7 +26,7 @@ const CustomTable = ({
       {(data.length || isLoading) && (
         <div className="custom-table-container">
           <Table
-            scroll={scrollAllwoed && { x: 1500}}
+            scroll={scrollAllwoed && { x: 1000}}
             columns={columns}
             dataSource={data}
             loading={isLoading}
