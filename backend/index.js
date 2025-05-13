@@ -25,8 +25,10 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
-// To serve static files
+
+//* To serve static files
 app.use("/uploads/companyImages", express.static("./uploads/companyImages"));
+app.use("/uploads/invoices", express.static("./uploads/invoices"));
 
 //* Routes
 app.use("/api/users", userRouter);

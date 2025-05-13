@@ -1,4 +1,6 @@
 import "./App.css";
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { ConfigProvider } from "antd";
 import {
   BrowserRouter as Router,
