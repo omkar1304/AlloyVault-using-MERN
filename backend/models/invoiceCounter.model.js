@@ -8,7 +8,7 @@ const invoiceCounterSchema = mongoose.Schema(
       required: true,
     },
     financialYear: { type: String, required: true },
-    counter: { type: Number, default: 0 },
+    counter: { type: Number, default: 1 },
   },
   { timestamps: true }
 );

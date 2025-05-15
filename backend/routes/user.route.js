@@ -41,6 +41,7 @@ import {
   getCompaniesAsOption,
   getCompanyDetails,
 } from "../controllers/users/company.controller.js";
+import { getInvoiceNumber } from "../controllers/users/invoiceCounter.controller.js";
 
 const router = express.Router();
 
@@ -86,5 +87,8 @@ router.delete("/deleteStockEntry/:recordId", authenticate, deleteStockEntry);
 // Company Routes
 router.get("/getCompaniesAsOption", authenticate, getCompaniesAsOption);
 router.get("/getCompanyDetails", authenticate, getCompanyDetails);
+
+// Invoice Counter Routes
+router.get("/getInvoiceNumber", authenticate, getInvoiceNumber)
 
 export default router;

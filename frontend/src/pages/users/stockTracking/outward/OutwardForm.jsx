@@ -36,6 +36,7 @@ import CustomTable from "../../../../component/CustomTable";
 import getItemColumns from "./getItemColumns";
 import dayjs from "dayjs";
 import encryptString from "../../../../helpers/encryptString";
+import { useGetInvoiceNumberQuery } from "../../../../redux/api/user/invoiceCounterApiSlice";
 
 const OutwardForm = () => {
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ const OutwardForm = () => {
   const [shipmentForm] = Form.useForm();
   const [itemForm] = Form.useForm();
   const company = useWatch("company", shipmentForm);
+  const branch = useWatch("branch", shipmentForm);
 
   const { data: stockEntryDetails, refetch: fetchStockEntryDetails } =
     useGetStockEntryDetailsQuery({ recordId }, { skip: !recordId });
@@ -62,6 +64,8 @@ const OutwardForm = () => {
     useGetPartyRecordsAsOptionQuery();
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
     useGetAsOptionQuery({ type: 1, comapnyId: company }, { skip: !company });
+  const { data: invoiceObj, isLoading: isInvoiceNumberLoading } =
+    useGetInvoiceNumberQuery({ branchId: branch }, { skip: !branch });
   const { data: outwardTypeOptions, isLoading: isOutwardTypeOptionsLoading } =
     useGetAsOptionQuery({ type: 7 });
   const { data: materialTypeOptions, isLoading: isMaterialTypeOptionsLoading } =
@@ -75,12 +79,7 @@ const OutwardForm = () => {
   const [updateStockEntry, { isLoading: isStockEntrtyUpdating }] =
     useUpdateStockEntryMutation();
 
-  useEffect(() => {
-    if (recordId) {
-      fetchStockEntryDetails();
-    }
-  }, [recordId]);
-
+  // Update Form
   useEffect(() => {
     if (stockEntryDetails) {
       shipmentForm.setFieldsValue({
@@ -90,6 +89,13 @@ const OutwardForm = () => {
       itemForm.setFieldsValue(stockEntryDetails);
     }
   }, [stockEntryDetails]);
+
+  // Invoice Counter
+  useEffect(() => {
+    if (invoiceObj) {
+      shipmentForm.setFieldValue("challanNo", invoiceObj?.invoiceNumber);
+    }
+  }, [invoiceObj]);
 
   const handleShipmentSubmit = (values) => {
     setStep((prev) => prev + 1);
@@ -321,7 +327,7 @@ const OutwardForm = () => {
                           },
                         ]}
                       >
-                        <Input size="large" placeholder="" />
+                        <Input size="large" placeholder="" disabled />
                       </Form.Item>
                     </Col>
 
@@ -824,7 +830,10 @@ const OutwardForm = () => {
                           },
                         ]}
                       >
-                        <Input size="large" placeholder="" />
+                        <Input
+                          size="large"
+                          placeholder=""
+                        />
                       </Form.Item>
                     </Col>
 
