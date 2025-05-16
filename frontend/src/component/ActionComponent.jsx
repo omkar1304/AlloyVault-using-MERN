@@ -1,10 +1,12 @@
-import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
+import { FaEye, FaRegEdit, FaRegEye, FaRegTrashAlt } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoIosSend } from "react-icons/io";
 import { MdLockReset, MdEdit } from "react-icons/md";
 import { HiOutlineMailOpen } from "react-icons/hi";
 import { GrShieldSecurity } from "react-icons/gr";
+import { LuEye } from "react-icons/lu";
+
 
 const iconStyle = {
   cursor: "pointer",
@@ -15,6 +17,10 @@ export const AddIcon = ({ size = 20, color = "#1F2937", ...rest }) => (
 );
 export const EditIcon = ({ size = 20, color = "#1F2937", ...rest }) => (
   <FaRegEdit style={{ ...iconStyle }} size={size} color={color} {...rest} />
+);
+
+export const ViewIcon = ({ size = 20, color = "#1F2937", ...rest }) => (
+  <LuEye  style={{ ...iconStyle }} size={size} color={color} {...rest} />
 );
 
 export const EditFieldIcon = ({ size = 20, color = "#1F2937", ...rest }) => (

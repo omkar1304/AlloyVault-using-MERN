@@ -9,6 +9,7 @@ import generateInvoiceDetails from "../../helpers/generateInvoiceDetails.js";
 import getSafeInvoiceFileName from "../../helpers/getSafeInvoiceFileName.js";
 import getCurrentFinancialYear from "../../helpers/getCurrentFinancialYear.js";
 import InvoiceCounter from "../../models/invoiceCounter.model.js";
+import ChallanRecord from "../../models/challanRecord.model.js";
 
 export const getStockEntries = async (req, res) => {
   try {
@@ -298,7 +299,12 @@ export const getStockEntries = async (req, res) => {
 export const addStockEntry = async (req, res) => {
   try {
     const payload = decryptData(req.body.payload);
-    const { shipmentData, items = [], type = undefined } = payload;
+    const {
+      shipmentData,
+      items = [],
+      type = undefined,
+      totalWeight = 0,
+    } = payload;
     const { userId } = req?.user;
 
     if (!type) {
@@ -342,10 +348,25 @@ export const addStockEntry = async (req, res) => {
         challanId: shipmentData?.challanNo,
         previewData: resultObj,
       };
-      await generateInvoicePDF(
+      const safeFileName = await generateInvoicePDF(
         pdfData,
         getSafeInvoiceFileName(shipmentData?.challanNo)
       );
+      const challanRecord = await ChallanRecord({
+        entryDate: shipmentData?.entryDate,
+        challanNo: shipmentData?.challanNo,
+        challanFile: safeFileName,
+        branch: shipmentData?.branch,
+        party: shipmentData?.billTo,
+        outwardType: shipmentData?.outwardType,
+        totalWeight,
+        createdBy: userId,
+      }).save();
+      if (!challanRecord) {
+        return res
+          .status(500)
+          .json({ message: "Error in creating challan record" });
+      }
       await createActivityLog(
         userId,
         `Challan - ${shipmentData?.challanNo} invoice generated successfully!`

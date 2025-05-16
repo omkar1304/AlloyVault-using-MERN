@@ -140,6 +140,7 @@ const OutwardForm = () => {
         shipmentData: shipmentForm.getFieldsValue(),
         items,
         type: "Outward",
+        totalWeight
       }).unwrap();
       toast.success("Record added successfully!");
       navigate(

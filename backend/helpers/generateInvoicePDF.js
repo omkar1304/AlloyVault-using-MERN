@@ -9,7 +9,9 @@ const __dirname = dirname(__filename);
 
 const generateInvoicePDF = async (data, fileName) => {
   try {
-    const safeFileName = fileName.endsWith(".pdf") ? fileName : `${fileName}.pdf`;
+    const safeFileName = fileName.endsWith(".pdf")
+      ? fileName
+      : `${fileName}.pdf`;
     const html = generateInvoiceHTML(data);
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -26,10 +28,11 @@ const generateInvoicePDF = async (data, fileName) => {
       printBackground: true,
     });
     await browser.close();
-    console.log("Invoice generated successfully!")
+    console.log("Invoice generated successfully!");
+    return safeFileName;
   } catch (error) {
     console.log("Error in generating invoide PDF", error);
   }
 };
 
-export default generateInvoicePDF
+export default generateInvoicePDF;

@@ -43,6 +43,10 @@ import {
 } from "../controllers/users/company.controller.js";
 import { getInvoiceNumber } from "../controllers/users/invoiceCounter.controller.js";
 import { getBranchAsOption } from "../controllers/users/branch.controller.js";
+import {
+  deleteChallanRecord,
+  getChallanRecords,
+} from "../controllers/users/challanRecord.controller.js";
 
 const router = express.Router();
 
@@ -93,6 +97,14 @@ router.get("/getCompaniesAsOption", authenticate, getCompaniesAsOption);
 router.get("/getCompanyDetails", authenticate, getCompanyDetails);
 
 // Invoice Counter Routes
-router.get("/getInvoiceNumber", authenticate, getInvoiceNumber)
+router.get("/getInvoiceNumber", authenticate, getInvoiceNumber);
+
+// Challan Record Routes
+router.get("/getChallanRecords", authenticate, getChallanRecords);
+router.delete(
+  "/deleteChallanRecord/:recordId",
+  authenticate,
+  deleteChallanRecord
+);
 
 export default router;
