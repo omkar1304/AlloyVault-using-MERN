@@ -31,6 +31,7 @@ import dayjs from "dayjs";
 import ItemModal from "./ItemModal";
 import { AddIcon } from "../../../../component/ActionComponent";
 import AddCompanyModal from "../../companyDetails/AddCompanyModal";
+import { useGetBranchAsOptionQuery } from "../../../../redux/api/user/branchApiSlice";
 
 const InwardForm = () => {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const InwardForm = () => {
   const { data: partyOptions, isLoading: isPartyOptionsLoading } =
     useGetPartyRecordsAsOptionQuery();
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
-    useGetAsOptionQuery({ type: 1 });
+    useGetBranchAsOptionQuery();
   const { data: inwardTypeOptions, isLoading: isInwardTypeOptionsLoading } =
     useGetAsOptionQuery({ type: 2 });
   const { data: materialTypeOptions, isLoading: isMaterialTypeOptionsLoading } =

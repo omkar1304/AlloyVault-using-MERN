@@ -1,9 +1,7 @@
 import createActivityLog from "../../helpers/createActivityLog.js";
 import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
 import Options from "./../../models/options.model.js";
-import InvoiceCounter from "../../models/invoiceCounter.model.js";
 import decryptData from "../../lib/decryptData.js";
-import getCurrentFinancialYear from "../../helpers/getCurrentFinancialYear.js";
 
 const optionMap = {
   1: "Branch",
@@ -119,14 +117,6 @@ export const addOption = async (req, res) => {
 
     if (!newOption) {
       return res.status(500).json({ message: "Internal Server Error" });
-    }
-
-    // If option is branch then create invoice counter
-    if (type === 1) {
-      await InvoiceCounter({
-        branchId: newOption._id,
-        financialYear: getCurrentFinancialYear(),
-      }).save();
     }
 
     await createActivityLog(

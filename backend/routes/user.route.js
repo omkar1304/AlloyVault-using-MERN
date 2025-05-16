@@ -42,6 +42,7 @@ import {
   getCompanyDetails,
 } from "../controllers/users/company.controller.js";
 import { getInvoiceNumber } from "../controllers/users/invoiceCounter.controller.js";
+import { getBranchAsOption } from "../controllers/users/branch.controller.js";
 
 const router = express.Router();
 
@@ -75,6 +76,9 @@ router.delete("/deletePartyRecord/:recordId", authenticate, deletePartyRecord);
 
 // Options Routes ->
 router.get("/getAsOption", authenticate, getAsOption);
+
+// Branch Routes ->
+router.get("/getBranchAsOption", authenticate, getBranchAsOption);
 
 // Stock Entry Routes ->
 router.get("/getStockEntries", authenticate, getStockEntries);

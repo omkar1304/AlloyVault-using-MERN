@@ -15,6 +15,7 @@ import { DatePicker, Select } from "antd";
 import filterOption from "../../../../helpers/filterOption";
 import moment from "moment";
 import toast from "react-hot-toast";
+import { useGetBranchAsOptionQuery } from "../../../../redux/api/user/branchApiSlice";
 
 const { RangePicker } = DatePicker;
 
@@ -23,19 +24,17 @@ const InwardList = () => {
   const [query, setQuery] = useState({
     page: 1,
     size: 25,
-    type: "Inward"
+    type: "Inward",
   });
   const { data, isLoading, refetch } = useGetStockEntriesQuery({ ...query });
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
-    useGetAsOptionQuery({ type: 1 });
+    useGetBranchAsOptionQuery();
   const { data: gradeOptions, isLoading: isGradeOptionsLoading } =
     useGetAsOptionQuery({ type: 4 });
   const { data: shapeOptions, isLoading: isShapeOptionsLoading } =
     useGetAsOptionQuery({ type: 6 });
-  const {
-      data: inwardTypeOptions,
-      isLoading: isInwardTypeOptionsLoading,
-    } = useGetAsOptionQuery({ type: 2 });
+  const { data: inwardTypeOptions, isLoading: isInwardTypeOptionsLoading } =
+    useGetAsOptionQuery({ type: 2 });
   const [deleteStockEntry, { isLoading: isStockEntryDeleting }] =
     useDeleteStockEntryMutation();
 

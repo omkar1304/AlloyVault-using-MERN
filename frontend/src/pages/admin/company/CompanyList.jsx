@@ -17,7 +17,6 @@ const CompanyList = () => {
     page: 1,
     size: 25,
   });
-
   const {
     data: companies,
     isLoading: isCompaniesLoading,

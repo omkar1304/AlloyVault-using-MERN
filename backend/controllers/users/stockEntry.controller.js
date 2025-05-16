@@ -172,7 +172,7 @@ export const getStockEntries = async (req, res) => {
             { $limit: size },
             {
               $lookup: {
-                from: "options",
+                from: "branches",
                 localField: "branch",
                 foreignField: "_id",
                 as: "branchInfo",

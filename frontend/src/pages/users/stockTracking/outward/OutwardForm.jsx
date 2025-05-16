@@ -37,6 +37,7 @@ import getItemColumns from "./getItemColumns";
 import dayjs from "dayjs";
 import encryptString from "../../../../helpers/encryptString";
 import { useGetInvoiceNumberQuery } from "../../../../redux/api/user/invoiceCounterApiSlice";
+import { useGetBranchAsOptionQuery } from "../../../../redux/api/user/branchApiSlice";
 
 const OutwardForm = () => {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ const OutwardForm = () => {
   const { data: partyOptions, isLoading: isPartyOptionsLoading } =
     useGetPartyRecordsAsOptionQuery();
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
-    useGetAsOptionQuery({ type: 1, comapnyId: company }, { skip: !company });
+    useGetBranchAsOptionQuery({ comapnyId: company }, { skip: !company });
   const { data: invoiceObj, isLoading: isInvoiceNumberLoading } =
     useGetInvoiceNumberQuery({ branchId: branch }, { skip: !branch });
   const { data: outwardTypeOptions, isLoading: isOutwardTypeOptionsLoading } =
@@ -830,10 +831,7 @@ const OutwardForm = () => {
                           },
                         ]}
                       >
-                        <Input
-                          size="large"
-                          placeholder=""
-                        />
+                        <Input size="large" placeholder="" />
                       </Form.Item>
                     </Col>
 

@@ -9,7 +9,7 @@ const getTableColumns = ({ handleDeleteBranch }) => {
   const navigate = useNavigate();
   return [
     {
-      title: "Company Name",
+      title: "Branch Name",
       dataIndex: "name",
       width: 150,
       render: (x) => x,

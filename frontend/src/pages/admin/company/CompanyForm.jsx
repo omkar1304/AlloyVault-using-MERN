@@ -12,7 +12,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { PageHeader, PageSubHeader } from "../../../component/Headers";
 import CustomButton from "../../../component/CustomButton";
-import { useGetAsOptionQuery } from "../../../redux/api/user/optionsApiSlice";
 import filterOption from "../../../helpers/filterOption";
 import toast from "react-hot-toast";
 import {
@@ -24,6 +23,7 @@ import getFlattenObject from "../../../helpers/flattenObject";
 import { BASE_URL } from "../../../redux/constant";
 import { EditFieldIcon } from "../../../component/ActionComponent";
 import { BsUpload } from "react-icons/bs";
+import { useGetBranchAsOptionQuery } from "../../../redux/api/admin/branchApiSlice";
 
 const CompanyForm = () => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const CompanyForm = () => {
   const [form] = Form.useForm();
 
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
-    useGetAsOptionQuery({ type: 1 });
+    useGetBranchAsOptionQuery({});
   const {
     data: companyDetails,
     isLoading: isCompanyDetailsLoading,
@@ -215,19 +215,13 @@ const CompanyForm = () => {
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-              <Form.Item
-                label="Description"
-                name="desc"
-              >
+              <Form.Item label="Description" name="desc">
                 <Input size="large" block placeholder="" />
               </Form.Item>
             </Col>
 
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-              <Form.Item
-                label="Grades"
-                name="grades"
-              >
+              <Form.Item label="Grades" name="grades">
                 <Input size="large" block placeholder="" />
               </Form.Item>
             </Col>

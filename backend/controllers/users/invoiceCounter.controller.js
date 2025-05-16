@@ -1,5 +1,5 @@
 import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
-import Option from "../../models/options.model.js";
+import Branch from "../../models/branch.model.js";
 import getCurrentFinancialYear from "../../helpers/getCurrentFinancialYear.js";
 import InvoiceCounter from "../../models/invoiceCounter.model.js";
 
@@ -8,7 +8,7 @@ export const getInvoiceNumber = async (req, res) => {
     const { payload } = req.query;
     const { branchId } = decryptUrlPayload(payload);
 
-    const branch = await Option.findById(branchId);
+    const branch = await Branch.findById(branchId);
     if (!branch) return res.status(404).json({ message: "Branch not found" });
 
     const financialYear = getCurrentFinancialYear();

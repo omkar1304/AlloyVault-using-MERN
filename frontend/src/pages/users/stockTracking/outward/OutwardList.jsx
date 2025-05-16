@@ -15,6 +15,7 @@ import { DatePicker, Select } from "antd";
 import filterOption from "../../../../helpers/filterOption";
 import moment from "moment";
 import toast from "react-hot-toast";
+import { useGetBranchAsOptionQuery } from "../../../../redux/api/user/branchApiSlice";
 
 const { RangePicker } = DatePicker;
 
@@ -23,19 +24,17 @@ const OutwardList = () => {
   const [query, setQuery] = useState({
     page: 1,
     size: 25,
-    type: "Outward"
+    type: "Outward",
   });
   const { data, isLoading, refetch } = useGetStockEntriesQuery({ ...query });
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
-    useGetAsOptionQuery({ type: 1 });
+    useGetBranchAsOptionQuery({});
   const { data: gradeOptions, isLoading: isGradeOptionsLoading } =
     useGetAsOptionQuery({ type: 4 });
   const { data: shapeOptions, isLoading: isShapeOptionsLoading } =
     useGetAsOptionQuery({ type: 6 });
-  const {
-    data: outwardTypeOptions,
-    isLoading: isOutwardTypeOptionsLoading,
-  } = useGetAsOptionQuery({ type: 7 });
+  const { data: outwardTypeOptions, isLoading: isOutwardTypeOptionsLoading } =
+    useGetAsOptionQuery({ type: 7 });
   const [deleteStockEntry, { isLoading: isStockEntryDeleting }] =
     useDeleteStockEntryMutation();
 
@@ -73,7 +72,8 @@ const OutwardList = () => {
         <div>
           <PageHeader>Outward Material</PageHeader>
           <PageSubHeader>
-          Track stock dispatched to customers, other branches, or job work units.
+            Track stock dispatched to customers, other branches, or job work
+            units.
           </PageSubHeader>
         </div>
         <CustomButton
@@ -228,4 +228,4 @@ const OutwardList = () => {
     </div>
   );
 };
-export default OutwardList
+export default OutwardList;

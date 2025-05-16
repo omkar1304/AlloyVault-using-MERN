@@ -4,7 +4,7 @@ const invoiceCounterSchema = mongoose.Schema(
   {
     branchId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Option",
+      ref: "Branch",
       required: true,
     },
     financialYear: { type: String, required: true },

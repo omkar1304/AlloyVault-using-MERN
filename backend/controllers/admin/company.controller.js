@@ -40,7 +40,7 @@ export const getCompanies = async (req, res) => {
             { $limit: size },
             {
               $lookup: {
-                from: "options",
+                from: "branches",
                 localField: "branches",
                 foreignField: "_id",
                 as: "branchesInfo",
