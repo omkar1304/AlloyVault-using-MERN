@@ -29,6 +29,14 @@ import {
   updateCompany,
 } from "../controllers/admin/company.controller.js";
 import uploadCompanyImg from "../middleware/uploadCompanyImg.middleware.js";
+import {
+  addBranch,
+  deleteBranch,
+  getBranchAsOption,
+  getBranchDetails,
+  getBranches,
+  updateBranch,
+} from "../controllers/admin/branch.controller.js";
 
 const router = express.Router();
 
@@ -61,6 +69,14 @@ router.put(
   updateCompany
 );
 router.delete("/deleteCompany/:recordId", authenticate, deleteCompany);
+
+// Branch routes
+router.get("/getBranches", authenticate, getBranches);
+router.get("/getBranchAsOption", authenticate, getBranchAsOption);
+router.get("/getBranchDetails", authenticate, getBranchDetails);
+router.post("/addBranch", authenticate, addBranch);
+router.put("/updateBranch/:recordId", authenticate, updateBranch);
+router.delete("/deleteBranch/:recordId", authenticate, deleteBranch);
 
 // Options routes
 router.get("/getOptions", authenticate, getOptions);

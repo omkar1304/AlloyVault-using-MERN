@@ -36,14 +36,14 @@ const AdminDrawer = ({ module, collapsed, setCollapsed }) => {
     getItem("Company", "company", <GoOrganization />, null, () =>
       navigate("/admin/company")
     ),
+    getItem("Branch", "branch", <IoGitBranchOutline />, null, () =>
+      navigate("/admin/branch")
+    ),
     getItem(
       "Options",
       "options",
       <IoOptionsSharp />,
       [
-        getItem("Branch", "branch", <IoGitBranchOutline />, null, () =>
-          navigate("/admin/branch")
-        ),
         getItem(
           "Inward Type",
           "inwardType",
@@ -58,12 +58,8 @@ const AdminDrawer = ({ module, collapsed, setCollapsed }) => {
           null,
           () => navigate("/admin/outwardType")
         ),
-        getItem(
-          "Material Type",
-          "materialType",
-          <VscSymbolClass />,
-          null,
-          () => navigate("/admin/materialType")
+        getItem("Material Type", "materialType", <VscSymbolClass />, null, () =>
+          navigate("/admin/materialType")
         ),
         getItem("Grade", "grade", <MdOutlineGrade />, null, () =>
           navigate("/admin/grade")

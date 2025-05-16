@@ -13,7 +13,6 @@ import { Toaster } from "react-hot-toast";
 import CustomHeader from "../../../component/CustomHeader";
 import CustomResult from "../../../component/CustomResult";
 import { useGetAuthenticatedUserQuery } from "../../../redux/api/user/authApiSlice";
-import Branch from "../options/branch";
 import Grade from "../options/grade";
 import PartyType from "../options/partyType";
 import Shape from "../options/shape";
@@ -21,6 +20,7 @@ import Company from "../company";
 import InwardType from "../options/inwardType";
 import MaterialType from "../options/materialType";
 import OutwardType from "../options/outwardType";
+import Branch from "../branch";
 
 const { Content } = Layout;
 
@@ -28,9 +28,9 @@ const adminModule = {
   users: <Users />,
   roles: <Roles />,
   company: <Company />,
+  branch: <Branch />,
   activityLogs: <ActivityLogs />,
   emailLogs: <EmailLogs />,
-  branch: <Branch />,
   inwardType: <InwardType />,
   outwardType: <OutwardType />,
   materialType: <MaterialType />,
@@ -68,6 +68,8 @@ const AdminComponent = () => {
     if (userData && !/super admin/i.test(userData?.roleName)) {
       return navigate(import.meta.env.VITE_INITIAL_ROUTE);
     }
+
+
   }, [userData]);
 
   const Main = ({ module }) => {

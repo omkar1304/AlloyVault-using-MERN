@@ -14,7 +14,9 @@ const apiSlice = createApi({
     "getOptionsUserSide",
     "getUsers",
     "getUsersDetails",
-    "getCompanies"
+    "getCompanies",
+    "getBranches",
+    "getBranchAsOption",
   ],
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,

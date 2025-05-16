@@ -7,6 +7,8 @@ import moment from "moment";
 import generateInvoicePDF from "../../helpers/generateInvoicePDF.js";
 import generateInvoiceDetails from "../../helpers/generateInvoiceDetails.js";
 import getSafeInvoiceFileName from "../../helpers/getSafeInvoiceFileName.js";
+import getCurrentFinancialYear from "../../helpers/getCurrentFinancialYear.js";
+import InvoiceCounter from "../../models/invoiceCounter.model.js";
 
 export const getStockEntries = async (req, res) => {
   try {
@@ -332,8 +334,9 @@ export const addStockEntry = async (req, res) => {
       )}`
     );
 
-    // If type is outward then genarate invoice
+    // If type is outward then genarate invoice PDF and update invoice counter
     if (type === "Outward") {
+      // Step 1 - Generate PDF
       const resultObj = await generateInvoiceDetails(shipmentData?.challanNo);
       const pdfData = {
         challanId: shipmentData?.challanNo,
@@ -347,6 +350,24 @@ export const addStockEntry = async (req, res) => {
         userId,
         `Challan - ${shipmentData?.challanNo} invoice generated successfully!`
       );
+
+      // Step 2 - Update Counter for given branch
+      const financialYear = getCurrentFinancialYear();
+      const counterDoc = await InvoiceCounter.findOneAndUpdate(
+        {
+          branchId: shipmentData?.branch,
+          financialYear,
+        },
+        {
+          $inc: { counter: 1 },
+        }
+      );
+
+      if (!counterDoc) {
+        return res
+          .status(404)
+          .json({ message: "Given counter not found for branch" });
+      }
     }
 
     return res.status(200).json({ message: "Stock record added successfully" });
