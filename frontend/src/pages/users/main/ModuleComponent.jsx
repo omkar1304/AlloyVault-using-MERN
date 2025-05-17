@@ -5,9 +5,9 @@ import CompanyDetails from "../companyDetails/index";
 import StockSummary from "../stockSummary/index";
 import JobWork from "../jobWork/index";
 import ProcessingUnit from "../processingUnit/index";
-import History from "../history/index";
 import Dashboard from "../dashboard";
 import Challan from "../challanList";
+import TransportDetails from "../transportDetails/index";
 
 export const ModuleComponents = {
   //* Dashbord
@@ -81,11 +81,11 @@ export const ModuleComponents = {
     index: 7,
   },
 
-  //* History
-  history: {
-    component: History,
-    pageTitle: "History",
-    pageKey: "history",
+  //* Transport Details
+  transportDetails: {
+    component: TransportDetails,
+    pageTitle: "Transport Details",
+    pageKey: "transportDetails",
     index: 8,
   },
 };

@@ -1,30 +1,9 @@
-import {
-  Breadcrumb,
-  Col,
-  Divider,
-  Form,
-  Input,
-  Row,
-  Select,
-  Switch,
-  Upload,
-} from "antd";
-import React, { useEffect, useState } from "react";
+import { Breadcrumb, Col, Form, Input, Row, Switch } from "antd";
+import { useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { PageHeader, PageSubHeader } from "../../../component/Headers";
 import CustomButton from "../../../component/CustomButton";
-import { useGetAsOptionQuery } from "../../../redux/api/user/optionsApiSlice";
-import filterOption from "../../../helpers/filterOption";
 import toast from "react-hot-toast";
-import {
-  useAddCompanyMutation,
-  useGetCompanyDetailsQuery,
-  useUpdateCompanyMutation,
-} from "../../../redux/api/admin/companyApiSlice";
-import getFlattenObject from "../../../helpers/flattenObject";
-import { BASE_URL } from "../../../redux/constant";
-import { EditFieldIcon } from "../../../component/ActionComponent";
-import { BsUpload } from "react-icons/bs";
 import {
   useAddBranchMutation,
   useGetBranchDetailsQuery,

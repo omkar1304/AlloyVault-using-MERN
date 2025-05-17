@@ -68,8 +68,8 @@ const perms = [
     order: 8,
   },
   {
-    name: "History",
-    key: "history",
+    name: "Transport Details",
+    key: "transportDetails",
     access: true,
     order: 9,
   },

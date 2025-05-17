@@ -48,6 +48,7 @@ import {
   deleteChallanRecord,
   getChallanRecords,
 } from "../controllers/users/challanRecord.controller.js";
+import { addTransport, deleteTransport, getTransportAsOption, getTransportDetails, getTransports, updateTransport } from "../controllers/users/transport.controller.js";
 
 const router = express.Router();
 
@@ -108,5 +109,13 @@ router.delete(
   authenticate,
   deleteChallanRecord
 );
+
+// Transport Routes
+router.get("/getTransports", authenticate, getTransports);
+router.get("/getTransportAsOption", authenticate, getTransportAsOption);
+router.get("/getTransportDetails", authenticate, getTransportDetails);
+router.post("/addTransport", authenticate, addTransport);
+router.put("/updateTransport/:recordId", authenticate, updateTransport);
+router.delete("/deleteTransport/:recordId", authenticate, deleteTransport);
 
 export default router;

@@ -17,7 +17,9 @@ const apiSlice = createApi({
     "getCompanies",
     "getBranches",
     "getBranchAsOption",
-    "getChallanRecords"
+    "getChallanRecords",
+    "getTransports",
+    "getTransportAsOption",
   ],
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
