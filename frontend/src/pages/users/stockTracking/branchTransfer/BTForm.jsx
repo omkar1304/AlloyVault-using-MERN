@@ -9,14 +9,13 @@ import {
   Select,
   Steps,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   useAddStockEntryForBTMutation,
   useGetStockEntryDetailsQuery,
   useUpdateStockEntryMutation,
 } from "../../../../redux/api/user/stockEntryApiSlice";
-import { useGetPartyRecordsAsOptionQuery } from "../../../../redux/api/user/partyRecordApiSlice";
 import { useGetAsOptionQuery } from "../../../../redux/api/user/optionsApiSlice";
 import toast from "react-hot-toast";
 import AddCompanyModal from "../../companyDetails/AddCompanyModal";
@@ -24,20 +23,18 @@ import ItemModal from "./ItemModal";
 import filterOption from "../../../../helpers/filterOption";
 import CustomButton from "../../../../component/CustomButton";
 import { PageHeader, PageSubHeader } from "../../../../component/Headers";
-import { AddIcon } from "../../../../component/ActionComponent";
 import { GoOrganization } from "react-icons/go";
 import { BsBoxSeam } from "react-icons/bs";
 import { TbListDetails } from "react-icons/tb";
 import { useGetCompaniesAsOptionQuery } from "../../../../redux/api/user/companyApiSlice";
-import { useGetBrokersAsOptionQuery } from "../../../../redux/api/user/brokerApiSlice";
 import AddBrokerModal from "../../companyDetails/AddBrokerModal";
 import { useWatch } from "antd/es/form/Form";
 import CustomTable from "../../../../component/CustomTable";
 import getItemColumns from "./getItemColumns";
 import dayjs from "dayjs";
-import encryptString from "../../../../helpers/encryptString";
 import { useGetInvoiceNumberQuery } from "../../../../redux/api/user/invoiceCounterApiSlice";
 import { useGetBranchAsOptionQuery } from "../../../../redux/api/user/branchApiSlice";
+import { useGetTransportAsOptionQuery } from "../../../../redux/api/user/transportApiSlice";
 
 const getBranchForInvoice = ({
   btType,
@@ -77,10 +74,6 @@ const BTForm = () => {
     useGetStockEntryDetailsQuery({ recordId }, { skip: !recordId });
   const { data: companyOptions, isLoading: isCompanyOptionsLoading } =
     useGetCompaniesAsOptionQuery({});
-  const { data: borkerOptions, isLoading: isBrokerOptionsLoading } =
-    useGetBrokersAsOptionQuery({});
-  const { data: partyOptions, isLoading: isPartyOptionsLoading } =
-    useGetPartyRecordsAsOptionQuery();
   const { data: btTypeOptions, isLoading: isbtTypeOptionsLoading } =
     useGetAsOptionQuery({ type: 8 });
   const { data: materialTypeOptions, isLoading: isMaterialTypeOptionsLoading } =
@@ -89,6 +82,8 @@ const BTForm = () => {
     useGetAsOptionQuery({ type: 4 });
   const { data: shapeOptions, isLoading: isShapeOptionsLoading } =
     useGetAsOptionQuery({ type: 6 });
+  const { data: transportOptions, isLoading: isTransportOptionsLoading } =
+    useGetTransportAsOptionQuery({});
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
     useGetBranchAsOptionQuery(
       { comapnyId: company, withCompanyLabel: true },
@@ -483,7 +478,17 @@ const BTForm = () => {
 
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                       <Form.Item label="Transport Name" name="transportName">
-                        <Input size="large" placeholder="" />
+                        <Select
+                          size="large"
+                          style={{ width: "100%" }}
+                          showSearch
+                          placeholder="Select a transport"
+                          optionFilterProp="children"
+                          filterOption={filterOption}
+                          options={transportOptions}
+                          loading={isTransportOptionsLoading}
+                          allowClear
+                        />
                       </Form.Item>
                     </Col>
 
@@ -921,7 +926,17 @@ const BTForm = () => {
 
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                       <Form.Item label="Transport Name" name="transportName">
-                        <Input size="large" placeholder="" />
+                        <Select
+                          size="large"
+                          style={{ width: "100%" }}
+                          showSearch
+                          placeholder="Select a transport"
+                          optionFilterProp="children"
+                          filterOption={filterOption}
+                          options={transportOptions}
+                          loading={isTransportOptionsLoading}
+                          allowClear
+                        />
                       </Form.Item>
                     </Col>
 

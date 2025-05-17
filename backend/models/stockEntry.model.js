@@ -15,7 +15,7 @@ const StockEntrySchema = mongoose.Schema(
     broker: { type: mongoose.Types.ObjectId, ref: "Broker" },
     billTo: { type: mongoose.Types.ObjectId, ref: "PartyRecord" },
     shipTo: { type: mongoose.Types.ObjectId, ref: "PartyRecord" },
-    transportName: { type: String },
+    transportName: { type: mongoose.Types.ObjectId, ref: "Transport" },
     vehicleNo: { type: String },
     createdBy: { type: mongoose.Types.ObjectId, ref: "User" },
     shipmentDesc: { type: String },

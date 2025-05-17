@@ -38,6 +38,7 @@ import dayjs from "dayjs";
 import encryptString from "../../../../helpers/encryptString";
 import { useGetInvoiceNumberQuery } from "../../../../redux/api/user/invoiceCounterApiSlice";
 import { useGetBranchAsOptionQuery } from "../../../../redux/api/user/branchApiSlice";
+import { useGetTransportAsOptionQuery } from "../../../../redux/api/user/transportApiSlice";
 
 const OutwardForm = () => {
   const navigate = useNavigate();
@@ -75,6 +76,8 @@ const OutwardForm = () => {
     useGetAsOptionQuery({ type: 4 });
   const { data: shapeOptions, isLoading: isShapeOptionsLoading } =
     useGetAsOptionQuery({ type: 6 });
+  const { data: transportOptions, isLoading: isTransportOptionsLoading } =
+    useGetTransportAsOptionQuery({});
   const [addStockEntryForOutward, { isLoading: isStockEntrtyAdding }] =
     useAddStockEntryForOutwardMutation();
   const [updateStockEntry, { isLoading: isStockEntrtyUpdating }] =
@@ -515,7 +518,17 @@ const OutwardForm = () => {
 
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                       <Form.Item label="Transport Name" name="transportName">
-                        <Input size="large" placeholder="" />
+                        <Select
+                          size="large"
+                          style={{ width: "100%" }}
+                          showSearch
+                          placeholder="Select a transport"
+                          optionFilterProp="children"
+                          filterOption={filterOption}
+                          options={transportOptions}
+                          loading={isTransportOptionsLoading}
+                          allowClear
+                        />
                       </Form.Item>
                     </Col>
 
@@ -1018,7 +1031,17 @@ const OutwardForm = () => {
 
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                       <Form.Item label="Transport Name" name="transportName">
-                        <Input size="large" placeholder="" />
+                        <Select
+                          size="large"
+                          style={{ width: "100%" }}
+                          showSearch
+                          placeholder="Select a transport"
+                          optionFilterProp="children"
+                          filterOption={filterOption}
+                          options={transportOptions}
+                          loading={isTransportOptionsLoading}
+                          allowClear
+                        />
                       </Form.Item>
                     </Col>
 

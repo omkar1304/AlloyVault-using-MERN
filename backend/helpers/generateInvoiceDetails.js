@@ -67,12 +67,23 @@ const generateInvoiceDetails = async ({
       },
     },
     {
+      $lookup: {
+        from: "transports",
+        localField: "transportName",
+        foreignField: "_id",
+        as: "TransportInfo",
+      },
+    },
+    {
       $addFields: {
         grade: {
           $arrayElemAt: ["$gradeInfo.name", 0],
         },
         shape: {
           $arrayElemAt: ["$shapeInfo.name", 0],
+        },
+        transportName: {
+          $arrayElemAt: ["$TransportInfo.name", 0],
         },
       },
     },
