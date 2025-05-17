@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const StockEntrySchema = mongoose.Schema(
   {
-    type: { type: String }, // Types : 1. Inward | 2. Outward
+    type: { type: String }, // Types : 1. Inward | 2. Outward | 3. BT
     entryDate: { type: Date, required: true },
     invoiceNo: { type: String },
     challanNo: { type: String },

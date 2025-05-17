@@ -31,8 +31,8 @@ import {
 import { getAsOption } from "../controllers/users/option.controller.js";
 import {
   addStockEntry,
+  addStockEntryForBT,
   deleteStockEntry,
-  getDetailsForPreview,
   getStockEntries,
   getStockEntryDetails,
   updateStockEntry,
@@ -87,8 +87,8 @@ router.get("/getBranchAsOption", authenticate, getBranchAsOption);
 // Stock Entry Routes ->
 router.get("/getStockEntries", authenticate, getStockEntries);
 router.post("/addStockEntry", authenticate, addStockEntry);
+router.post("/addStockEntryForBT", authenticate, addStockEntryForBT);
 router.get("/getStockEntryDetails", authenticate, getStockEntryDetails);
-router.get("/getDetailsForPreview", authenticate, getDetailsForPreview);
 router.put("/updateStockEntry/:recordId", authenticate, updateStockEntry);
 router.delete("/deleteStockEntry/:recordId", authenticate, deleteStockEntry);
 

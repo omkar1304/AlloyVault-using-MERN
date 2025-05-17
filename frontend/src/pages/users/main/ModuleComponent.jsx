@@ -2,12 +2,12 @@ import Inward from "../stockTracking/inward/index";
 import Outward from "../stockTracking/outward/index";
 import BranchTransfer from "../stockTracking/branchTransfer/index";
 import CompanyDetails from "../companyDetails/index";
-import ChallanGeneration from "../challanGeneration/index";
 import StockSummary from "../stockSummary/index";
 import JobWork from "../jobWork/index";
 import ProcessingUnit from "../processingUnit/index";
 import History from "../history/index";
 import Dashboard from "../dashboard";
+import ChallanList from "../challanList/ChallanList";
 
 export const ModuleComponents = {
 
@@ -51,10 +51,10 @@ export const ModuleComponents = {
   },
 
   //* Challan Generation
-  challanGeneration: {
-    component: ChallanGeneration,
-    pageTitle: "Challan Generation",
-    pageKey: "challanGeneration",
+  challanList: {
+    component: ChallanList,
+    pageTitle: "Challan List",
+    pageKey: "challanList",
     index: 4,
   },
 

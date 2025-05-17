@@ -44,8 +44,8 @@ const perms = [
     order: 4,
   },
   {
-    name: "Challan Generation",
-    key: "challanGeneration",
+    name: "Challan List",
+    key: "challanList",
     access: true,
     order: 5,
   },

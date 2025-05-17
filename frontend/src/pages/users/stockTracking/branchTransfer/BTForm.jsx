@@ -12,6 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
+  useAddStockEntryForBTMutation,
   useAddStockEntryMutation,
   useGetStockEntryDetailsQuery,
   useUpdateStockEntryMutation,
@@ -39,7 +40,23 @@ import encryptString from "../../../../helpers/encryptString";
 import { useGetInvoiceNumberQuery } from "../../../../redux/api/user/invoiceCounterApiSlice";
 import { useGetBranchAsOptionQuery } from "../../../../redux/api/user/branchApiSlice";
 
-const OutwardForm = () => {
+const getBranchForInvoice = ({
+  btType,
+  btTypeOptions,
+  toBranch,
+  fromBranch,
+}) => {
+  // If BT-In then invoice Number should have toBranch in it
+  // If BT-Out then invoice Number should have fromBranch in it
+
+  const result = btTypeOptions?.find(
+    (option) => option.value === btType
+  )?.label;
+
+  return /In/i.test(result) ? toBranch : fromBranch;
+};
+
+const BTForm = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const recordId = searchParams.get("recordId");
@@ -53,7 +70,9 @@ const OutwardForm = () => {
   const [shipmentForm] = Form.useForm();
   const [itemForm] = Form.useForm();
   const company = useWatch("company", shipmentForm);
-  const branch = useWatch("branch", shipmentForm);
+  const fromBranch = useWatch("fromBranch", shipmentForm);
+  const toBranch = useWatch("toBranch", shipmentForm);
+  const btType = useWatch("btType", shipmentForm);
 
   const { data: stockEntryDetails, refetch: fetchStockEntryDetails } =
     useGetStockEntryDetailsQuery({ recordId }, { skip: !recordId });
@@ -63,20 +82,42 @@ const OutwardForm = () => {
     useGetBrokersAsOptionQuery({});
   const { data: partyOptions, isLoading: isPartyOptionsLoading } =
     useGetPartyRecordsAsOptionQuery();
-  const { data: branchOptions, isLoading: isBranchOptionsLoading } =
-    useGetBranchAsOptionQuery({ comapnyId: company }, { skip: !company });
-  const { data: invoiceObj, isLoading: isInvoiceNumberLoading } =
-    useGetInvoiceNumberQuery({ branchId: branch }, { skip: !branch });
-  const { data: outwardTypeOptions, isLoading: isOutwardTypeOptionsLoading } =
-    useGetAsOptionQuery({ type: 7 });
+  const { data: btTypeOptions, isLoading: isbtTypeOptionsLoading } =
+    useGetAsOptionQuery({ type: 8 });
   const { data: materialTypeOptions, isLoading: isMaterialTypeOptionsLoading } =
     useGetAsOptionQuery({ type: 3 });
   const { data: gradeOptions, isLoading: isGradeOptionsLoading } =
     useGetAsOptionQuery({ type: 4 });
   const { data: shapeOptions, isLoading: isShapeOptionsLoading } =
     useGetAsOptionQuery({ type: 6 });
-  const [addStockEntry, { isLoading: isStockEntrtyAdding }] =
-    useAddStockEntryMutation();
+  const { data: branchOptions, isLoading: isBranchOptionsLoading } =
+    useGetBranchAsOptionQuery(
+      { comapnyId: company, withCompanyLabel: true },
+      { skip: !company }
+    );
+  const { data: invoiceObj, isLoading: isInvoiceNumberLoading } =
+    useGetInvoiceNumberQuery(
+      {
+        branchId: getBranchForInvoice({
+          btType,
+          btTypeOptions,
+          toBranch,
+          fromBranch,
+        }),
+        isBT: true,
+      },
+      {
+        skip:
+          !getBranchForInvoice({
+            btType,
+            btTypeOptions,
+            toBranch,
+            fromBranch,
+          }) || !btType,
+      }
+    );
+  const [addStockEntryForBT, { isLoading: isStockEntrtyAdding }] =
+    useAddStockEntryForBTMutation();
   const [updateStockEntry, { isLoading: isStockEntrtyUpdating }] =
     useUpdateStockEntryMutation();
 
@@ -135,19 +176,17 @@ const OutwardForm = () => {
   };
 
   const handleAddStock = async () => {
+    console.log("shipmentData", shipmentForm.getFieldsValue());
+    console.log("items", items);
+    console.log("totalWeight", totalWeight);
     try {
-      await addStockEntry({
+      await addStockEntryForBT({
         shipmentData: shipmentForm.getFieldsValue(),
         items,
-        type: "Outward",
-        totalWeight
+        type: "BT",
+        totalWeight,
       }).unwrap();
       toast.success("Record added successfully!");
-      navigate(
-        `/home/outward/preview?challan=${encryptString(
-          shipmentForm.getFieldValue("challanNo")
-        )}`
-      );
     } catch (error) {
       console.error(error);
       const errMessage = error?.data?.message || "Couldn't add record!";
@@ -163,7 +202,7 @@ const OutwardForm = () => {
         ...items[0],
       }).unwrap();
       toast.success("Record updated successfully!");
-      navigate(`/home/outward`);
+      navigate(`/home/branchTransfer`);
     } catch (error) {
       console.error(error);
       const errMessage = error?.data?.message || "Couldn't update record!";
@@ -225,20 +264,18 @@ const OutwardForm = () => {
           separator=">"
           items={[
             {
-              title: <Link to="/home/outward">Outward Material</Link>,
+              title: <Link to="/home/branchTransfer">Branch Transfer</Link>,
             },
             {
-              title: recordId ? "Update Outward Entry" : "New Outward Entry",
+              title: recordId ? "Update Entry" : "New Entry",
             },
           ]}
         />
         <div className="margin-top">
           <PageHeader>
-            {recordId ? "Update Outward Entry" : "New Outward Entry"}
+            {recordId ? "Update Branch Transfer" : "New Branch Transfer"}
           </PageHeader>
-          <PageSubHeader>
-            Enter stock details and update inventory records.
-          </PageSubHeader>
+          <PageSubHeader>Record stock movement between branches.</PageSubHeader>
         </div>
       </div>
 
@@ -297,23 +334,137 @@ const OutwardForm = () => {
                       </Form.Item>
                     </Col>
 
+                    {recordId ? (
+                      <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                        <Form.Item
+                          label="Branch"
+                          name="branch"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select a branch",
+                            },
+                          ]}
+                        >
+                          <Select
+                            size="large"
+                            style={{ width: "100%" }}
+                            showSearch
+                            placeholder="Select a branch"
+                            optionFilterProp="children"
+                            filterOption={filterOption}
+                            options={branchOptions ?? []}
+                            loading={isBranchOptionsLoading}
+                            allowClear
+                          />
+                        </Form.Item>
+                      </Col>
+                    ) : (
+                      <>
+                        <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                          <Form.Item
+                            label="From Branch"
+                            name="fromBranch"
+                            dependencies={["toBranch"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please select a branch",
+                              },
+                              ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                  if (
+                                    !value ||
+                                    getFieldValue("toBranch") !== value
+                                  ) {
+                                    return Promise.resolve();
+                                  }
+                                  return Promise.reject(
+                                    new Error(
+                                      "From and to branch should not be the same"
+                                    )
+                                  );
+                                },
+                              }),
+                            ]}
+                          >
+                            <Select
+                              size="large"
+                              style={{ width: "100%" }}
+                              showSearch
+                              placeholder="Select a branch"
+                              optionFilterProp="children"
+                              filterOption={filterOption}
+                              options={branchOptions ?? []}
+                              loading={isBranchOptionsLoading}
+                              allowClear
+                            />
+                          </Form.Item>
+                        </Col>
+
+                        <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                          <Form.Item
+                            label="To Branch"
+                            name="toBranch"
+                            dependencies={["fromBranch"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please select a branch",
+                              },
+                              ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                  if (
+                                    !value ||
+                                    getFieldValue("fromBranch") !== value
+                                  ) {
+                                    return Promise.resolve();
+                                  }
+                                  return Promise.reject(
+                                    new Error(
+                                      "From and to branch should not be the same"
+                                    )
+                                  );
+                                },
+                              }),
+                            ]}
+                          >
+                            <Select
+                              size="large"
+                              style={{ width: "100%" }}
+                              showSearch
+                              placeholder="Select a branch"
+                              optionFilterProp="children"
+                              filterOption={filterOption}
+                              options={branchOptions ?? []}
+                              loading={isBranchOptionsLoading}
+                              allowClear
+                            />
+                          </Form.Item>
+                        </Col>
+                      </>
+                    )}
+
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                       <Form.Item
-                        label="Branch"
-                        name="branch"
+                        label="BT Type"
+                        name="btType"
                         rules={[
-                          { required: true, message: "Please select a branch" },
+                          {
+                            required: true,
+                            message: "Please select a type",
+                          },
                         ]}
                       >
                         <Select
                           size="large"
                           style={{ width: "100%" }}
                           showSearch
-                          placeholder="Select a branch"
+                          placeholder="Select a type"
                           optionFilterProp="children"
                           filterOption={filterOption}
-                          options={branchOptions ?? []}
-                          loading={isBranchOptionsLoading}
+                          options={btTypeOptions}
+                          loading={isbtTypeOptionsLoading}
                           allowClear
                         />
                       </Form.Item>
@@ -330,186 +481,6 @@ const OutwardForm = () => {
                         ]}
                       >
                         <Input size="large" placeholder="" disabled />
-                      </Form.Item>
-                    </Col>
-
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item
-                        label="Outward Type"
-                        name="outwardType"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select a type",
-                          },
-                        ]}
-                      >
-                        <Select
-                          size="large"
-                          style={{ width: "100%" }}
-                          showSearch
-                          placeholder="Select a type"
-                          optionFilterProp="children"
-                          filterOption={filterOption}
-                          options={outwardTypeOptions}
-                          loading={isOutwardTypeOptionsLoading}
-                          allowClear
-                        />
-                      </Form.Item>
-                    </Col>
-
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item label="Broker" name="broker">
-                        <Select
-                          size="large"
-                          style={{ width: "100%" }}
-                          showSearch
-                          placeholder="Select a broker"
-                          optionFilterProp="children"
-                          filterOption={filterOption}
-                          allowClear
-                          disabled={
-                            isBrokerModalVisible || isBrokerOptionsLoading
-                          }
-                        >
-                          <Select.Option
-                            value="add-broker"
-                            key="add-broker"
-                            disabled
-                          >
-                            <div
-                              className="flex-row-space-between"
-                              style={{
-                                color: "#6366F1",
-                                width: "100%",
-                                cursor: "pointer",
-                              }}
-                              onClick={openBrokerModal}
-                            >
-                              <span>Add Broker</span>
-                              <AddIcon color="#6366F1" />
-                            </div>
-                          </Select.Option>
-                          {borkerOptions?.map((broker) => (
-                            <Select.Option
-                              key={broker.value}
-                              value={broker.value}
-                              label={broker.label}
-                            >
-                              {broker.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                    </Col>
-
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item
-                        label="Bill To"
-                        name="billTo"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select a party",
-                          },
-                        ]}
-                      >
-                        <Select
-                          size="large"
-                          style={{ width: "100%" }}
-                          showSearch
-                          placeholder="Select a party"
-                          optionFilterProp="children"
-                          filterOption={filterOption}
-                          loading={isPartyOptionsLoading}
-                          disabled={
-                            isCompanyModalVisible || isPartyOptionsLoading
-                          }
-                          allowClear
-                        >
-                          <Select.Option
-                            value="add-party"
-                            key="add-party"
-                            disabled
-                          >
-                            <div
-                              className="flex-row-space-between"
-                              style={{
-                                color: "#6366F1",
-                                width: "100%",
-                                cursor: "pointer",
-                              }}
-                              onClick={openCompanyModal}
-                            >
-                              <span>Add Party</span>
-                              <AddIcon color="#6366F1" />
-                            </div>
-                          </Select.Option>
-                          {partyOptions?.map((party) => (
-                            <Select.Option
-                              key={party.value}
-                              value={party.value}
-                              label={party.label}
-                            >
-                              {party.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                    </Col>
-
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item
-                        label="Ship To"
-                        name="shipTo"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select a party",
-                          },
-                        ]}
-                      >
-                        <Select
-                          size="large"
-                          style={{ width: "100%" }}
-                          showSearch
-                          placeholder="Select a party"
-                          optionFilterProp="children"
-                          filterOption={filterOption}
-                          loading={isPartyOptionsLoading}
-                          disabled={
-                            isCompanyModalVisible || isPartyOptionsLoading
-                          }
-                          allowClear
-                        >
-                          <Select.Option
-                            value="add-party"
-                            key="add-party"
-                            disabled
-                          >
-                            <div
-                              className="flex-row-space-between"
-                              style={{
-                                color: "#6366F1",
-                                width: "100%",
-                                cursor: "pointer",
-                              }}
-                              onClick={openCompanyModal}
-                            >
-                              <span>Add Party</span>
-                              <AddIcon color="#6366F1" />
-                            </div>
-                          </Select.Option>
-                          {partyOptions?.map((party) => (
-                            <Select.Option
-                              key={party.value}
-                              value={party.value}
-                              label={party.label}
-                            >
-                              {party.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
                       </Form.Item>
                     </Col>
 
@@ -751,12 +722,13 @@ const OutwardForm = () => {
 
             {step === 2 && (
               <>
-                <h3 className="form-heading">Outward Overview</h3>
+                <h3 className="form-heading">Branch Transfer Overview</h3>
                 <Form
                   className="full-width form-layout"
                   layout="vertical"
                   form={shipmentForm}
                   onFinish={handleShipmentSubmit}
+                  onValuesChange={onValuesChange}
                 >
                   <Row gutter={[16]}>
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
@@ -800,23 +772,137 @@ const OutwardForm = () => {
                       </Form.Item>
                     </Col>
 
+                    {recordId ? (
+                      <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                        <Form.Item
+                          label="Branch"
+                          name="branch"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please select a branch",
+                            },
+                          ]}
+                        >
+                          <Select
+                            size="large"
+                            style={{ width: "100%" }}
+                            showSearch
+                            placeholder="Select a branch"
+                            optionFilterProp="children"
+                            filterOption={filterOption}
+                            options={branchOptions ?? []}
+                            loading={isBranchOptionsLoading}
+                            allowClear
+                          />
+                        </Form.Item>
+                      </Col>
+                    ) : (
+                      <>
+                        <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                          <Form.Item
+                            label="From Branch"
+                            name="fromBranch"
+                            dependencies={["toBranch"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please select a branch",
+                              },
+                              ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                  if (
+                                    !value ||
+                                    getFieldValue("toBranch") !== value
+                                  ) {
+                                    return Promise.resolve();
+                                  }
+                                  return Promise.reject(
+                                    new Error(
+                                      "From and to branch should not be the same"
+                                    )
+                                  );
+                                },
+                              }),
+                            ]}
+                          >
+                            <Select
+                              size="large"
+                              style={{ width: "100%" }}
+                              showSearch
+                              placeholder="Select a branch"
+                              optionFilterProp="children"
+                              filterOption={filterOption}
+                              options={branchOptions ?? []}
+                              loading={isBranchOptionsLoading}
+                              allowClear
+                            />
+                          </Form.Item>
+                        </Col>
+
+                        <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+                          <Form.Item
+                            label="To Branch"
+                            name="toBranch"
+                            dependencies={["fromBranch"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please select a branch",
+                              },
+                              ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                  if (
+                                    !value ||
+                                    getFieldValue("fromBranch") !== value
+                                  ) {
+                                    return Promise.resolve();
+                                  }
+                                  return Promise.reject(
+                                    new Error(
+                                      "From and to branch should not be the same"
+                                    )
+                                  );
+                                },
+                              }),
+                            ]}
+                          >
+                            <Select
+                              size="large"
+                              style={{ width: "100%" }}
+                              showSearch
+                              placeholder="Select a branch"
+                              optionFilterProp="children"
+                              filterOption={filterOption}
+                              options={branchOptions ?? []}
+                              loading={isBranchOptionsLoading}
+                              allowClear
+                            />
+                          </Form.Item>
+                        </Col>
+                      </>
+                    )}
+
                     <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                       <Form.Item
-                        label="Branch"
-                        name="branch"
+                        label="BT Type"
+                        name="btType"
                         rules={[
-                          { required: true, message: "Please select a branch" },
+                          {
+                            required: true,
+                            message: "Please select a type",
+                          },
                         ]}
                       >
                         <Select
                           size="large"
                           style={{ width: "100%" }}
                           showSearch
-                          placeholder="Select a branch"
+                          placeholder="Select a type"
                           optionFilterProp="children"
                           filterOption={filterOption}
-                          options={branchOptions ?? []}
-                          loading={isBranchOptionsLoading}
+                          options={btTypeOptions}
+                          loading={isbtTypeOptionsLoading}
                           allowClear
                         />
                       </Form.Item>
@@ -832,187 +918,7 @@ const OutwardForm = () => {
                           },
                         ]}
                       >
-                        <Input size="large" placeholder="" />
-                      </Form.Item>
-                    </Col>
-
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item
-                        label="Outward Type"
-                        name="outwardType"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select a type",
-                          },
-                        ]}
-                      >
-                        <Select
-                          size="large"
-                          style={{ width: "100%" }}
-                          showSearch
-                          placeholder="Select a type"
-                          optionFilterProp="children"
-                          filterOption={filterOption}
-                          options={outwardTypeOptions}
-                          loading={isOutwardTypeOptionsLoading}
-                          allowClear
-                        />
-                      </Form.Item>
-                    </Col>
-
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item label="Broker" name="broker">
-                        <Select
-                          size="large"
-                          style={{ width: "100%" }}
-                          showSearch
-                          placeholder="Select a broker"
-                          optionFilterProp="children"
-                          filterOption={filterOption}
-                          allowClear
-                          disabled={
-                            isBrokerModalVisible || isBrokerOptionsLoading
-                          }
-                        >
-                          <Select.Option
-                            value="add-broker"
-                            key="add-broker"
-                            disabled
-                          >
-                            <div
-                              className="flex-row-space-between"
-                              style={{
-                                color: "#6366F1",
-                                width: "100%",
-                                cursor: "pointer",
-                              }}
-                              onClick={openBrokerModal}
-                            >
-                              <span>Add Broker</span>
-                              <AddIcon color="#6366F1" />
-                            </div>
-                          </Select.Option>
-                          {borkerOptions?.map((broker) => (
-                            <Select.Option
-                              key={broker.value}
-                              value={broker.value}
-                              label={broker.label}
-                            >
-                              {broker.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                    </Col>
-
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item
-                        label="Bill To"
-                        name="billTo"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select a party",
-                          },
-                        ]}
-                      >
-                        <Select
-                          size="large"
-                          style={{ width: "100%" }}
-                          showSearch
-                          placeholder="Select a party"
-                          optionFilterProp="children"
-                          filterOption={filterOption}
-                          loading={isPartyOptionsLoading}
-                          disabled={
-                            isCompanyModalVisible || isPartyOptionsLoading
-                          }
-                          allowClear
-                        >
-                          <Select.Option
-                            value="add-party"
-                            key="add-party"
-                            disabled
-                          >
-                            <div
-                              className="flex-row-space-between"
-                              style={{
-                                color: "#6366F1",
-                                width: "100%",
-                                cursor: "pointer",
-                              }}
-                              onClick={openCompanyModal}
-                            >
-                              <span>Add Party</span>
-                              <AddIcon color="#6366F1" />
-                            </div>
-                          </Select.Option>
-                          {partyOptions?.map((party) => (
-                            <Select.Option
-                              key={party.value}
-                              value={party.value}
-                              label={party.label}
-                            >
-                              {party.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                    </Col>
-
-                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
-                      <Form.Item
-                        label="Ship To"
-                        name="shipTo"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please select a party",
-                          },
-                        ]}
-                      >
-                        <Select
-                          size="large"
-                          style={{ width: "100%" }}
-                          showSearch
-                          placeholder="Select a party"
-                          optionFilterProp="children"
-                          filterOption={filterOption}
-                          loading={isPartyOptionsLoading}
-                          disabled={
-                            isCompanyModalVisible || isPartyOptionsLoading
-                          }
-                          allowClear
-                        >
-                          <Select.Option
-                            value="add-party"
-                            key="add-party"
-                            disabled
-                          >
-                            <div
-                              className="flex-row-space-between"
-                              style={{
-                                color: "#6366F1",
-                                width: "100%",
-                                cursor: "pointer",
-                              }}
-                              onClick={openCompanyModal}
-                            >
-                              <span>Add Party</span>
-                              <AddIcon color="#6366F1" />
-                            </div>
-                          </Select.Option>
-                          {partyOptions?.map((party) => (
-                            <Select.Option
-                              key={party.value}
-                              value={party.value}
-                              label={party.label}
-                            >
-                              {party.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
+                        <Input size="large" placeholder="" disabled />
                       </Form.Item>
                     </Col>
 
@@ -1085,4 +991,4 @@ const OutwardForm = () => {
   );
 };
 
-export default OutwardForm;
+export default BTForm;

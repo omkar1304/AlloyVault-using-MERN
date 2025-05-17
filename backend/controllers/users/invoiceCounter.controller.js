@@ -6,7 +6,7 @@ import InvoiceCounter from "../../models/invoiceCounter.model.js";
 export const getInvoiceNumber = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { branchId } = decryptUrlPayload(payload);
+    const { branchId, isBT = false } = decryptUrlPayload(payload);
 
     const branch = await Branch.findById(branchId);
     if (!branch) return res.status(404).json({ message: "Branch not found" });
@@ -22,11 +22,11 @@ export const getInvoiceNumber = async (req, res) => {
       counterDoc = await InvoiceCounter({ branchId, financialYear }).save();
     }
 
-    const invoiceNumber = `${
+    const invoiceNumber = `${isBT ? "BT/" : ""}${
       branch?.prefix
     }/${financialYear}/${counterDoc?.counter?.toString().padStart(4, "0")}`;
 
-    return res.status(200).send({invoiceNumber});
+    return res.status(200).send({ invoiceNumber });
   } catch (error) {
     console.log("Error in get invoice number controller:", error.message);
     res.status(500).json({ message: "Internal Server Error" });

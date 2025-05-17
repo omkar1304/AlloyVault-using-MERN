@@ -2,7 +2,7 @@ import { Avatar, Popconfirm, Tooltip } from "antd";
 import { DeleteIcon, ViewIcon } from "../../../component/ActionComponent";
 import getInitials from "../../../helpers/getInitials";
 import { useNavigate } from "react-router-dom";
-import getFormattedDate from "./../../../helpers/getFormattedDate";
+import getFormattedDate from "../../../helpers/getFormattedDate";
 import encryptString from "../../../helpers/encryptString";
 
 const getTableColumns = ({ handleDeleteRecord }) => {
@@ -70,7 +70,7 @@ const getTableColumns = ({ handleDeleteRecord }) => {
               size={24}
               onClick={() =>
                 navigate(
-                  `/home/challanGeneration/preview?challan=${encryptString(
+                  `/home/challanList/preview?challan=${encryptString(
                     row?.challanNo
                   )}`
                 )

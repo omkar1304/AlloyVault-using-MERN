@@ -18,7 +18,7 @@ export const MenuComponents = {
   outward: <IoIosArrowRoundUp />,
   branchTransfer: <PiArrowsDownUpLight />,
   partyDetails: <HiOutlineBuildingOffice />,
-  challanGeneration: <HiOutlineReceiptPercent />,
+  challanList: <HiOutlineReceiptPercent />,
   stockSummary: <TbReportAnalytics />,
   jobWork: <VscTools />,
   processingUnit: <HiOutlineHomeModern />,

@@ -2,6 +2,7 @@ import createActivityLog from "../../helpers/createActivityLog.js";
 import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
 import decryptData from "../../lib/decryptData.js";
 import StockEntry from "../../models/stockEntry.model.js";
+import Option from "../../models/options.model.js";
 import mongoose from "mongoose";
 import moment from "moment";
 import generateInvoicePDF from "../../helpers/generateInvoicePDF.js";
@@ -24,6 +25,7 @@ export const getStockEntries = async (req, res) => {
       selectedShape = undefined,
       selectedInwardType = undefined,
       selectedOutwardType = undefined,
+      selectedBtType = undefined,
       dateRange = undefined,
     } = decryptUrlPayload(payload);
 
@@ -80,6 +82,11 @@ export const getStockEntries = async (req, res) => {
     if (selectedOutwardType) {
       matchQueryStage.push({
         outwardType: new mongoose.Types.ObjectId(selectedOutwardType),
+      });
+    }
+    if (selectedBtType) {
+      matchQueryStage.push({
+        btType: new mongoose.Types.ObjectId(selectedBtType),
       });
     }
 
@@ -219,6 +226,21 @@ export const getStockEntries = async (req, res) => {
             {
               $lookup: {
                 from: "options",
+                localField: "btType",
+                foreignField: "_id",
+                as: "btInfo",
+                pipeline: [
+                  {
+                    $project: {
+                      name: 1,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: "options",
                 localField: "materialType",
                 foreignField: "_id",
                 as: "materialTypeInfo",
@@ -259,6 +281,9 @@ export const getStockEntries = async (req, res) => {
                 },
                 outwardType: {
                   $arrayElemAt: ["$outwardInfo.name", 0],
+                },
+                btType: {
+                  $arrayElemAt: ["$btInfo.name", 0],
                 },
                 customer: {
                   $arrayElemAt: ["$partyInfo.name", 0],
@@ -398,6 +423,76 @@ export const addStockEntry = async (req, res) => {
   }
 };
 
+export const addStockEntryForBT = async (req, res) => {
+  try {
+    const payload = decryptData(req.body.payload);
+    const {
+      shipmentData,
+      items = [],
+      type = undefined,
+      totalWeight = 0,
+    } = payload;
+    const { userId } = req?.user;
+
+    if (!type) {
+      return res.status(400).json({ message: "Type not defined" });
+    }
+
+    if (!items?.length) {
+      return res
+        .status(400)
+        .json({ message: "At least one item present to add!" });
+    }
+
+    const btIn = await Option.findOne({ type: 8, name: /In/i });
+    const btOut = await Option.findOne({ type: 8, name: /Out/i });
+
+    const formattedDataForBtIn = items?.map((item) => {
+      return {
+        ...shipmentData,
+        ...item,
+        type,
+        branch: shipmentData?.toBranch,
+        btType: btIn?._id,
+        createdBy: userId,
+      };
+    });
+
+    const formattedDataForBtOut = items?.map((item) => {
+      return {
+        ...shipmentData,
+        ...item,
+        type,
+        branch: shipmentData?.fromBranch,
+        btType: btOut?._id,
+        createdBy: userId,
+      };
+    });
+
+    const allStockEntries = await StockEntry.insertMany([
+      ...formattedDataForBtIn,
+      ...formattedDataForBtOut,
+    ]);
+    if (!allStockEntries) {
+      return res
+        .status(500)
+        .json({ message: "Something went wrong while adding records" });
+    }
+
+    await createActivityLog(
+      userId,
+      `User added ${type} stock on ${moment(shipmentData?.entryDate).format(
+        "DD/MM/YYYY hh:mm:ss A"
+      )}`
+    );
+
+    return res.status(200).json({ message: "Stock record added successfully" });
+  } catch (error) {
+    console.log("Error in add stock entry record controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 export const getStockEntryDetails = async (req, res) => {
   try {
     const { payload } = req.query;
@@ -416,24 +511,6 @@ export const getStockEntryDetails = async (req, res) => {
     return res.status(200).send(stockEntryRecord);
   } catch (error) {
     console.log("Error in stock entry record controller:", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-export const getDetailsForPreview = async (req, res) => {
-  try {
-    const { payload } = req.query;
-    const { challanId = undefined } = decryptUrlPayload(payload);
-
-    if (!challanId) {
-      return res.status(400).json({ message: "Challan ID is missing" });
-    }
-
-    const resultObj = await generateInvoiceDetails(challanId);
-
-    return res.status(200).send(resultObj);
-  } catch (error) {
-    console.log("Error in details for preview controller:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

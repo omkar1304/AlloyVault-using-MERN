@@ -5,8 +5,8 @@ import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import { PageHeader, PageSubHeader } from "../../../component/Headers";
 import { BASE_URL } from "../../../redux/constant";
-import decryptString from './../../../helpers/decryptString';
-import getSafeInvoiceFileName from './../../../../../backend/helpers/getSafeInvoiceFileName';
+import decryptString from '../../../helpers/decryptString';
+import getSafeInvoiceFileName from '../../../../../backend/helpers/getSafeInvoiceFileName';
 
 const ChallanPreview = () => {
   const [searchParams] = useSearchParams();
@@ -24,7 +24,7 @@ const ChallanPreview = () => {
           separator=">"
           items={[
             {
-              title: <Link to="/home/challanGeneration">Challan List</Link>,
+              title: <Link to="/home/challanList">Challan List</Link>,
             },
             {
               title: "Preview",
