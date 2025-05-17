@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
-  useAddStockEntryMutation,
+  useAddStockEntryForOutwardMutation,
   useGetStockEntryDetailsQuery,
   useUpdateStockEntryMutation,
 } from "../../../../redux/api/user/stockEntryApiSlice";
@@ -75,8 +75,8 @@ const OutwardForm = () => {
     useGetAsOptionQuery({ type: 4 });
   const { data: shapeOptions, isLoading: isShapeOptionsLoading } =
     useGetAsOptionQuery({ type: 6 });
-  const [addStockEntry, { isLoading: isStockEntrtyAdding }] =
-    useAddStockEntryMutation();
+  const [addStockEntryForOutward, { isLoading: isStockEntrtyAdding }] =
+    useAddStockEntryForOutwardMutation();
   const [updateStockEntry, { isLoading: isStockEntrtyUpdating }] =
     useUpdateStockEntryMutation();
 
@@ -136,11 +136,11 @@ const OutwardForm = () => {
 
   const handleAddStock = async () => {
     try {
-      await addStockEntry({
+      await addStockEntryForOutward({
         shipmentData: shipmentForm.getFieldsValue(),
         items,
         type: "Outward",
-        totalWeight
+        totalWeight,
       }).unwrap();
       toast.success("Record added successfully!");
       navigate(

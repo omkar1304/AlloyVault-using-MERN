@@ -7,10 +7,9 @@ import JobWork from "../jobWork/index";
 import ProcessingUnit from "../processingUnit/index";
 import History from "../history/index";
 import Dashboard from "../dashboard";
-import ChallanList from "../challanList/ChallanList";
+import Challan from "../challanList";
 
 export const ModuleComponents = {
-
   //* Dashbord
   dashboard: {
     component: Dashboard,
@@ -52,7 +51,7 @@ export const ModuleComponents = {
 
   //* Challan Generation
   challanList: {
-    component: ChallanList,
+    component: Challan,
     pageTitle: "Challan List",
     pageKey: "challanList",
     index: 4,
@@ -63,7 +62,7 @@ export const ModuleComponents = {
     component: StockSummary,
     pageTitle: "Stock Summary",
     pageKey: "stockSummary",
-    index: 5
+    index: 5,
   },
 
   //* Job Work
@@ -71,7 +70,7 @@ export const ModuleComponents = {
     component: JobWork,
     pageTitle: "Job Work",
     pageKey: "jobWork",
-    index: 6
+    index: 6,
   },
 
   //* Processing Unit
@@ -79,7 +78,7 @@ export const ModuleComponents = {
     component: ProcessingUnit,
     pageTitle: "Processing Unit",
     pageKey: "processingUnit",
-    index: 7
+    index: 7,
   },
 
   //* History
@@ -87,6 +86,6 @@ export const ModuleComponents = {
     component: History,
     pageTitle: "History",
     pageKey: "history",
-    index: 8
+    index: 8,
   },
 };

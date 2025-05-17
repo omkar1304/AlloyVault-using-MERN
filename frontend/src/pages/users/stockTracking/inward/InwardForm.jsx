@@ -23,7 +23,7 @@ import CustomTable from "../../../../component/CustomTable";
 import getItemColumns from "./getItemColumns";
 import toast from "react-hot-toast";
 import {
-  useAddStockEntryMutation,
+  useAddStockEntryForInwardMutation,
   useGetStockEntryDetailsQuery,
   useUpdateStockEntryMutation,
 } from "../../../../redux/api/user/stockEntryApiSlice";
@@ -51,7 +51,7 @@ const InwardForm = () => {
   const { data: partyOptions, isLoading: isPartyOptionsLoading } =
     useGetPartyRecordsAsOptionQuery();
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
-    useGetBranchAsOptionQuery();
+    useGetBranchAsOptionQuery({});
   const { data: inwardTypeOptions, isLoading: isInwardTypeOptionsLoading } =
     useGetAsOptionQuery({ type: 2 });
   const { data: materialTypeOptions, isLoading: isMaterialTypeOptionsLoading } =
@@ -60,8 +60,8 @@ const InwardForm = () => {
     useGetAsOptionQuery({ type: 4 });
   const { data: shapeOptions, isLoading: isShapeOptionsLoading } =
     useGetAsOptionQuery({ type: 6 });
-  const [addStockEntry, { isLoading: isStockEntrtyAdding }] =
-    useAddStockEntryMutation();
+  const [addStockEntryForInward, { isLoading: isStockEntrtyAdding }] =
+    useAddStockEntryForInwardMutation();
   const [updateStockEntry, { isLoading: isStockEntrtyUpdating }] =
     useUpdateStockEntryMutation();
 
@@ -119,7 +119,7 @@ const InwardForm = () => {
 
   const handleAddStock = async () => {
     try {
-      await addStockEntry({
+      await addStockEntryForInward({
         shipmentData: shipmentForm.getFieldsValue(),
         items,
         type: "Inward",

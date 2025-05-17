@@ -3,11 +3,11 @@ import ChallanList from "./ChallanList";
 import { useParams } from "react-router-dom";
 import ChallanPreview from "./ChallanPreview";
 
-const ChallanList = () => {
+const Challan = () => {
   const { id } = useParams();
 
   if (id && id === "preview") return <ChallanPreview />;
   else return <ChallanList />;
 };
 
-export default ChallanList;
+export default Challan;

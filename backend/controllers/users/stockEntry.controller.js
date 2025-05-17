@@ -11,6 +11,7 @@ import getSafeInvoiceFileName from "../../helpers/getSafeInvoiceFileName.js";
 import getCurrentFinancialYear from "../../helpers/getCurrentFinancialYear.js";
 import InvoiceCounter from "../../models/invoiceCounter.model.js";
 import ChallanRecord from "../../models/challanRecord.model.js";
+import updateInvoiceCounter from "../../helpers/updateInvoiceCounter.js";
 
 export const getStockEntries = async (req, res) => {
   try {
@@ -321,7 +322,7 @@ export const getStockEntries = async (req, res) => {
   }
 };
 
-export const addStockEntry = async (req, res) => {
+export const addStockEntryForInward = async (req, res) => {
   try {
     const payload = decryptData(req.body.payload);
     const {
@@ -365,56 +366,92 @@ export const addStockEntry = async (req, res) => {
       )}`
     );
 
-    // If type is outward then genarate invoice PDF and update invoice counter
-    if (type === "Outward") {
-      // Step 1 - Generate PDF
-      const resultObj = await generateInvoiceDetails(shipmentData?.challanNo);
-      const pdfData = {
-        challanId: shipmentData?.challanNo,
-        previewData: resultObj,
-      };
-      const safeFileName = await generateInvoicePDF(
-        pdfData,
-        getSafeInvoiceFileName(shipmentData?.challanNo)
-      );
-      const challanRecord = await ChallanRecord({
-        entryDate: shipmentData?.entryDate,
-        challanNo: shipmentData?.challanNo,
-        challanFile: safeFileName,
-        branch: shipmentData?.branch,
-        party: shipmentData?.billTo,
-        outwardType: shipmentData?.outwardType,
-        totalWeight,
-        createdBy: userId,
-      }).save();
-      if (!challanRecord) {
-        return res
-          .status(500)
-          .json({ message: "Error in creating challan record" });
-      }
-      await createActivityLog(
-        userId,
-        `Challan - ${shipmentData?.challanNo} invoice generated successfully!`
-      );
+    return res.status(200).json({ message: "Stock record added successfully" });
+  } catch (error) {
+    console.log("Error in add stock entry record controller:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
-      // Step 2 - Update Counter for given branch
-      const financialYear = getCurrentFinancialYear();
-      const counterDoc = await InvoiceCounter.findOneAndUpdate(
-        {
-          branchId: shipmentData?.branch,
-          financialYear,
-        },
-        {
-          $inc: { counter: 1 },
-        }
-      );
+export const addStockEntryForOutward = async (req, res) => {
+  try {
+    const payload = decryptData(req.body.payload);
+    const {
+      shipmentData,
+      items = [],
+      type = undefined,
+      totalWeight = 0,
+    } = payload;
+    const { userId } = req?.user;
 
-      if (!counterDoc) {
-        return res
-          .status(404)
-          .json({ message: "Given counter not found for branch" });
-      }
+    if (!type) {
+      return res.status(400).json({ message: "Type not defined" });
     }
+
+    if (!items?.length) {
+      return res
+        .status(400)
+        .json({ message: "At least one item present to add!" });
+    }
+
+    const formattedData = items?.map((item) => {
+      return {
+        ...shipmentData,
+        ...item,
+        type,
+        createdBy: userId,
+      };
+    });
+
+    const allStockEntries = await StockEntry.insertMany(formattedData);
+    if (!allStockEntries) {
+      return res
+        .status(500)
+        .json({ message: "Something went wrong while adding records" });
+    }
+
+    await createActivityLog(
+      userId,
+      `User added ${type} stock on ${moment(shipmentData?.entryDate).format(
+        "DD/MM/YYYY hh:mm:ss A"
+      )}`
+    );
+
+    // Step 1 - Generate PDF
+    const resultObj = await generateInvoiceDetails({
+      challanId: shipmentData?.challanNo,
+      type,
+    });
+    const pdfData = {
+      challanId: shipmentData?.challanNo,
+      previewData: resultObj,
+    };
+    const safeFileName = await generateInvoicePDF(
+      pdfData,
+      getSafeInvoiceFileName(shipmentData?.challanNo)
+    );
+    const challanRecord = await ChallanRecord({
+      entryDate: shipmentData?.entryDate,
+      challanNo: shipmentData?.challanNo,
+      challanFile: safeFileName,
+      branch: shipmentData?.branch,
+      party: shipmentData?.billTo,
+      outwardType: shipmentData?.outwardType,
+      totalWeight,
+      typeEntry: type,
+      createdBy: userId,
+    }).save();
+    if (!challanRecord) {
+      return res
+        .status(500)
+        .json({ message: "Error in creating challan record" });
+    }
+    await createActivityLog(
+      userId,
+      `Challan - ${shipmentData?.challanNo} invoice generated successfully!`
+    );
+    // Step 2 - Update Counter for given branch
+    await updateInvoiceCounter(shipmentData?.branch);
 
     return res.status(200).json({ message: "Stock record added successfully" });
   } catch (error) {
@@ -485,6 +522,51 @@ export const addStockEntryForBT = async (req, res) => {
         "DD/MM/YYYY hh:mm:ss A"
       )}`
     );
+
+    // If bt type is BT-IN then take toBranch
+    // If bt type is BT-OUT then take fromBranch
+    const recordBranch =
+      shipmentData?.btType === btIn?._id
+        ? shipmentData?.toBranch
+        : shipmentData?.fromBranch;
+
+    // Step 1 - Generate PDF
+    const resultObj = await generateInvoiceDetails({
+      challanId: shipmentData?.challanNo,
+      type,
+      toBranch: shipmentData?.toBranch,
+      fromBranch: shipmentData?.fromBranch,
+    });
+    const pdfData = {
+      challanId: shipmentData?.challanNo,
+      previewData: resultObj,
+    };
+    const safeFileName = await generateInvoicePDF(
+      pdfData,
+      getSafeInvoiceFileName(shipmentData?.challanNo)
+    );
+    const challanRecord = await ChallanRecord({
+      entryDate: shipmentData?.entryDate,
+      challanNo: shipmentData?.challanNo,
+      challanFile: safeFileName,
+      branch: recordBranch,
+      btType: shipmentData?.btType,
+      totalWeight,
+      typeEntry: type,
+      createdBy: userId,
+    }).save();
+    if (!challanRecord) {
+      return res
+        .status(500)
+        .json({ message: "Error in creating challan record" });
+    }
+    await createActivityLog(
+      userId,
+      `Challan - ${shipmentData?.challanNo} invoice generated successfully!`
+    );
+
+    // Step 2 - Update Counter for given branch
+    await updateInvoiceCounter(recordBranch);
 
     return res.status(200).json({ message: "Stock record added successfully" });
   } catch (error) {

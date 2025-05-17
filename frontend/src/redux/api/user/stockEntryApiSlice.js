@@ -26,9 +26,20 @@ export const stockEntryApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
-    addStockEntry: builder.mutation({
+    addStockEntryForInward: builder.mutation({
       query: (data) => ({
-        url: `${USER_URL}/addStockEntry`,
+        url: `${USER_URL}/addStockEntryForInward`,
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { payload: encryptData(data) },
+      }),
+    }),
+    addStockEntryForOutward: builder.mutation({
+      query: (data) => ({
+        url: `${USER_URL}/addStockEntryForOutward`,
         method: "POST",
         credentials: "include",
         headers: {
@@ -75,7 +86,8 @@ export const stockEntryApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetStockEntriesQuery,
-  useAddStockEntryMutation,
+  useAddStockEntryForInwardMutation,
+  useAddStockEntryForOutwardMutation,
   useAddStockEntryForBTMutation,
   useGetStockEntryDetailsQuery,
   useUpdateStockEntryMutation,

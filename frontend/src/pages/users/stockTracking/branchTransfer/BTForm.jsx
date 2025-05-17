@@ -13,7 +13,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   useAddStockEntryForBTMutation,
-  useAddStockEntryMutation,
   useGetStockEntryDetailsQuery,
   useUpdateStockEntryMutation,
 } from "../../../../redux/api/user/stockEntryApiSlice";
@@ -176,9 +175,6 @@ const BTForm = () => {
   };
 
   const handleAddStock = async () => {
-    console.log("shipmentData", shipmentForm.getFieldsValue());
-    console.log("items", items);
-    console.log("totalWeight", totalWeight);
     try {
       await addStockEntryForBT({
         shipmentData: shipmentForm.getFieldsValue(),
@@ -187,6 +183,7 @@ const BTForm = () => {
         totalWeight,
       }).unwrap();
       toast.success("Record added successfully!");
+      navigate("/home/branchTransfer");
     } catch (error) {
       console.error(error);
       const errMessage = error?.data?.message || "Couldn't add record!";

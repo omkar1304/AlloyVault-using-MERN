@@ -18,7 +18,8 @@ const imageToBase64 = (imagePath) => {
 
 const generateInvoiceHTML = (data) => {
   const { challanId = "No Data", previewData = {} } = data;
-  
+  const invoiceType = previewData?.type;
+
   // Make paginated items
   const items = previewData.items || [];
   const totalPages = Math.ceil(items?.length / ITEMS_PER_PAGE);
@@ -29,7 +30,7 @@ const generateInvoiceHTML = (data) => {
     `../uploads/companyImages/${previewData?.companyDetails?.imgURL}`
   );
   if (!fs.existsSync(companyImg)) {
-    companyImg = path.join(__dirname, '../assets/images/default.png');
+    companyImg = path.join(__dirname, "../assets/images/default.png");
   }
 
   // Convert image into base 64
@@ -54,24 +55,58 @@ const generateInvoiceHTML = (data) => {
       </div>`;
 
   const invoiceShipDetails = `<div class="flex-row-space-between">
-          <div class="flex-col-start">
-            <div class="transport-address flex-col-start">
-              <span class="invoice-label">Bill To</span>
-              <h4>${previewData.billDetails?.name?.toUpperCase() || ""}</h4>
-              <p>${previewData.billDetails?.address1 || ""}</p>
-              <p>${previewData.billDetails?.address2 || ""}</p>
-              <p>Phone no: ${previewData.billDetails?.mobile || ""}</p>
-              <p>GST no: ${previewData.billDetails?.gstNo || ""}</p>
-            </div>
-            <div class="transport-address flex-col-start">
-              <span class="invoice-label">Ship To</span>
-              <h4>${previewData.shipDetails?.name?.toUpperCase() || ""}</h4>
-              <p>${previewData.shipDetails?.address1 || ""}</p>
-              <p>${previewData.shipDetails?.address2 || ""}</p>
-              <p>Phone no: ${previewData.shipDetails?.mobile || ""}</p>
-              <p>GST no: ${previewData.shipDetails?.gstNo || ""}</p>
-            </div>
-          </div>
+          ${
+            invoiceType === "Outward"
+              ? `<div class="flex-col-start">
+                <div class="transport-address flex-col-start">
+                  <span class="invoice-label">Bill To</span>
+                  <h4>${previewData.billDetails?.name?.toUpperCase() || ""}</h4>
+                  <p>${previewData.billDetails?.address1 || ""}</p>
+                  <p>${previewData.billDetails?.address2 || ""}</p>
+                  <p>Phone no: ${previewData.billDetails?.mobile || ""}</p>
+                  <p>GST no: ${previewData.billDetails?.gstNo || ""}</p>
+                </div>
+                <div class="transport-address flex-col-start">
+                  <span class="invoice-label">Ship To</span>
+                  <h4>${previewData.shipDetails?.name?.toUpperCase() || ""}</h4>
+                  <p>${previewData.shipDetails?.address1 || ""}</p>
+                  <p>${previewData.shipDetails?.address2 || ""}</p>
+                  <p>Phone no: ${previewData.shipDetails?.mobile || ""}</p>
+                  <p>GST no: ${previewData.shipDetails?.gstNo || ""}</p>
+                </div>
+              </div>`
+              : ""
+          }
+          ${
+            invoiceType === "BT"
+              ? `<div class="flex-col-start">
+                <div class="transport-address flex-col-start">
+                  <span class="invoice-label">To Branch</span>
+                  <h4>${
+                    previewData.companyDetails?.name?.toUpperCase() || ""
+                  } (${
+                  previewData?.toBranchDetails?.prefix?.toUpperCase() || ""
+                })</h4>
+                  <p>${previewData?.toBranchDetails?.address1 || ""}</p>
+                  <p>${previewData?.toBranchDetails?.address2 || ""}</p>
+                  <p>${previewData?.toBranchDetails?.address3 || ""}</p>
+                  <p>GST no: ${previewData?.companyDetails?.gstNo || ""}</p>
+                </div>
+                <div class="transport-address flex-col-start">
+                  <span class="invoice-label">From Branch</span>
+                   <h4>${
+                     previewData.companyDetails?.name?.toUpperCase() || ""
+                   } (${
+                  previewData?.fromBranchDetails?.prefix?.toUpperCase() || ""
+                })</h4>
+                  <p>${previewData?.fromBranchDetails?.address1 || ""}</p>
+                  <p>${previewData?.fromBranchDetails?.address2 || ""}</p>
+                  <p>${previewData?.fromBranchDetails?.address3 || ""}</p>
+                  <p>GST no: ${previewData?.companyDetails?.gstNo || ""}</p>
+                </div>
+              </div>`
+              : ""
+          }
           <div class="flex-col-start">
             <div class="right-section">
               <span class="invoice-label">Date</span>
@@ -86,16 +121,28 @@ const generateInvoiceHTML = (data) => {
               <p style="margin: 0">${challanId}</p>
             </div>
             <div class="right-section">
-              <span class="invoice-label">Broker</span>
-              <p style="margin: 0">${previewData.brokerDetails?.name || ""}</p>
-            </div>
-            <div class="right-section">
               <span class="invoice-label">Transport Name</span>
-              <p style="margin: 0">${previewData.transportName || ""}</p>
+              <p style="margin: 0">${previewData.transportName || "-"}</p>
             </div>
+            ${
+              invoiceType === "Outward"
+                ? `<div class="right-section">
+              <span class="invoice-label">Broker</span>
+              <p style="margin: 0">${previewData.brokerDetails?.name || "-"}</p>
+            </div>`
+                : ""
+            }
+            ${
+              invoiceType === "BT"
+                ? `<div class="right-section">
+              <span class="invoice-label">Vehicle No.</span>
+              <p style="margin: 0">${previewData.vehicleNo || "-"}</p>
+            </div>`
+                : ""
+            }
             <div class="right-section">
               <span class="invoice-label">Description</span>
-              <p style="margin: 0">${previewData.shipmentDesc || ""}</p>
+              <p style="margin: 0">${previewData.shipmentDesc || "-"}</p>
             </div>
           </div>
       </div>`;
