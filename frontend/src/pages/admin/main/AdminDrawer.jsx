@@ -58,6 +58,13 @@ const AdminDrawer = ({ module, collapsed, setCollapsed }) => {
           null,
           () => navigate("/admin/outwardType")
         ),
+        getItem(
+          "BT Type",
+          "btType",
+          <SiMaterialformkdocs />,
+          null,
+          () => navigate("/admin/btType")
+        ),
         getItem("Material Type", "materialType", <VscSymbolClass />, null, () =>
           navigate("/admin/materialType")
         ),

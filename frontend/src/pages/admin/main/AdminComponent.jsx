@@ -21,6 +21,7 @@ import InwardType from "../options/inwardType";
 import MaterialType from "../options/materialType";
 import OutwardType from "../options/outwardType";
 import Branch from "../branch";
+import BtType from "../options/btType";
 
 const { Content } = Layout;
 
@@ -33,6 +34,7 @@ const adminModule = {
   emailLogs: <EmailLogs />,
   inwardType: <InwardType />,
   outwardType: <OutwardType />,
+  btType: <BtType />,
   materialType: <MaterialType />,
   grade: <Grade />,
   partyType: <PartyType />,
@@ -68,8 +70,6 @@ const AdminComponent = () => {
     if (userData && !/super admin/i.test(userData?.roleName)) {
       return navigate(import.meta.env.VITE_INITIAL_ROUTE);
     }
-
-
   }, [userData]);
 
   const Main = ({ module }) => {

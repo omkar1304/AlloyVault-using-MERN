@@ -28,7 +28,7 @@ const InwardList = () => {
   });
   const { data, isLoading, refetch } = useGetStockEntriesQuery({ ...query });
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
-    useGetBranchAsOptionQuery();
+    useGetBranchAsOptionQuery({});
   const { data: gradeOptions, isLoading: isGradeOptionsLoading } =
     useGetAsOptionQuery({ type: 4 });
   const { data: shapeOptions, isLoading: isShapeOptionsLoading } =

@@ -5,7 +5,8 @@ import Branch from "../../models/branch.model.js";
 export const getBranchAsOption = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { comapnyId = undefined } = decryptUrlPayload(payload);
+    const { comapnyId = undefined, withCompanyLabel = false } =
+      decryptUrlPayload(payload);
 
     const result = await Branch.aggregate([
       {
@@ -45,7 +46,14 @@ export const getBranchAsOption = async (req, res) => {
       {
         $project: {
           _id: 0,
-          label: "$name",
+          label:
+            // If company label required then concat with prefix of branch
+            comapnyId && withCompanyLabel
+              ? {
+                  $concat: ["$companyInfo.name", " ", "(", "$prefix", ")"],
+                }
+              : // Else return name as it is
+                "$name",
           value: "$_id",
         },
       },

@@ -17,9 +17,9 @@ import {
 import { PageHeader, PageSubHeader } from "../../../component/Headers";
 import CustomButton from "../../../component/CustomButton";
 import { useGetRolesAsOptionQuery } from "../../../redux/api/admin/roleApiSlice";
-import { useGetAsOptionQuery } from "../../../redux/api/user/optionsApiSlice";
 import filterOption from "../../../helpers/filterOption";
 import toast from "react-hot-toast";
+import { useGetBranchAsOptionQuery } from "../../../redux/api/admin/branchApiSlice";
 
 const UserForm = () => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const UserForm = () => {
   const { data: roleOptions, isLoading: isRoleOptionsLoading } =
     useGetRolesAsOptionQuery({});
   const { data: branchOptions, isLoading: isBranchOptionsLoading } =
-    useGetAsOptionQuery({ type: 1 });
+    useGetBranchAsOptionQuery({});
   const [updateUser, { isLoading: isUserUpdating }] = useUpdateUserMutation();
 
   useEffect(() => {
