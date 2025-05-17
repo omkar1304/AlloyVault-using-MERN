@@ -12,9 +12,11 @@ export const getChallanRecords = async (req, res) => {
     const {
       page = 1,
       size = 25,
+      type = "Outward",
       keyword = undefined,
       selectedBranch = undefined,
       selectedOutwardType = undefined,
+      selectedBtType = undefined,
       dateRange = undefined,
     } = decryptUrlPayload(payload);
 
@@ -46,8 +48,19 @@ export const getChallanRecords = async (req, res) => {
         outwardType: new mongoose.Types.ObjectId(selectedOutwardType),
       });
     }
+    if (selectedBtType) {
+      matchQueryStage.push({
+        btType: new mongoose.Types.ObjectId(selectedBtType),
+      });
+    }
 
     const result = await ChallanRecord.aggregate([
+      // Type filter
+      {
+        $match: {
+          typeEntry: type,
+        },
+      },
       // Date range filter
       ...(dateRange != undefined
         ? [
@@ -113,13 +126,27 @@ export const getChallanRecords = async (req, res) => {
                 ],
               },
             },
-
             {
               $lookup: {
                 from: "options",
                 localField: "outwardType",
                 foreignField: "_id",
                 as: "outwardInfo",
+                pipeline: [
+                  {
+                    $project: {
+                      name: 1,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: "options",
+                localField: "btType",
+                foreignField: "_id",
+                as: "btInfo",
                 pipeline: [
                   {
                     $project: {
@@ -159,6 +186,9 @@ export const getChallanRecords = async (req, res) => {
                 },
                 outwardType: {
                   $arrayElemAt: ["$outwardInfo.name", 0],
+                },
+                btType: {
+                  $arrayElemAt: ["$btInfo.name", 0],
                 },
                 totalWeight: 1,
                 createdBy: {

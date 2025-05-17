@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import getFormattedDate from "../../../helpers/getFormattedDate";
 import encryptString from "../../../helpers/encryptString";
 
-const getTableColumns = ({ handleDeleteRecord }) => {
+const getTableColumns = ({ handleDeleteRecord, type }) => {
   const navigate = useNavigate();
 
   return [
@@ -27,18 +27,32 @@ const getTableColumns = ({ handleDeleteRecord }) => {
       width: 100,
       render: (x) => x,
     },
-    {
-      title: "Party Name",
-      dataIndex: "partyName",
-      width: 100,
-      render: (x) => x,
-    },
-    {
-      title: "Outward Type",
-      dataIndex: "outwardType",
-      width: 100,
-      render: (x) => x,
-    },
+    ...(type === "Outward"
+      ? [
+          {
+            title: "Party Name",
+            dataIndex: "partyName",
+            width: 100,
+            render: (x) => x,
+          },
+          {
+            title: "Outward Type",
+            dataIndex: "outwardType",
+            width: 100,
+            render: (x) => x,
+          },
+        ]
+      : []),
+    ...(type === "BT"
+      ? [
+          {
+            title: "BT Type",
+            dataIndex: "btType",
+            width: 100,
+            render: (x) => x,
+          },
+        ]
+      : []),
     {
       title: "Weight",
       dataIndex: "totalWeight",
