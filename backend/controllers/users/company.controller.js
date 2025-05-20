@@ -4,7 +4,9 @@ import Company from "../../models/company.model.js";
 export const getCompaniesAsOption = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { sameAsLabel = false } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { sameAsLabel = false } = decrypted;
     const result = await Company.aggregate([
       {
         $sort: { name: 1 },
@@ -27,7 +29,9 @@ export const getCompaniesAsOption = async (req, res) => {
 export const getCompanyDetails = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { recordId = undefined } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { recordId = undefined } = decrypted;
 
     if (!recordId) {
       return res.status(400).json({ message: "Company ID is missing" });

@@ -6,7 +6,9 @@ import InvoiceCounter from "../../models/invoiceCounter.model.js";
 export const getInvoiceNumber = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { branchId, isBT = false } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { branchId, isBT = false } = decrypted;
 
     const branch = await Branch.findById(branchId);
     if (!branch) return res.status(404).json({ message: "Branch not found" });

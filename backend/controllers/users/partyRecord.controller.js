@@ -7,6 +7,8 @@ import mongoose from "mongoose";
 export const getPartyRecords = async (req, res) => {
   try {
     const { payload } = req.query;
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
     const {
       page = 1,
       size = 25,
@@ -15,7 +17,7 @@ export const getPartyRecords = async (req, res) => {
       selectedState = undefined,
       selectedCity = undefined,
       keyword = undefined,
-    } = decryptUrlPayload(payload);
+    } = decrypted;
 
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;
@@ -192,11 +194,13 @@ export const getPartyRecordsAsOption = async (req, res) => {
 export const getPartyDetails = async (req, res) => {
   try {
     const { payload } = req.query;
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
     const {
       recordId = undefined,
       searchBy = "id",
       partyName = undefined,
-    } = decryptUrlPayload(payload);
+    } = decrypted;
 
     if (searchBy === "id" && !recordId) {
       return res.status(400).json({ message: "Party record ID is missing" });
@@ -232,6 +236,7 @@ export const getPartyDetails = async (req, res) => {
 export const addPartyRecord = async (req, res) => {
   try {
     const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
     const { userId } = req?.user;
 
     const newPartyRecord = await PartyRecord({
@@ -259,6 +264,7 @@ export const updatePartyRecord = async (req, res) => {
   try {
     const { recordId = undefined } = req.params;
     const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
     const { userId } = req?.user;
 
     if (!recordId) {

@@ -16,6 +16,8 @@ import updateInvoiceCounter from "../../helpers/updateInvoiceCounter.js";
 export const getStockEntries = async (req, res) => {
   try {
     const { payload } = req.query;
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
     const {
       page = 1,
       size = 25,
@@ -28,9 +30,7 @@ export const getStockEntries = async (req, res) => {
       selectedOutwardType = undefined,
       selectedBtType = undefined,
       dateRange = undefined,
-    } = decryptUrlPayload(payload);
-
-    console.log("decryptUrlPayload", decryptUrlPayload(payload));
+    } = decrypted;
 
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;
@@ -325,6 +325,7 @@ export const getStockEntries = async (req, res) => {
 export const addStockEntryForInward = async (req, res) => {
   try {
     const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
     const {
       shipmentData,
       items = [],
@@ -376,6 +377,7 @@ export const addStockEntryForInward = async (req, res) => {
 export const addStockEntryForOutward = async (req, res) => {
   try {
     const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
     const {
       shipmentData,
       items = [],
@@ -463,6 +465,7 @@ export const addStockEntryForOutward = async (req, res) => {
 export const addStockEntryForBT = async (req, res) => {
   try {
     const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
     const {
       shipmentData,
       items = [],
@@ -578,7 +581,9 @@ export const addStockEntryForBT = async (req, res) => {
 export const getStockEntryDetails = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { recordId = undefined } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { recordId = undefined } = decrypted;
 
     if (!recordId) {
       return res.status(400).json({ message: "Stock record ID is missing" });
@@ -601,6 +606,7 @@ export const updateStockEntry = async (req, res) => {
   try {
     const { recordId = undefined } = req.params;
     const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
     const { userId } = req?.user;
 
     if (!recordId) {

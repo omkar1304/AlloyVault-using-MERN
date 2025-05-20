@@ -6,11 +6,9 @@ import Branch from "../../models/branch.model.js";
 export const getBranches = async (req, res) => {
   try {
     const { payload } = req.query;
-    const {
-      page = 1,
-      size = 25,
-      keyword = undefined,
-    } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { page = 1, size = 25, keyword = undefined } = decrypted;
 
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;
@@ -113,7 +111,9 @@ export const getBranchAsOption = async (req, res) => {
 export const getBranchDetails = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { recordId = undefined } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { recordId = undefined } = decrypted;
 
     if (!recordId) {
       return res.status(400).json({ message: "Branch ID is missing" });
@@ -135,6 +135,7 @@ export const getBranchDetails = async (req, res) => {
 export const addBranch = async (req, res) => {
   try {
     const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
     const { userId } = req?.user;
 
     const newBranch = await Branch({
@@ -159,6 +160,7 @@ export const updateBranch = async (req, res) => {
   try {
     const { recordId = undefined } = req.params;
     const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
     const { userId } = req?.user;
 
     if (!recordId) {

@@ -5,11 +5,13 @@ import Options from "./../../models/options.model.js";
 export const getAsOption = async (req, res) => {
   try {
     const { payload } = req.query;
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
     const {
       type = undefined,
       sameAsLabel = false,
       comapnyId = undefined,
-    } = decryptUrlPayload(payload);
+    } = decrypted;
 
     if (!type) {
       return res.status(400).json({ message: "Type is required" });

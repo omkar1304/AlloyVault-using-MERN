@@ -5,8 +5,9 @@ import Branch from "../../models/branch.model.js";
 export const getBranchAsOption = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { comapnyId = undefined, withCompanyLabel = false } =
-      decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { comapnyId = undefined, withCompanyLabel = false } = decrypted;
 
     const result = await Branch.aggregate([
       {

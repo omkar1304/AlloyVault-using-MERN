@@ -9,6 +9,8 @@ import path from "path";
 export const getChallanRecords = async (req, res) => {
   try {
     const { payload } = req.query;
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
     const {
       page = 1,
       size = 25,
@@ -18,7 +20,7 @@ export const getChallanRecords = async (req, res) => {
       selectedOutwardType = undefined,
       selectedBtType = undefined,
       dateRange = undefined,
-    } = decryptUrlPayload(payload);
+    } = decrypted;
 
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;

@@ -16,6 +16,7 @@ export const register = async (req, res) => {
     const { firstName, lastName, email, password } = decryptData(
       req.body.payload
     );
+    req.decryptedBody = { firstName, lastName, email, password };
 
     if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({ message: "All fields are required!" });
@@ -60,7 +61,9 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = decryptData(req.body.payload);
+    const payload = decryptData(req.body.payload)
+    req.decryptedBody = payload;
+    const { email, password } = payload;
 
     if (!email || !password) {
       return res.status(400).json({ message: "All fields are required" });
@@ -110,7 +113,9 @@ export const logout = async (req, res) => {
 
 export const sendOTP = async (req, res) => {
   try {
-    const { email = undefined } = decryptData(req.body.payload);
+    const payload = decryptData(req.body.payload)
+    req.decryptedBody = payload;
+    const { email = undefined } = payload;
 
     if (!email) {
       return res.status(400).json({ message: "Email ID is required" });
@@ -141,7 +146,9 @@ export const sendOTP = async (req, res) => {
 
 export const verifyOTP = async (req, res) => {
   try {
-    const { email, otp } = decryptData(req.body.payload);
+    const payload = decryptData(req.body.payload)
+    req.decryptedBody = payload;
+    const { email, otp } = payload;
 
     if (!email) {
       return res.status(400).json({ message: "Email ID is required" });
@@ -169,7 +176,9 @@ export const verifyOTP = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
   try {
-    const { email, password } = decryptData(req.body.payload);
+    const payload = decryptData(req.body.payload)
+    req.decryptedBody = payload;
+    const { email, password } = payload;
 
     if (!email) {
       return res.status(400).json({ message: "Email ID is required" });

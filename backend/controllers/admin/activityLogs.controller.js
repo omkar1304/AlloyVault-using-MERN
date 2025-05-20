@@ -4,11 +4,9 @@ import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
 export const getActivityLogs = async (req, res) => {
   try {
     const { payload } = req.query;
-    const {
-      page = 1,
-      size = 25,
-      keyword = undefined,
-    } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { page = 1, size = 25, keyword = undefined } = decrypted;
 
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;

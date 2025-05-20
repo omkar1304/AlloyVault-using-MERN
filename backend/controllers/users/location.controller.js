@@ -27,7 +27,9 @@ export const getCountriesAsOption = async (req, res) => {
 export const getStatesAsOption = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { countryCode = undefined } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { countryCode = undefined } = decrypted;
 
     const result = await State.aggregate([
       ...(countryCode
@@ -58,8 +60,9 @@ export const getStatesAsOption = async (req, res) => {
 export const getCitiesAsOption = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { countryCode = undefined, stateCode = undefined } =
-      decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { countryCode = undefined, stateCode = undefined } = decrypted;
 
     const result = await City.aggregate([
       ...(stateCode && countryCode

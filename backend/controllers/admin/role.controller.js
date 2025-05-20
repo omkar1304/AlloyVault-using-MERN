@@ -7,11 +7,9 @@ import createActivityLog from "../../helpers/createActivityLog.js";
 export const getRoles = async (req, res) => {
   try {
     const { payload } = req.query;
-    const {
-      page = 1,
-      size = 25,
-      keyword = undefined,
-    } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { page = 1, size = 25, keyword = undefined } = decrypted;
 
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;
@@ -122,7 +120,9 @@ export const getRolesAsOption = async (req, res) => {
 
 export const addRole = async (req, res) => {
   try {
-    const { name } = decryptData(req.body.payload);
+    const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
+    const { name } = payload;
     const { userId } = req?.user;
 
     const exisitingRole = await Role.findOne({ name });
@@ -149,11 +149,9 @@ export const addRole = async (req, res) => {
 
 export const updatePermission = async (req, res) => {
   try {
-    const {
-      value = undefined,
-      roleId = undefined,
-      key = undefined,
-    } = decryptData(req.body.payload);
+    const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
+    const { value = undefined, roleId = undefined, key = undefined } = payload;
     const { userId } = req?.user;
 
     if (value === undefined || roleId === undefined || key === undefined) {
@@ -181,11 +179,9 @@ export const updatePermission = async (req, res) => {
 
 export const updateRoleField = async (req, res) => {
   try {
-    const {
-      recordId,
-      fieldName,
-      fieldValue = undefined,
-    } = decryptData(req.body.payload);
+    const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
+    const { recordId, fieldName, fieldValue = undefined } = payload;
     const { userId } = req?.user;
 
     if (!fieldName || !recordId) {

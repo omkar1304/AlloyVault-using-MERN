@@ -28,7 +28,9 @@ export const getBrokersAsOption = async (req, res) => {
 
 export const addBroker = async (req, res) => {
   try {
-    const { name, panNo, mobile, address } = decryptData(req.body.payload);
+    const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
+    const { name, panNo, mobile, address } = payload;
     const { userId } = req?.user;
 
     if (!name) {
@@ -60,6 +62,7 @@ export const updateBroker = async (req, res) => {
   try {
     const { brokerId = undefined } = req.params;
     const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
     const { userId } = req?.user;
 
     if (!brokerId) {

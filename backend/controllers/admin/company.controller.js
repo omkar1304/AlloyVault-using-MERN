@@ -7,11 +7,9 @@ import createActivityLog from "../../helpers/createActivityLog.js";
 export const getCompanies = async (req, res) => {
   try {
     const { payload } = req.query;
-    const {
-      page = 1,
-      size = 25,
-      keyword = undefined,
-    } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { page = 1, size = 25, keyword = undefined } = decrypted;
 
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;
@@ -99,7 +97,9 @@ export const getCompanies = async (req, res) => {
 export const getCompanyDetails = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { recordId = undefined } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { recordId = undefined } = decrypted;
 
     if (!recordId) {
       return res.status(400).json({ message: "Company ID is missing" });

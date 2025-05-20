@@ -7,11 +7,9 @@ import createActivityLog from "../../helpers/createActivityLog.js";
 export const getUsers = async (req, res) => {
   try {
     const { payload } = req.query;
-    const {
-      page = 1,
-      size = 25,
-      keyword = undefined,
-    } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { page = 1, size = 25, keyword = undefined } = decrypted;
 
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;
@@ -63,7 +61,7 @@ export const getUsers = async (req, res) => {
                 email: 1,
                 createdAt: 1,
                 updatedAt: 1,
-                isAdminApproved: 1
+                isAdminApproved: 1,
               },
             },
           ],
@@ -105,6 +103,7 @@ export const updateUser = async (req, res) => {
   try {
     const { recordId = undefined } = req.params;
     const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
     const { userId } = req?.user;
 
     if (!recordId) {

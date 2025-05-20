@@ -1,14 +1,12 @@
 import decryptUrlPayload from "../../lib/decryptUrlPayload.js";
-import EmailLog from './../../models/emailLog.model.js';
+import EmailLog from "./../../models/emailLog.model.js";
 
 export const getEmailLogs = async (req, res) => {
   try {
     const { payload } = req.query;
-    const {
-      page = 1,
-      size = 25,
-      keyword = undefined,
-    } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { page = 1, size = 25, keyword = undefined } = decrypted;
 
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;
@@ -17,9 +15,7 @@ export const getEmailLogs = async (req, res) => {
     if (keyword !== undefined) {
       const words = keyword.split(" ");
       const searchConditions = words.map((word) => ({
-        $or: [
-          { subject: { $regex: word, $options: "i" } },
-        ],
+        $or: [{ subject: { $regex: word, $options: "i" } }],
       }));
 
       matchQueryStage.push({
@@ -38,10 +34,7 @@ export const getEmailLogs = async (req, res) => {
       {
         $facet: {
           totalCount: [{ $count: "count" }],
-          paginatedResults: [
-            { $skip: skip },
-            { $limit: size },
-          ],
+          paginatedResults: [{ $skip: skip }, { $limit: size }],
         },
       },
     ]);

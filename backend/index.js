@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import connectDB from "./lib/connectDB.js";
 import userRouter from "./routes/user.route.js";
 import adminRouter from "./routes/admin.route.js";
+import apiLogger from "./middleware/apiLogger.middleware.js";
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -25,6 +26,7 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
+app.use(apiLogger); 
 
 //* To serve static files
 app.use("/uploads/companyImages", express.static("./uploads/companyImages"));

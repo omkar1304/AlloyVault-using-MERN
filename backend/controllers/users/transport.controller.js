@@ -6,11 +6,9 @@ import Transport from "../../models/transport.model.js";
 export const getTransports = async (req, res) => {
   try {
     const { payload } = req.query;
-    const {
-      page = 1,
-      size = 25,
-      keyword = undefined,
-    } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { page = 1, size = 25, keyword = undefined } = decrypted;
 
     // Calculate the number of documents to skip
     const skip = (page - 1) * size;
@@ -108,7 +106,9 @@ export const getTransportAsOption = async (req, res) => {
 export const getTransportDetails = async (req, res) => {
   try {
     const { payload } = req.query;
-    const { recordId = undefined } = decryptUrlPayload(payload);
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
+    const { recordId = undefined } = decrypted;
 
     if (!recordId) {
       return res.status(400).json({ message: "Transport ID is missing" });
@@ -130,6 +130,7 @@ export const getTransportDetails = async (req, res) => {
 export const addTransport = async (req, res) => {
   try {
     const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
     const { userId } = req?.user;
 
     const newTransport = await Transport({
@@ -157,6 +158,7 @@ export const updateTransport = async (req, res) => {
   try {
     const { recordId = undefined } = req.params;
     const payload = decryptData(req.body.payload);
+    req.decryptedBody = payload;
     const { userId } = req?.user;
 
     if (!recordId) {
@@ -200,7 +202,10 @@ export const deleteTransport = async (req, res) => {
       return res.status(404).json({ message: "Transport not found" });
     }
 
-    await createActivityLog(userId, `User deleted transport - ${transport?.name}`);
+    await createActivityLog(
+      userId,
+      `User deleted transport - ${transport?.name}`
+    );
 
     return res.status(200).json({ message: "Transport deleted successfully" });
   } catch (error) {

@@ -13,12 +13,14 @@ const optionMap = {
 export const getOptions = async (req, res) => {
   try {
     const { payload } = req.query;
+    const decrypted = decryptUrlPayload(payload);
+    req.decryptedBody = decrypted;
     const {
       page = 1,
       size = 25,
       type = undefined,
       keyword = undefined,
-    } = decryptUrlPayload(payload);
+    } = decrypted;
 
     if (!type) {
       return res.status(400).json({ message: "Type is required" });
@@ -103,6 +105,7 @@ export const getOptions = async (req, res) => {
 export const addOption = async (req, res) => {
   try {
     const { name, type } = decryptData(req.body.payload);
+    req.decryptedBody = { name, type };
     const { userId } = req?.user;
 
     if (!name || !type) {
